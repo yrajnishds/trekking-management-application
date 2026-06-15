@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>{{ page|capitalize }}</title>
+</head>
+
+<body>
+
+    <header>
+
+        {% if role == "admin" %}
+            {% include "admin/navbar.html" %}
+        {% elif role == "staff" %}
+            {% include "staff/navbar.html" %}
+        {% else %}
+            {% include "user/navbar.html" %}
+        {% endif %}
+
+    </header>
+
+    <main>
+
+        {% block content %}
+
+        {% endblock %}
+
+    </main>
+
+    {% include "components/footer.html" %}
+
+</body>
+
+</html>
