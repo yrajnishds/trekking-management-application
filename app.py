@@ -1,4 +1,6 @@
 from flask import Flask
+from flask_login import LoginManager
+from models.model import User
 
 from routes.home import home_bp
 from routes.auth import auth_bp
@@ -18,12 +20,21 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
-
-
-    with app.app_context():
+    with app.app_context():  # Create the Database
         db.create_all()
 
-        import create_admin
+        print('Database Created Successfuly')
+
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = 'auth.login'
+    login_manager.login_message = 'Please Login First'
+    @login_manager.user_loader
+
+    def load_user(user_id):
+
+        return User.query.get(int(user_id))
+
 
     app.register_blueprint(home_bp)
     app.register_blueprint(auth_bp)
