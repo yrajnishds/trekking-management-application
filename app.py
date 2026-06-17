@@ -25,6 +25,9 @@ def create_app():
 
         print('Database Created Successfuly')
 
+        from create_admin import create_admin_user
+        create_admin_user()
+
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
@@ -34,6 +37,7 @@ def create_app():
     def load_user(user_id):
 
         return User.query.get(int(user_id))
+
 
 
     app.register_blueprint(home_bp)
