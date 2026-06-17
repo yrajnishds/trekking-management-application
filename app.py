@@ -7,8 +7,23 @@ from routes.user import user_bp
 from routes.staff import staff_bp
 from routes.error import error_bp
 
+from models import db
+
+
 def create_app():
     app = Flask(__name__)
+
+    app.config["SECRET_KEY"] = 'mad1-project'
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.sqlite3"
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    db.init_app(app)
+
+
+    with app.app_context():
+        db.create_all()
+
+        import create_admin
 
     app.register_blueprint(home_bp)
     app.register_blueprint(auth_bp)
