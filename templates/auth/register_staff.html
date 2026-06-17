@@ -1,0 +1,63 @@
+{% extends "auth/auth_base.html" %}
+
+{% block content %}
+
+<div>
+    <h2>New Staff - Register</h2><br>
+    <div>
+        <form action="" method="POST">
+            {{ form.hidden_tag() }}
+
+            <div>
+                <p>{{ form.name.label }}</p>
+                <p>{{ form.name }}</p>
+                {% for error in form.name.errors %}
+                <p><span style="color: red;">[{{ error }}]</span></p>
+                {% endfor %}
+            </div><br>
+            <div>
+                <p>{{ form.email.label }}</p>
+                <p>{{ form.email }}</p>
+                {% for error in form.email.errors %}
+                <p><span style="color: red;">[{{ error }}]</span></p>
+                {% endfor %}
+            </div><br>
+            <div>
+                <p>{{ form.role.label }}</p>
+                <p>{{ form.role }}</p>
+                {% for error in form.role.errors %}
+                <p><span style="color: red;">[{{ error }}]</span></p>
+                {% endfor %}
+            </div><br>
+            <div>
+                <p>{{ form.password.label }}</p>
+                <p>{{ form.password}}</p>
+                {% for error in form.password.errors %}
+                <p><span style="color: red;">[{{ error }}]</span></p>
+                {% endfor %}
+            </div><br>
+            <div>
+                <p>{{ form.confirm_password.label }}</p>
+                <p>{{ form.confirm_password}}</p>
+                {% for error in form.confirm_password.errors %}
+                <p><span style="color: red;">[{{ error }}]</span></p>
+                {% endfor %}
+            </div><br>
+            <div>
+                <p>{{ form.submit }}</p>
+            </div>
+        </form>
+    </div><br>
+    <div>
+        <p>
+            Already Have An Account? <a href="{{ url_for('auth.login') }}">Login</a>
+        </p><br>
+        <p>
+            New User? <a href="{{ url_for('auth.registerUser') }}">Create Account</a>
+        </p>
+    </div>
+</div>
+<br>
+
+
+{% endblock %}
