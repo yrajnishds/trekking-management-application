@@ -8,4 +8,7 @@
 <p><a href="{{ url_for('auth.registerUser') }}">Register New User</a></p><br>
 <p><a href="{{ url_for('auth.registerStaff') }}">Register New staff</a></p><br>
 
+<br>
+<strong>{{ current_user.first_name }}</strong>
+
 {% endblock %}

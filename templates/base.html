@@ -11,9 +11,9 @@
 <body>
 
     <header>
-        {% if role == "admin" %}
+        {% if current_user.role == "admin" %}
             {% include "admin/navbar.html" %}
-        {% elif role == "staff" %}
+        {% elif current_user.role == "staff" %}
             {% include "staff/navbar.html" %}
         {% else %}
             {% include "user/navbar.html" %}

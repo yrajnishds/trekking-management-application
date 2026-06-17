@@ -1,0 +1,28 @@
+<nav>
+    <div>
+        Trek Management
+    </div>
+<!-- Nav Links -->
+
+    <div>
+        <a href="{{ url_for('user.dashboard') }}">Dashborad</a>
+        <a href="{{ url_for('user.booking') }}">Bookings</a>
+        <a href="{{ url_for('user.trek') }}">Treks</a>
+        <a href="{{ url_for('user.history') }}">History</a>
+    </div>
+    <!-- Search Bar-->
+    <div>
+        <form action="">
+            <input type="text" placeholder="Search treks...">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <!-- Action Links -->
+    <div>
+        <a href="{{ url_for('user.profile') }}">Profile</a>
+        <a href="{{ url_for('auth.logout') }}">Logout</a>
+    </div>
+
+
+</nav>
+

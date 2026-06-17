@@ -1,0 +1,29 @@
+<nav>
+    <div>
+        Trek Management
+    </div>
+
+    <!-- Navlinks Links -->
+    <div>
+        <a href="{{ url_for('staff.dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('staff.assigned_trek') }}">Assigned Treks</a>
+        <a href="{{ url_for('staff.booking') }}">Bookings</a>
+        <a href="{{ url_for('staff.history') }}">History</a>
+    </div>
+
+    <!-- Search Bar-->
+    <div>
+        <form action="">
+            <input type="text" placeholder="Search treks...">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <!-- Action Links -->
+
+    <div>
+        <a href="{{ url_for('staff.profile') }}">Profile</a>
+        <a href="{{ url_for('auth.logout') }}">Logout</a>
+    </div>
+
+
+</nav>
