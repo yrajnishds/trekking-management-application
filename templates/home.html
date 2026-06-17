@@ -2,6 +2,10 @@
 
 {% block content %}
 
-<h1>This Is Home Page</h1>
+<h1>Welcome</h1><br>
+
+<p><a href="{{ url_for('auth.login') }}">Login</a></p><br>
+<p><a href="{{ url_for('auth.registerUser') }}">Register New User</a></p><br>
+<p><a href="{{ url_for('auth.registerStaff') }}">Register New staff</a></p><br>
 
 {% endblock %}
