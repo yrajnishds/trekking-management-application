@@ -1,15 +1,41 @@
 from . import db
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
-class User(db.Model):
+class User(UserMixin, db.Model):
+
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key = True)
     first_name = db.Column(db.String(50), nullable = False, unique = False)
     last_name = db.Column(db.String(50), nullable = True, unique = False)
     email = db.Column(db.String(120), unique = True, nullable = False)
     username = db.Column(db.String(120), unique = True, nullable = False)
-    role = db.Column(db.String(20), unique = False, nullable = False, default = 'not_approved')
+    # is_active = db.Column(db.Boolean, default=True, nullable=False)
+    role = db.Column(db.String(20), unique = False, nullable = False, default = 'not_defined')
     user_status = db.Column(db.String(20), unique = False, nullable = False, default = 'not_approved')
-    password = db.Column(db.String(120), nullable = False, unique = False)
+    password_hash = db.Column(db.String(120), nullable = False, unique = False)
+
+    def set_password(self, password):
+        """Hashes and stores the password."""
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        """Checks if the plain password matches the stored hash."""
+        return check_password_hash(self.password_hash, password)
+
+class UserProfile(db.Model):
+
+    __tablename__ = 'users_profile'
+    id = db.Column(db.Integer, primary_key = True)
+    first_name = db.Column(db.String(50), nullable = False, unique = False)
+    last_name = db.Column(db.String(50), nullable = True, unique = False)
+    email = db.Column(db.String(120), unique = True, nullable = False)
+    username = db.Column(db.String(120), unique = True, nullable = False)
+    is_active = db.Column(db.Boolean, default=True, nullable=False)
+    role = db.Column(db.String(20), unique = False, nullable = False, default = 'not_defined')
+    user_status = db.Column(db.String(20), unique = False, nullable = False, default = 'not_approved')
+    password_hash = db.Column(db.String(120), nullable = False, unique = False)
+
 
 
 class Trek(db.Model):
@@ -32,8 +58,18 @@ class Booking(db.Model):
     user_id = db.Column(db.Integer, nullable = False, unique = False)
     
 
-class History(db.Model):
-    __tablename__ = 'history'
+class UserHistory(db.Model):
+    __tablename__ = "users_history"
+    id = db.Column(db.Integer, primary_key = True)
+    first_name = db.Column(db.String(50), nullable = False, unique = False)
+    last_name = db.Column(db.String(50), nullable = True, unique = False)
+    email = db.Column(db.String(120), unique = True, nullable = False)
+    username = db.Column(db.String(120), unique = True, nullable = False)
+    role = db.Column(db.String(20), unique = False, nullable = False, default = 'not_defined')
+    account_status = db.Column(db.String(20), unique = False, nullable = False, default = 'deleted')
+
+class TrekHistory(db.Model):
+    __tablename__ = 'trek_history'
     id = db.Column(db.Integer, primary_key = True)
     trek_id = db.Column(db.Integer, nullable = False, unique = True)
     user_id = db.Column(db.Integer, nullable = False, unique = False)
