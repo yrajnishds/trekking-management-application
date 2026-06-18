@@ -7,8 +7,8 @@ def create_admin_user():
     if not User.query.filter_by(role='admin').first():
         admin = User(username='admin', email='admin@test.com',
                      role='admin', approval_status = 'approved',
-                     account_status = 'superUser',
-                     first_name = 'Admin')
+                     is_active = True,
+                     first_name = 'admin')
         admin.set_password('admin')
         db.session.add(admin)
         db.session.commit()

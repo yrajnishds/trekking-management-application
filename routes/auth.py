@@ -43,10 +43,10 @@ def register(type):
         else:
             name = form.name.data.split()
             if len(name) != 1:
-                first_name = name[0]
-                last_name = " ".join(name[1:])
+                first_name = name[0].lower()
+                last_name = " ".join(name[1:]).lower()
             else:
-                first_name = name[0]
+                first_name = name[0].lower()
                 last_name = None
             email = form.email.data
             password = form.password.data
