@@ -1,6 +1,5 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, EmailField, SubmitField, RadioField
-from wtforms import IntegerField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, InputRequired
 
 class TrekkerRegisterForm(FlaskForm):
@@ -63,13 +62,6 @@ class AddUsersForm(FlaskForm):
                                             EqualTo('password', message='Passwords must match.')])
     submit = SubmitField('Add')
 
-class TrekAddForm(FlaskForm):
-    pass
-class TrekBookForm(FlaskForm):
-    pass
-
-class TrekUpdateForm(FlaskForm):
-    pass
 
 class ProfileUpdateForm(FlaskForm):
     pass

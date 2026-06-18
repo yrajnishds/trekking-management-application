@@ -4,7 +4,7 @@ from flask_login import current_user, login_required
 from models.model import User
 from routes.decorators import role_required
 from models import db
-from forms.form import AddUsersForm
+from forms.user_form import AddUsersForm
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
