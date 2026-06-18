@@ -1,5 +1,5 @@
 from flask import Blueprint,  render_template, redirect, url_for
-from flask import flash
+from flask import flash, request
 from flask_login import current_user, login_required
 from models.model import User
 from routes.decorators import role_required
@@ -26,16 +26,31 @@ def dashboard():
                            role = admin_data.role)
 
 
-@admin_bp.route('/user')
+@admin_bp.route('/trekker')
 @login_required
 @role_required('admin')
 def trekker():
     trekkers = User.query.filter_by(role = 'trekker').all()
     form = AddUsersForm()
+    total = User.query.filter_by(role = 'trekker').count()
+    approved = User.query.filter_by(role = 'trekker', approval_status = 'approved').count()
+    pending = total - approved
+    active = User.query.filter_by(role = 'trekker', is_active = True).count()
+    inactive = total - active
+    blacklisted = User.query.filter_by(role = 'trekker', is_blocked = True).count()
+    unblacklisted = total - blacklisted
+
     return render_template('admin/trekker.html',
                            page = 'trekkers',
-                           trekkers = trekkers, form = form,
-                           type = 'trekker')
+                           users = trekkers, form = form,
+                           role_type = 'trekker',
+                           total = total,
+                           approved = approved,
+                           pending = pending,
+                           active = active,
+                           inactive = inactive,
+                           blacklisted = blacklisted,
+                           unblacklisted = unblacklisted)
 
 @admin_bp.route('/staff')
 @login_required
@@ -45,8 +60,8 @@ def staff():
     form = AddUsersForm()
     return render_template('admin/staff.html',
                            page = 'Staffs',
-                           staffs = staffs, form = form,
-                           type = 'staff')
+                           users = staffs, form = form,
+                           role_type = 'staff')
 
 @admin_bp.route('/add/<string:role_type>', methods = ['GET', 'POST'])
 @login_required
@@ -60,12 +75,12 @@ def add_user(role_type):
             return redirect(url_for('auth.register'))
         
         else:
-            name = form.name.data.split()
+            name = form.name.data.strip().split()
             if len(name) != 1:
-                first_name = name[0]
-                last_name = " ".join(name[1:])
+                first_name = name[0].lower()
+                last_name = " ".join(name[1:]).lower()
             else:
-                first_name = name[0]
+                first_name = name[0].lower()
                 last_name = None
             email = form.email.data
             password = form.password.data
@@ -93,10 +108,44 @@ def add_user(role_type):
 @login_required
 @role_required('admin')
 def admin_action(role_type, id, action):
-    user_data = User.query.get_or_404(id)
-    if user_data:
-        pass
-
+    if request.method == 'POST':
+        user_data = User.query.get_or_404(id)
+        if not user_data:
+            flash('Invalid Id', 'error')
+            return redirect(url_for(f'admin.{role_type}'))
+        if action == 'approved':
+            user_data.approval_status = action
+            db.session.commit()
+            flash(f'Now Approval for {user_data.first_name} changed to {action}', 'success')
+            return redirect(url_for(f'admin.{role_type}'))
+        elif action == 'pending':
+            user_data.approval_status = action
+            db.session.commit()
+            flash(f'Now Approval for {user_data.first_name} changed to {action}', 'info')
+            return redirect(url_for(f'admin.{role_type}'))
+        elif action == 'activate':
+            user_data.is_active = True
+            db.session.commit()
+            flash(f'{user_data.first_name} is now Activated', 'success')
+            return redirect(url_for(f'admin.{role_type}'))
+        elif action == 'deactivate':
+            user_data.is_active = False
+            db.session.commit()
+            flash(f'{user_data.first_name} is now Deactivated', 'danger')
+            return redirect(url_for(f'admin.{role_type}'))
+        elif action == 'block':
+            user_data.is_blocked = True
+            db.session.commit()
+            flash(f'{user_data.first_name} is now Blacklisted', 'danger')
+            return redirect(url_for(f'admin.{role_type}'))
+        elif action == 'unblock':
+            user_data.is_blocked = False
+            db.session.commit()
+            flash(f'{user_data.first_name} is now Unblacklisted', 'success')
+            return redirect(url_for(f'admin.{role_type}'))
+        else:
+            flash('Invalid Action', 'error')
+            return redirect(url_for(f'admin.{role_type}'))
 
 
 
