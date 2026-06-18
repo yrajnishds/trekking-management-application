@@ -54,8 +54,8 @@ def staff():
 def add_user(role_type):
     form = AddUsersForm()
     if form.validate_on_submit():
-        role_type = User.query.filter_by(email = form.email.data).first()
-        if type:
+        user = User.query.filter_by(email = form.email.data).first()
+        if user:
             flash(f'{user.role.caplitalize()} With this email already exits', 'error')
             return redirect(url_for('auth.register'))
         
