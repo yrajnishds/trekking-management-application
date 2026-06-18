@@ -5,7 +5,7 @@
 <section>
     <div>
         <h3>
-            Total users: {{ users|length }}
+            Total {{ type|capitalize + 's' }}: {{ users|length }}
         </h3>
     </div>
 
@@ -16,7 +16,7 @@
 </section>
 <section>
 
-    <h1> Manage Users </h1>
+    <h1> Manage {{ type|capitalize + 's' }} </h1>
 
     <table border='1'>
         <thead>

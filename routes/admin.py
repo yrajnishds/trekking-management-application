@@ -30,25 +30,32 @@ def dashboard():
 @login_required
 @role_required('admin')
 def user():
-    user_id = current_user.id
-    user_data = User.query.filter_by(id = user_id).first()
     users = User.query.filter_by(role = 'user').all()
     form = AddUsersForm()
     return render_template('admin/user.html',
-                           page = 'Users', first_name = user_data.first_name,
-                           email = user_data.email,
-                           role = user_data.role,
+                           page = 'Users',
                            users = users, form = form,
                            type = 'user')
 
-@admin_bp.route('/add-user', methods = ['GET', 'POST'])
+@admin_bp.route('/staff')
 @login_required
 @role_required('admin')
-def add_user():
+def staff():
+    users = User.query.filter_by(role = 'staff').all()
+    form = AddUsersForm()
+    return render_template('admin/user.html',
+                           page = 'Staffs',
+                           users = users, form = form,
+                           type = 'staff')
+
+@admin_bp.route('/add/<string:role_type>', methods = ['GET', 'POST'])
+@login_required
+@role_required('admin')
+def add_user(role_type):
     form = AddUsersForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email = form.email.data).first()
-        if user:
+        role_type = User.query.filter_by(email = form.email.data).first()
+        if type:
             flash(f'{user.role.caplitalize()} With this email already exits', 'error')
             return redirect(url_for('auth.register'))
         
@@ -93,27 +100,18 @@ def user_block(id):
         db.session.commit()
         return redirect(url_for('admin.user'))
 
-@admin_bp.route('/staff')
-@login_required
-@role_required('admin')
-def staff():
-    user_id = current_user.id
-    user_data = User.query.filter_by(id = user_id).first()
-    return render_template('admin/staff.html',
-                           page = 'Staffs', first_name = user_data.first_name,
-                           email = user_data.email,
-                           role = user_data.role)
-
 
 @admin_bp.route('/trek')
 @login_required
 @role_required('admin')
 def trek():
-    user_id = current_user.id
-    user_data = User.query.filter_by(id = user_id).first()
-    return render_template('admin/trek.html', page = 'Treks', first_name = user_data.first_name,
-                           email = user_data.email,
-                           role = user_data.role)
+    pass
+    # treks = Trek.query.all()
+    # form = AddTrekForm()
+    # return render_template('admin/treks.html',
+    #                        page = 'Treks'
+    #                        treks = treks, form = form,
+    #                        type = 'treks')
 
 
 @admin_bp.route('/booking')
