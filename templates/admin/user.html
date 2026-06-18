@@ -2,6 +2,117 @@
 
 {% block content %}
 
-<h1> {{ current_user.first_name|capitalize }} {{ page|capitalize }} Page</h1>
+<section>
+    <div>
+        <h3>
+            Total users: {{ users|length }}
+        </h3>
+    </div>
+
+</section>
+<section>
+
+    {% include 'admin/add_user.html' %}
+</section>
+<section>
+
+    <h1> Manage Users </h1>
+
+    <table border='1'>
+        <thead>
+            <tr>
+                <th colspan="10">
+                    Users Details
+                </th>
+                <th colspan="2">
+                    Actions
+                </th>
+            </tr>
+        <tr>
+            <th>
+                S.no.
+            </th>
+            <th>
+                Used Id
+            </th>
+            <th>
+                First Name
+            </th>
+            <th>
+                Last Name
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Username
+            </th>
+            <th>
+                User Status
+            </th>
+            <th>
+                Bio
+            </th>
+            <th>
+                dob
+            </th>
+            <th>
+                user_since
+            </th>
+            <th colspan="2">
+                Status
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in range(users|length) %}
+        <tr>
+                <td>
+                    {{ user + 1 }}
+                </td>
+                <td>
+                    {{ users[user].id }}
+                </td>
+                <td>
+                    {{ users[user].first_name }}
+                </td>
+                <td>
+                    {{ users[user].last_name }}
+                </td>
+                <td>
+                    {{ users[user].email }}
+                </td>
+                <td>
+                    {{ users[user].username }}
+                </td>
+                <td>
+                    {{ users[user].user_status }}
+                </td>
+                <td>
+                    {{ users[user].bio }}
+                </td>
+                <td>
+                    {{ users[user].dob }}
+                </td>
+                <td>
+                    {{ users[user].user_since }}
+                </td>
+                <td>
+                    <form action="{{ url_for('admin.user_block', id = users[user].id) }}" method="post">
+                        <button>Block</button>
+                    </form>
+                </td>
+                <td>
+                    {{ 'active' }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        
+        
+    </table>
+
+</section>
+            
 
 {% endblock %}

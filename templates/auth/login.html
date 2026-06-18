@@ -12,7 +12,7 @@
                 <p>{{ form.email.label }}</p>
                 <p>{{ form.email }}</p>
                 {% for error in form.email.errors %}
-                <p><span style="color: red;">[{{ error }}]</span></p>
+                <p><span style="color: red">[{{ error }}]</span></p>
                 {% endfor %}
             </div><br>
             <div>
@@ -30,12 +30,11 @@
     <div>
 
         <p>
-            New User? <a href="{{ url_for('auth.registerUser') }}">Create Account</a>
+            New User? <a href="{{ url_for('auth.register', type = 'user') }}">Create Account</a>
         </p><br>
-        <p>New Staff? <a href="{{ url_for('auth.registerStaff') }}">Register Staff</a></p>
+        <p>New Staff? <a href="{{ url_for('auth.register', type = 'staff') }}">Register Staff</a></p>
     </div>
 </div>
 <br>
-<p><strong>{{ current_user.first_name }}</strong></p>
 
 {% endblock %}

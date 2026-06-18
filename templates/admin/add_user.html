@@ -1,11 +1,7 @@
-{% extends "auth/auth_base.html" %}
-
-{% block content %}
-
 <div>
-    <h2>New Staff - Register</h2><br>
+    <h2>Add New {{ type|capitalize }}</h2><br>
     <div>
-        <form action="" method="POST">
+        <form action="{{ url_for('admin.add_user') }}" method="POST">
             {{ form.hidden_tag() }}
 
             <div>
@@ -47,17 +43,4 @@
                 <p>{{ form.submit }}</p>
             </div>
         </form>
-    </div><br>
-    <div>
-        <p>
-            Already Have An Account? <a href="{{ url_for('auth.login') }}">Login</a>
-        </p><br>
-        <p>
-            New User? <a href="{{ url_for('auth.registerUser') }}">Create Account</a>
-        </p>
     </div>
-</div>
-<br>
-
-
-{% endblock %}

@@ -3,9 +3,9 @@
 {% block content %}
 
 <div>
-    <h2>New User - Register</h2><br>
+    <h2>New {{ type|capitalize }} - Register</h2><br>
     <div>
-        <form action="" method="POST">
+        <form action="{{ url_for('auth.register', type = type) }}" method="POST">
             {{ form.hidden_tag() }}
 
             <div>
@@ -49,12 +49,23 @@
         </form>
     </div><br>
     <div>
-
         <p>
             Already Have An Account? <a href="{{ url_for('auth.login') }}">Login</a>
         </p><br>
         <p>
-            New Staff? <a href="{{ url_for('auth.registerStaff') }}">Register Staff</a>
+            {% if type == 'staff' %}
+            {% set other = 'user' %}
+            {% else %}
+            {% set other = 'staff' %}
+            {% endif %}
+            New {{ other }}? <a href="{{ url_for('auth.register', type = other) }}">
+                {% if other == 'user' %}
+                    Create Account
+                {% else %}
+                    Register
+                {% endif %}
+                
+            </a>
         </p>
     </div>
 </div>
