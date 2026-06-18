@@ -12,7 +12,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(120), unique = True, nullable = True)
     role = db.Column(db.String(20), unique = False, nullable = False, default = 'not_defined')
     approval_status = db.Column(db.String(20), unique = False, nullable = False, default = 'not_approved')
-    user_status = db.Column(db.String(20), unique = False, nullable = False, default = 'active')
+    account_status = db.Column(db.String(20), unique = False, nullable = False, default = 'active')
     password_hash = db.Column(db.String(120), nullable = False, unique = False)
     bio = db.Column(db.Text(1000), nullable = True, unique = False)
     dob = db.Column(db.Date, nullable = True, unique = False)

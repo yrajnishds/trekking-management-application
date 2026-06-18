@@ -59,7 +59,7 @@
                 <th>
                     user_since
                 </th>
-                <th colspan="2">
+                <th>
                     Status
                 </th>
             </tr>
@@ -98,12 +98,25 @@
                     {{ users[user].user_since }}
                 </td>
                 <td>
-                    <form action="{{ url_for('admin.user_block', id = users[user].id) }}" method="post">
-                        <button>Block</button>
+                    {% if users[user].account_status != 'active' %}
+                    <form action="{{ url_for('admin.user_action') }}" method="post">
+                        <button>Activate</button>
                     </form>
+                    {% endif %}
                 </td>
                 <td>
-                    {{ 'active' }}
+                    {% if users[user].account_status != 'deactived' %}
+                    <form action="{{ url_for('admin.user_action') }}" method="post">
+                        <button>Deactivate</button>
+                    </form>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if users[user].account_status != 'blocked' %}
+                    <form action="{{ url_for('admin.user_action') }}" method="post">
+                        <button>Block</button>
+                    </form>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

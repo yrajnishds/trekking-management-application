@@ -1,5 +1,5 @@
 from flask import Blueprint,  render_template, redirect, url_for
-from flask import request, flash
+from flask import flash
 from flask_login import current_user, login_required
 from models.model import User
 from routes.decorators import role_required
@@ -18,34 +18,34 @@ def admin():
 @login_required
 @role_required('admin')
 def dashboard():
-    user_id = current_user.id
-    user_data = User.query.filter_by(id = user_id).first()
+    admin_id = current_user.id
+    admin_data = User.query.filter_by(id = admin_id).first()
     return render_template('admin/dashboard.html',
-                           page = f'dashboard', first_name = user_data.first_name,
-                           email = user_data.email,
-                           role = user_data.role)
+                           page = f'dashboard', first_name = admin_data.first_name,
+                           email = admin_data.email,
+                           role = admin_data.role)
 
 
 @admin_bp.route('/user')
 @login_required
 @role_required('admin')
-def user():
-    users = User.query.filter_by(role = 'user').all()
+def trekker():
+    trekkers = User.query.filter_by(role = 'trekker').all()
     form = AddUsersForm()
-    return render_template('admin/user.html',
-                           page = 'Users',
-                           users = users, form = form,
-                           type = 'user')
+    return render_template('admin/trekker.html',
+                           page = 'trekkers',
+                           trekkers = trekkers, form = form,
+                           type = 'trekker')
 
 @admin_bp.route('/staff')
 @login_required
 @role_required('admin')
 def staff():
-    users = User.query.filter_by(role = 'staff').all()
+    staffs = User.query.filter_by(role = 'staff').all()
     form = AddUsersForm()
-    return render_template('admin/user.html',
+    return render_template('admin/staff.html',
                            page = 'Staffs',
-                           users = users, form = form,
+                           staffs = staffs, form = form,
                            type = 'staff')
 
 @admin_bp.route('/add/<string:role_type>', methods = ['GET', 'POST'])
@@ -70,7 +70,7 @@ def add_user(role_type):
             email = form.email.data
             password = form.password.data
             role = form.role.data
-            if role == 'user':
+            if role == 'trekker':
                 approval_status = 'approved'
             else:
                 approval_status = 'pending'
@@ -85,20 +85,20 @@ def add_user(role_type):
             flash(f'New {role.capitalize()} Added', 'success')
             if role == 'staff':
                 flash(f'Now You Can Update {role.capitalize()} Approval Status', 'info')
-            return redirect(url_for('admin.user'))
-    return redirect(url_for('admin.user'))
+            return redirect(url_for(f'admin.{role_type}'))
+    return redirect(url_for(f'admin.{role_type}'))
 
 
-@admin_bp.route('/user/<int:id>', methods = ['GET', 'POST'])
+@admin_bp.route('/<string:role_type>/<int:id>/<string:action>', methods = ['GET', 'POST'])
 @login_required
 @role_required('admin')
-def user_block(id):
-    user_id = id
-    if request.method == "POST":
-        user = User.query.filter_by(id = user_id).first()
-        db.session.delete(user)
-        db.session.commit()
-        return redirect(url_for('admin.user'))
+def admin_action(role_type, id, action):
+    user_data = User.query.get_or_404(id)
+    if user_data:
+        pass
+
+
+
 
 
 @admin_bp.route('/trek')
@@ -118,22 +118,22 @@ def trek():
 @login_required
 @role_required('admin')
 def booking():
-    user_id = current_user.id
-    user_data = User.query.filter_by(id = user_id).first()
-    return render_template('admin/booking.html',page = 'booking', first_name = user_data.first_name,
-                           email = user_data.email,
-                           role = user_data.role)
+    admin_id = current_user.id
+    admin_data = User.query.filter_by(id = admin_id).first()
+    return render_template('admin/booking.html',page = 'booking', first_name = admin_data.first_name,
+                           email = admin_data.email,
+                           role = admin_data.role)
 
 @admin_bp.route('/history')
 @login_required
 @role_required('admin')
 def history():
-    user_id = current_user.id
-    user_data = User.query.filter_by(id = user_id).first()
+    admin_id = current_user.id
+    admin_data = User.query.filter_by(id = admin_id).first()
     return render_template('admin/history.html',
-                           page = 'history', first_name = user_data.first_name,
-                           email = user_data.email,
-                           role = user_data.role)
+                           page = 'history', first_name = admin_data.first_name,
+                           email = admin_data.email,
+                           role = admin_data.role)
 
 
 
@@ -142,10 +142,10 @@ def history():
 @login_required
 @role_required('admin')
 def profile():
-    user_id = current_user.id
-    user_data = User.query.filter_by(id = user_id).first()
-    return render_template('admin/profile.html',page = 'Profile', first_name = user_data.first_name,
-                           email = user_data.email,
-                           role = user_data.role)
+    admin_id = current_user.id
+    admin_data = User.query.filter_by(id = admin_id).first()
+    return render_template('admin/profile.html',page = 'Profile', first_name = admin_data.first_name,
+                           email = admin_data.email,
+                           role = admin_data.role)
 
 

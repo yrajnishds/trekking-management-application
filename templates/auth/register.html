@@ -54,12 +54,12 @@
         </p><br>
         <p>
             {% if type == 'staff' %}
-            {% set other = 'user' %}
+            {% set other = 'trekker' %}
             {% else %}
             {% set other = 'staff' %}
             {% endif %}
             New {{ other }}? <a href="{{ url_for('auth.register', type = other) }}">
-                {% if other == 'user' %}
+                {% if other == 'trekker' %}
                     Create Account
                 {% else %}
                     Register
