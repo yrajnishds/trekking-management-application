@@ -53,7 +53,7 @@
                     Description
                 </th>
                 <th>
-                    Approval
+                    Assign Staff
                 </th>
                 <th>
                     Activation
@@ -106,17 +106,26 @@
                     {{ treks[trek].description }}
                 </td>
                 <td>
-                    {% if treks[trek].approval_status == 'approved' %}
+                    {% if not treks[trek].assigned_staff_id %}
                     <form
-                        action="{{ url_for('admin.admin_trek_action', trek_id = treks[trek].trek_id, action = 'pending') }}"
+                        action="{{ url_for('admin.admin_trek_action', trek_id = treks[trek].trek_id, action = 'assign_staff') }}"
                         method="post">
-                        <button>Pending</button>
+                        <div>
+                            {{ assign_staff_form.assigned_staff }}
+                        </div>
+                        <button>Assign</button>
+                        
                     </form>
-                    {% elif treks[trek].approval_status == 'pending' %}
+                    {% elif treks[trek].assigned_staff_id %}
                     <form
-                        action="{{ url_for('admin.admin_trek_action', trek_id = treks[trek].trek_id, action = 'approved') }}"
+                        action="{{ url_for('admin.admin_trek_action', trek_id = treks[trek].trek_id, action = 'change_staff') }}"
                         method="post">
-                        <button>Approve</button>
+                        {{ assign_staff_form.hidden_tag() }}
+
+                        <div>
+                            {{ assign_staff_form.assigned_staff }}
+                        </div>
+                        <button>Change</button>
                     </form>
                     {% endif %}
                 </td>

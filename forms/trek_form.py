@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, RadioField, TextAreaField
 from wtforms import IntegerField, DateField, SubmitField
+from wtforms import SelectField
 from wtforms.validators import DataRequired, NumberRange, Length
 from datetime import date, timedelta
 
@@ -67,3 +68,11 @@ class TrekBookForm(FlaskForm):
 
 class TrekUpdateForm(FlaskForm):
     pass
+
+
+class AssignStaffForm(FlaskForm):
+    assigned_staff = SelectField(
+        'Select Staff',
+        validators=[DataRequired()], choices=[]
+    )
+    # submit = SubmitField('Assign')

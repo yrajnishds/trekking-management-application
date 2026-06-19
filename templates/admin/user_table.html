@@ -104,13 +104,8 @@
                     {{ users[user].user_since }}
                 </td>
                 <td>
-                    {% if users[user].approval_status == 'approved' %}
-                    <form
-                        action="{{ url_for('admin.admin_action',role_type = role_type, id = users[user].id, action = 'pending') }}"
-                        method="post">
-                        <button>Pending</button>
-                    </form>
-                    {% elif users[user].approval_status == 'pending' %}
+                    
+                    {% if users[user].approval_status == 'pending' %}
                     <form
                         action="{{ url_for('admin.admin_action',role_type = role_type, id = users[user].id, action = 'approved') }}"
                         method="post">

@@ -5,7 +5,7 @@ from models.model import User, Trek
 from routes.decorators import role_required
 from models import db
 from forms.user_form import UsersAddForm
-from forms.trek_form import TrekAddForm
+from forms.trek_form import TrekAddForm, AssignStaffForm
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -125,6 +125,8 @@ def add_user(role_type):
 @role_required('admin')
 def admin_action(role_type, id, action):
     if request.method == 'POST':
+        if role_type == 'staff':
+            trek_data = Trek.query.filter_by(assigned_staff_id = id).all()
         user_data = User.query.get_or_404(id)
         if not user_data:
             flash('Invalid Id', 'error')
@@ -146,11 +148,16 @@ def admin_action(role_type, id, action):
             return redirect(url_for(f'admin.{role_type}'))
         elif action == 'deactivate':
             user_data.is_active = False
+
             db.session.commit()
             flash(f'{user_data.first_name} is now Deactivated', 'danger')
             return redirect(url_for(f'admin.{role_type}'))
         elif action == 'block':
             user_data.is_blocked = True
+            if trek_data:
+                for trek in trek_data:
+                    trek.assigned_staff_id = None
+                    db.session.commit()
             db.session.commit()
             flash(f'{user_data.first_name} is now Blacklisted', 'danger')
             return redirect(url_for(f'admin.{role_type}'))
@@ -170,6 +177,7 @@ def admin_action(role_type, id, action):
 @login_required
 @role_required('admin')
 def trek():
+
     form = TrekAddForm()
     treks = Trek.query.all()
     total_treks = Trek.query.count()
@@ -181,6 +189,13 @@ def trek():
     easy = Trek.query.filter_by(difficulty = 'easy').count()
     moderate = Trek.query.filter_by(difficulty = 'moderate').count()
     hard = Trek.query.filter_by(difficulty = 'hard').count()
+
+
+    assign_staff_form = AssignStaffForm()
+    staffs = User.query.filter_by(role = 'staff', approval_status = 'approved', is_active = True, is_blocked = False).all()
+    # if staffs:
+    assign_staff_form.assigned_staff.choices = [('', '---Choose Staff---')] + [(staff.id, staff.email) for staff in staffs]
+    
 
     return render_template('admin/trek.html',
                            page = 'Treks',
@@ -194,7 +209,8 @@ def trek():
                            completed = completed,
                            easy = easy,
                            moderate = moderate,
-                           hard = hard
+                           hard = hard,
+                           assign_staff_form = assign_staff_form
                            )
 
 @admin_bp.route('/add-trek', methods = ['GET', 'POST'])
@@ -232,6 +248,22 @@ def add_trek():
 @login_required
 @role_required('admin')
 def admin_trek_action(trek_id, action):
+
+    if request.method == "POST":
+        staff_id = request.form.get('assigned_staff')
+        staffs = User.query.filter_by(id = staff_id).first()
+        trek = Trek.query.filter_by(trek_id = trek_id).first()
+        if not trek:
+            flash('Invalid Trek Id', 'error')
+            return redirect(url_for('admin.trek'))
+        if action == 'assign_staff' or action == 'change_staff':
+            trek.assigned_staff_id = staff_id
+            db.session.commit()
+            flash(f'staff {staffs.email} is assigned for {trek.trek_id} successfully', 'success')
+            return redirect(url_for('admin.trek'))
+        
+
+
     pass
 
 
