@@ -2,6 +2,61 @@
 
 {% block content %}
 
-<h1> {{ current_user.first_name|capitalize }} {{ page|capitalize }} Page</h1>
+<section>
+    <div>
+        <h3>
+            Total {{ page|capitalize  }}: {{ total }}
+        </h3>
+    </div>
+    <div>
+        <h3>
+            Approved {{ page|capitalize  }}: {{ approved }}
+        </h3>
+    </div>
+    <div>
+        <h3>
+            Pending {{ page|capitalize  }}: {{ pending }}
+        </h3>
+    </div>
+    <div>
+        <h3>
+            Open {{ page|capitalize  }}: {{ open }}
+        </h3>
+    </div>
+    <div>
+        <h3>
+            Completed {{ page|capitalize  }}: {{ completed }}
+        </h3>
+    </div>
+    <div>
+        <h3>
+            Closed {{ page|capitalize  }}: {{ closed }}
+        </h3>
+    </div>
+    <div>
+        <h3>
+            Easy {{ page|capitalize  }}: {{ easy }}
+        </h3>
+    </div>
+    <div>
+        <h3>
+            Moderate {{ page|capitalize  }}: {{ moderate }}
+        </h3>
+    </div>
+    <div>
+        <h3>
+            Hard {{ page|capitalize  }}: {{ hard }}
+        </h3>
+    </div>
+
+</section><br><br>
+<section>
+
+    {% include 'admin/add_trek.html' %}
+</section>
+<br><br>
+<section>
+    {% include 'admin/trek_table.html' %}
+</section>
 
 {% endblock %}

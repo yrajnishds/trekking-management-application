@@ -27,7 +27,7 @@ def create_app():
 
         from create_admin import create_admin_user
         create_admin_user()
-
+    
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'

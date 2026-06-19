@@ -1,5 +1,5 @@
 <div>
-    <h2>Add New {{ type|capitalize }}</h2><br>
+    <h2>Add New {{ role_type|capitalize }}</h2><br>
     <div>
         <form action="{{ url_for('admin.add_user', role_type = type) }}" method="POST">
             {{ form.hidden_tag() }}
@@ -20,7 +20,7 @@
             </div><br>
             <div>
                 <p>{{ form.role.label }}</p>
-                <p>{{ form.role }}</p>
+                <p> {{ form.role }} </p>
                     {% for error in form.role.errors %}
                 <p><span style="color: red;">[{{ error }}]</span></p>
                 {% endfor %}

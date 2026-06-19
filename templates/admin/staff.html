@@ -5,127 +5,48 @@
 <section>
     <div>
         <h3>
-            Total {{ type|capitalize + 's' }}: {{ users|length }}
+            Total {{ role_type|capitalize + 's' }}: {{ total }}
+        </h3>
+    </div>
+    <div>
+        <h3>
+            Approved {{ role_type|capitalize + 's' }}: {{ approved }}
+        </h3>
+    </div>
+    <div>
+        <h3>
+            Pending {{ role_type|capitalize + 's' }}: {{ pending }}
+        </h3>
+    </div>
+    <div>
+        <h3>
+            Active {{ role_type|capitalize + 's' }}: {{ active }}
+        </h3>
+    </div>
+    <div>
+        <h3>
+            Inactive {{ role_type|capitalize + 's' }}: {{ inavtive }}
+        </h3>
+    </div>
+    <div>
+        <h3>
+            Blacklisted {{ role_type|capitalize + 's' }}: {{ blacklisted }}
+        </h3>
+    </div>
+    <div>
+        <h3>
+            Unblacklisted {{ role_type|capitalize + 's' }}: {{ unblacklisted }}
         </h3>
     </div>
 
-</section>
+</section><br><br>
 <section>
 
     {% include 'admin/add_user.html' %}
 </section>
+<br><br>
 <section>
-
-    <h1> Manage {{ type|capitalize + 's' }} </h1>
-
-    <table border='1'>
-        <thead>
-            <tr>
-                <th colspan="10">
-                    Users Details
-                </th>
-                <th colspan="2">
-                    Actions
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    S.no.
-                </th>
-                <th>
-                    Used Id
-                </th>
-                <th>
-                    First Name
-                </th>
-                <th>
-                    Last Name
-                </th>
-                <th>
-                    Email
-                </th>
-                <th>
-                    Username
-                </th>
-                <th>
-                    User Status
-                </th>
-                <th>
-                    Bio
-                </th>
-                <th>
-                    dob
-                </th>
-                <th>
-                    user_since
-                </th>
-                <th>
-                    Status
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in range(users|length) %}
-            <tr>
-                <td>
-                    {{ user + 1 }}
-                </td>
-                <td>
-                    {{ users[user].id }}
-                </td>
-                <td>
-                    {{ users[user].first_name }}
-                </td>
-                <td>
-                    {{ users[user].last_name }}
-                </td>
-                <td>
-                    {{ users[user].email }}
-                </td>
-                <td>
-                    {{ users[user].username }}
-                </td>
-                <td>
-                    {{ users[user].user_status }}
-                </td>
-                <td>
-                    {{ users[user].bio }}
-                </td>
-                <td>
-                    {{ users[user].dob }}
-                </td>
-                <td>
-                    {{ users[user].user_since }}
-                </td>
-                <td>
-                    {% if users[user].account_status != 'active' %}
-                    <form action="{{ url_for('admin.user_action') }}" method="post">
-                        <button>Activate</button>
-                    </form>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if users[user].account_status != 'deactived' %}
-                    <form action="{{ url_for('admin.user_action') }}" method="post">
-                        <button>Deactivate</button>
-                    </form>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if users[user].account_status != 'blocked' %}
-                    <form action="{{ url_for('admin.user_action') }}" method="post">
-                        <button>Block</button>
-                    </form>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-
-
-    </table>
-
+    {% include 'admin/user_table.html' %}
 </section>
-
 
 {% endblock %}

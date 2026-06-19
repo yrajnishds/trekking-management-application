@@ -1,0 +1,158 @@
+<section>
+
+    <h1> Manage {{ role_type|capitalize + 's' }} </h1>
+
+    <table border='1'>
+        <thead>
+            <tr>
+                <th colspan="12">
+                    {{ role_type|capitalize + 's' }} Details
+                </th>
+                <th colspan="3">
+                    Actions
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    S.no.
+                </th>
+                <th>
+                    {{ role_type|capitalize }} Id
+                </th>
+                <th>
+                    First Name
+                </th>
+                <th>
+                    Last Name
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Username
+                </th>
+                <th>
+                    Approval Status
+                </th>
+                <th>
+                    Active Status
+                </th>
+                <th>
+                    Block Status
+                </th>
+                <th>
+                    Bio
+                </th>
+                <th>
+                    DOB
+                </th>
+                <th>
+                    {{ role_type|capitalize + '_since' }}
+                </th>
+                <th>
+                    Approval
+                </th>
+                <th>
+                    Activation
+                </th>
+                <th>
+                    Restriction
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in range(users|length) %}
+            <tr>
+                <td>
+                    {{ user + 1 }}
+                </td>
+                <td>
+                    {{ users[user].id }}
+                </td>
+                <td>
+                    {{ users[user].first_name }}
+                </td>
+                <td>
+                    {{ users[user].last_name }}
+                </td>
+                <td>
+                    {{ users[user].email }}
+                </td>
+                <td>
+                    {{ users[user].username }}
+                </td>
+                <td>
+                    {{ users[user].approval_status }}
+                </td>
+                <td>
+                    {% if users[user].is_active %} Active
+                    {% else %} Deactive
+                    {% endif %}
+                </td>
+                <td>
+                    {% if users[user].is_blocked %} Blacklisted
+                    {% else %} Not Blacklisted
+                    {% endif %}
+                </td>
+                <td>
+                    {{ users[user].bio }}
+                </td>
+                <td>
+                    {{ users[user].dob }}
+                </td>
+                <td>
+                    {{ users[user].user_since }}
+                </td>
+                <td>
+                    {% if users[user].approval_status == 'approved' %}
+                    <form
+                        action="{{ url_for('admin.admin_action',role_type = role_type, id = users[user].id, action = 'pending') }}"
+                        method="post">
+                        <button>Pending</button>
+                    </form>
+                    {% elif users[user].approval_status == 'pending' %}
+                    <form
+                        action="{{ url_for('admin.admin_action',role_type = role_type, id = users[user].id, action = 'approved') }}"
+                        method="post">
+                        <button>Approve</button>
+                    </form>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if users[user].is_active %}
+                    <form
+                        action="{{ url_for('admin.admin_action',role_type = role_type, id = users[user].id, action = 'deactivate') }}"
+                        method="post">
+                        <button>Deactivate</button>
+                    </form>
+                    {% else %}
+                    <form
+                        action="{{ url_for('admin.admin_action',role_type = role_type, id = users[user].id, action = 'activate') }}"
+                        method="post">
+                        <button>Activate</button>
+                    </form>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if users[user].is_blocked %}
+                    <form
+                        action="{{ url_for('admin.admin_action',role_type = role_type, id = users[user].id, action = 'unblock') }}"
+                        method="post">
+                        <button>Unblacklist</button>
+                    </form>
+                    {% else %}
+                    <form
+                        action="{{ url_for('admin.admin_action',role_type = role_type, id = users[user].id, action = 'block') }}"
+                        method="post">
+                        <button>Blacklist</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+
+    </table>
+
+</section>

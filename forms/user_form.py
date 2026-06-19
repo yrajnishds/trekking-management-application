@@ -44,7 +44,7 @@ class LoginForm(FlaskForm):
                                 validators=[DataRequired(message='Please enter your password.')])
     submit = SubmitField('Login')
 
-class AddUsersForm(FlaskForm):
+class UsersAddForm(FlaskForm):
     name = StringField('Name',
                             validators=[DataRequired(message='Please enter your name.'),
                                 Length(min=3, max=50, message='Name must be between 3 and 50 characters.')])
