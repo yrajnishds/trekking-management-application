@@ -4,7 +4,7 @@ from flask_login import current_user, login_required
 from models.model import User, Trek
 from routes.decorators import role_required
 from models import db
-from forms.user_form import UsersAddForm
+from forms.user_form import UsersAddForm, ProfileUpdateForm
 from forms.trek_form import TrekAddForm, AssignStaffForm
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
@@ -301,9 +301,44 @@ def history():
 @role_required('admin')
 def profile():
     admin_id = current_user.id
+    update_form = ProfileUpdateForm()
     admin_data = User.query.filter_by(id = admin_id).first()
-    return render_template('admin/profile.html',page = 'Profile', first_name = admin_data.first_name,
-                           email = admin_data.email,
-                           role = admin_data.role)
+    return render_template('admin/profile.html',page = 'Profile',
+                           update_form = update_form)
+
+@admin_bp.route('/profile/update', methods = ['GET', 'POST'])
+@login_required
+@role_required('admin')
+def update_profile():
+    update_form = ProfileUpdateForm()
+    if update_form.validate_on_submit():
+        user_data = User.query.filter_by(id = current_user.id).first()
+        if update_form.name.data:
+            name = update_form.name.data.strip().split()
+            if len(name) != 1:
+                first_name = name[0].lower()
+                last_name = " ".join(name[1:]).lower()
+            else:
+                first_name = name[0].lower()
+                last_name = None
+            user_data.first_name = first_name
+            flash('Name Chnaged Successfully', 'success')
+            user_data.last_name = last_name
+        if update_form.contact.data:
+            user_data.contact = update_form.contact.data
+            flash('Contact Details Update Successful', 'success')
+        if update_form.dob.data:
+            user_data.dob = update_form.dob.data
+            flash('Date Of Birth Update Successful', 'success')
+        if update_form.bio.data:
+            user_data.bio = update_form.bio.data
+            flash('About Update Successful', 'success')
+        if update_form.password.data:
+            user_data.password_hash = update_form.password.data
+            flash('Password Update Successful', 'success')
+        db.session.commit()
+        flash('Profile Updated Successfully', 'success')
+        return redirect(url_for(f'{current_user.role}.profile'))
+    return render_template('components/update_profile.html', update_form = update_form)
 
 

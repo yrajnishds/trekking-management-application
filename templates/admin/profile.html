@@ -2,6 +2,13 @@
 
 {% block content %}
 
-<h1> {{ current_user.first_name|capitalize }} {{ page|capitalize }} Page</h1>
+<h1> {{ current_user.first_name|title }} {{ page|capitalize }} Page</h1>
+<h2>Full Name: {{ current_user.first_name|title }} {% if current_user.last_name %} {{ current_user.last_name|title }} {% endif %}</h2>
+<h2> User Id:  {{ current_user.id }}</h2>
+<h2> Email: {{ current_user.email }}</h2>
+<h2> Date Of Birth: {% if current_user.dob %} {{ current_user.dob }} {% else %} 'Not Available' {% endif %}</h2>
+<h2>About: {% if current_user.bio %} {{ current_user.bio|capitalize }} {% else %} 'Not Available' {% endif %}</h2>
+<h2>{{ current_user.user_since }}</h2>
+<a href="{{ url_for(current_user.role ~ '.update_profile') }}">Update Profile</a>
 
 {% endblock %}

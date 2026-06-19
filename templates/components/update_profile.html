@@ -1,0 +1,61 @@
+<div>
+    <h2>Update Profile</h2>
+    <p>Enter Only That Fields You Want to Update </p>
+</div>
+
+<div>
+
+    <form action="{{ url_for(current_user.role ~ '.update_profile') }}" method="post">
+        {{ update_form.hidden_tag() }}
+        <div>
+            <p>{{ update_form.name.label }}</p>
+            <p>{{ update_form.name() }}</p>
+            {% for error in update_form.name.errors %}
+            <p><span style="color: red;">[{{ error }}] </span></p>
+            {% endfor %}
+        </div>
+        <div>
+            <p>{{ update_form.contact.label }}</p>
+            <p>{{ update_form.contact() }}</p>
+            {% for error in update_form.contact.errors %}
+            <p><span style="color: red;">[{{ error }}] </span></p>
+            {% endfor %}
+        </div>
+        <div>
+            <p>{{ update_form.dob.label }}</p>
+            <p>{{ update_form.dob() }}</p>
+            {% for error in update_form.dob.errors %}
+            <p><span style="color: red;">[{{ error }}] </span></p>
+            {% endfor %}
+        </div>
+        <div>
+            <p>{{ update_form.bio.label }}</p>
+            <p>{{ update_form.bio() }}</p>
+            {% for error in update_form.bio.errors %}
+            <p><span style="color: red;">[{{ error }}] </span></p>
+            {% endfor %}
+        </div>
+        
+        <div>
+            <p>{{ update_form.password.label }}</p>
+            <p>{{ update_form.password() }}</p>
+            {% for error in update_form.password.errors %}
+            <p><span style="color: red;">[{{ error }}] </span></p>
+            {% endfor %}
+        </div>
+        
+        <div>
+            <p>{{ update_form.confirm_password.label }}</p>
+            <p>{{ update_form.confirm_password() }}</p>
+            {% for error in update_form.confirm_password.errors %}
+            <p><span style="color: red;">[{{ error }}] </span></p>
+            {% endfor %}
+        </div>
+        <div>{{ update_form.submit() }}</div>
+        
+
+    </form>
+
+
+</div>
+<a href="{{ url_for(current_user.role ~ '.profile') }}">Profile</a>
