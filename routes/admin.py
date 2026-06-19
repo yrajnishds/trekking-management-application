@@ -154,6 +154,8 @@ def admin_action(role_type, id, action):
             return redirect(url_for(f'admin.{role_type}'))
         elif action == 'block':
             user_data.is_blocked = True
+            user_data.is_active = False
+            user_data.approval_status = 'pending'
             if trek_data:
                 for trek in trek_data:
                     trek.assigned_staff_id = None
@@ -163,6 +165,8 @@ def admin_action(role_type, id, action):
             return redirect(url_for(f'admin.{role_type}'))
         elif action == 'unblock':
             user_data.is_blocked = False
+            user_data.is_active = True
+            user_data.approval_status = 'approved'
             db.session.commit()
             flash(f'{user_data.first_name} is now Unblacklisted', 'success')
             return redirect(url_for(f'admin.{role_type}'))
