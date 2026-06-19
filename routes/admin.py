@@ -1,10 +1,11 @@
 from flask import Blueprint,  render_template, redirect, url_for
 from flask import flash, request
 from flask_login import current_user, login_required
-from models.model import User
+from models.model import User, Trek
 from routes.decorators import role_required
 from models import db
-from forms.user_form import AddUsersForm
+from forms.user_form import UsersAddForm
+from forms.trek_form import TrekAddForm
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -31,7 +32,7 @@ def dashboard():
 @role_required('admin')
 def trekker():
     trekkers = User.query.filter_by(role = 'trekker').all()
-    form = AddUsersForm()
+    form = UsersAddForm()
     total = User.query.filter_by(role = 'trekker').count()
     approved = User.query.filter_by(role = 'trekker', approval_status = 'approved').count()
     pending = total - approved
@@ -51,23 +52,38 @@ def trekker():
                            inactive = inactive,
                            blacklisted = blacklisted,
                            unblacklisted = unblacklisted)
-
 @admin_bp.route('/staff')
 @login_required
 @role_required('admin')
 def staff():
-    staffs = User.query.filter_by(role = 'staff').all()
-    form = AddUsersForm()
-    return render_template('admin/staff.html',
-                           page = 'Staffs',
-                           users = staffs, form = form,
-                           role_type = 'staff')
+    trekkers = User.query.filter_by(role = 'staff').all()
+    form = UsersAddForm()
+    total = User.query.filter_by(role = 'staff').count()
+    approved = User.query.filter_by(role = 'staff', approval_status = 'approved').count()
+    pending = total - approved
+    active = User.query.filter_by(role = 'staff', is_active = True).count()
+    inactive = total - active
+    blacklisted = User.query.filter_by(role = 'staff', is_blocked = True).count()
+    unblacklisted = total - blacklisted
 
-@admin_bp.route('/add/<string:role_type>', methods = ['GET', 'POST'])
+    return render_template('admin/staff.html',
+                           page = 'trekkers',
+                           users = trekkers, form = form,
+                           role_type = 'staff',
+                           total = total,
+                           approved = approved,
+                           pending = pending,
+                           active = active,
+                           inactive = inactive,
+                           blacklisted = blacklisted,
+                           unblacklisted = unblacklisted)
+
+
+@admin_bp.route('/add-user/<string:role_type>', methods = ['GET', 'POST'])
 @login_required
 @role_required('admin')
 def add_user(role_type):
-    form = AddUsersForm()
+    form = UsersAddForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email = form.email.data).first()
         if user:
@@ -154,13 +170,70 @@ def admin_action(role_type, id, action):
 @login_required
 @role_required('admin')
 def trek():
+    form = TrekAddForm()
+    treks = Trek.query.all()
+    total_treks = Trek.query.count()
+    approved = Trek.query.filter_by(trek_status = 'approved').count()
+    pending = Trek.query.filter_by(trek_status = 'pending').count()
+    open = Trek.query.filter_by(trek_status = 'open').count()
+    closed = Trek.query.filter_by(trek_status = 'closed').count()
+    completed = Trek.query.filter_by(trek_status = 'completed').count()
+    easy = Trek.query.filter_by(difficulty = 'easy').count()
+    moderate = Trek.query.filter_by(difficulty = 'moderate').count()
+    hard = Trek.query.filter_by(difficulty = 'hard').count()
+
+    return render_template('admin/trek.html',
+                           page = 'Treks',
+                           treks = treks,
+                           form = form,
+                           total_treks = total_treks,
+                           approved = approved,
+                           pending = pending,
+                           open = open,
+                           closed = closed,
+                           completed = completed,
+                           easy = easy,
+                           moderate = moderate,
+                           hard = hard
+                           )
+
+@admin_bp.route('/add-trek', methods = ['GET', 'POST'])
+@login_required
+@role_required('admin')
+def add_trek():
+    form = TrekAddForm()
+    if form.validate_on_submit():
+        trek = Trek.query.filter_by(trek_id = form.trek_id.data).first()
+        if trek:
+            flash(f'Trek with id {form.trek_id.data} Already exists..', 'error')
+            flash(f'Trek Name is {trek.trek_name}.', 'info')
+            return redirect(url_for('admin.trek'))
+        else:
+            new_trek = Trek(
+                trek_id = form.trek_id.data.strip().lower(),
+                trek_name = form.trek_name.data.strip().lower(),
+                location = form.location.data.strip().lower(),
+                difficulty = form.difficulty.data.strip().lower(),
+                duration = form.duration.data,
+                no_of_slots = form.no_of_slots.data,
+                trek_status = form.trek_status.data.strip().lower(),
+                start_date = form.start_date.data,
+                end_date = form.end_date.data,
+                price = form.price.data,
+                description = form.description.data.strip().lower()
+            )
+            db.session.add(new_trek)
+            db.session.commit()
+            flash(f'Trek with Id: {form.trek_id.data} Created Successfully', 'success')
+            flash(f'Trek Name: {form.trek_name.data}', 'info')
+            return redirect(url_for('admin.trek'))
+
+@admin_bp.route('/trek/<string:trek_id>/<string:action>', methods = ['GET', 'POST'])
+@login_required
+@role_required('admin')
+def admin_trek_action(trek_id, action):
     pass
-    # treks = Trek.query.all()
-    # form = AddTrekForm()
-    # return render_template('admin/treks.html',
-    #                        page = 'Treks'
-    #                        treks = treks, form = form,
-    #                        type = 'treks')
+
 
 
 @admin_bp.route('/booking')
