@@ -2,7 +2,8 @@ from flask import Blueprint, render_template, redirect, url_for, flash, session
 from forms.user_form import TrekkerRegisterForm, StaffRegisterForm, LoginForm
 from models import db
 from models.model import User
-from flask_login import login_user, login_required, logout_user
+from flask_login import login_user, login_required
+from flask_login import current_user, logout_user
 
 
 auth_bp = Blueprint('auth', __name__)
@@ -14,10 +15,10 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email = form.email.data).first()
         # Checking User
-        if user and user.check_password(form.password.data):
-            role = user.role
+        if user and user.password == form.password.data:
 
             login_user(user)
+            role = current_user.role
 
             return redirect(url_for(f'{role}.dashboard'))
         else:
@@ -27,9 +28,9 @@ def login():
 
 
 
-@auth_bp.route('/register/<string:type>', methods = ['GET', 'POST'])
-def register(type):
-    if type == 'staff':
+@auth_bp.route('/register/<string:role_type>', methods = ['GET', 'POST'])
+def register(role_type):
+    if role_type == 'staff':
         form = StaffRegisterForm()
     else:
         form = TrekkerRegisterForm()
@@ -52,15 +53,15 @@ def register(type):
             password = form.password.data
             role = form.role.data
             if role == 'trekker':
-                approval_status = 'approved'
+                is_approved = True
             else:
-                approval_status = 'pending'
+                is_approved = False
             new_user = User(first_name = first_name,
                             last_name = last_name,
                             email = email,
+                            password = password,
                             role = role,
-                            approval_status = approval_status)
-            new_user.set_password(password)
+                            is_approved = is_approved)
             db.session.add(new_user)
             db.session.commit()
             if role == 'trekker':
@@ -69,7 +70,7 @@ def register(type):
                 flash(f'Account Registration Successful for {first_name}', 'success')
                 flash(f'You Can View Your Approval Status By Login with your Email And Password', 'info')
             return redirect(url_for('auth.login'))
-    return render_template('auth/register.html', page = f'register {type}', form = form, type = type)
+    return render_template('auth/register.html', page = f'register {role_type}', form = form, role_type = role_type)
 
 
 @auth_bp.route("/logout")

@@ -3,9 +3,9 @@
 {% block content %}
 
 <div>
-    <h2>New {{ type|capitalize }} - Register</h2><br>
+    <h2>New {{ role_type|capitalize }} - Register</h2><br>
     <div>
-        <form action="{{ url_for('auth.register', type = type) }}" method="POST">
+        <form action="{{ url_for('auth.register', role_type = role_type) }}" method="POST">
             {{ form.hidden_tag() }}
 
             <div>
@@ -19,13 +19,6 @@
                 <p>{{ form.email.label }}</p>
                 <p>{{ form.email }}</p>
                 {% for error in form.email.errors %}
-                <p><span style="color: red;">[{{ error }}]</span></p>
-                {% endfor %}
-            </div><br>
-            <div>
-                <p>{{ form.contact.label }}</p>
-                <p>{{ form.contact }}</p>
-                {% for error in form.contact.errors %}
                 <p><span style="color: red;">[{{ error }}]</span></p>
                 {% endfor %}
             </div><br>
@@ -60,12 +53,12 @@
             Already Have An Account? <a href="{{ url_for('auth.login') }}">Login</a>
         </p><br>
         <p>
-            {% if type == 'staff' %}
+            {% if role_type == 'staff' %}
             {% set other = 'trekker' %}
             {% else %}
             {% set other = 'staff' %}
             {% endif %}
-            New {{ other }}? <a href="{{ url_for('auth.register', type = other) }}">
+            New {{ other }}? <a href="{{ url_for('auth.register', role_type = other) }}">
                 {% if other == 'trekker' %}
                     Create Account
                 {% else %}

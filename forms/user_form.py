@@ -16,10 +16,6 @@ class TrekkerRegisterForm(FlaskForm):
         validators=[DataRequired(message='Email Required'),
                     Email(message='Please enter a valid email address.')]
     )
-    contact = IntegerField(
-        'Contact No', validators=[DataRequired(message='Provide Contact Number'),
-                                  Length(min=10, max=10, message='Contact Number Should be 10 digits Only')]
-    )
     role = RadioField(
         'Role',
         validators=[DataRequired()],
@@ -49,10 +45,6 @@ class StaffRegisterForm(FlaskForm):
         'Email',
         validators=[DataRequired(message='Email Required'),
                     Email(message='Please enter a valid email address.')]
-    )
-    contact = IntegerField(
-        'Contact No', validators=[DataRequired(message='Provide Contact Number'),
-                                  Length(min=10, max=10, message='Contact Number Should be 10 digits Only')]
     )
     role = RadioField(
         'Role',

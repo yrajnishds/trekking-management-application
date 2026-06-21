@@ -30,9 +30,9 @@
     <div>
 
         <p>
-            New Trekker? <a href="{{ url_for('auth.register', type = 'trekker') }}">Create Account</a>
+            New Trekker? <a href="{{ url_for('auth.register', role_type = 'trekker') }}">Create Account</a>
         </p><br>
-        <p>New Staff? <a href="{{ url_for('auth.register', type = 'staff') }}">Register Staff</a></p>
+        <p>New Staff? <a href="{{ url_for('auth.register', role_type = 'staff') }}">Register Staff</a></p>
     </div>
 </div>
 <br>
