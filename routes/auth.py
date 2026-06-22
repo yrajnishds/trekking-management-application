@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, session
 from forms.user_form import TrekkerRegisterForm, StaffRegisterForm, LoginForm
 from models import db
-from models.model import User
+from models.model import User, TrekkerProfile, StaffProfile
 from flask_login import login_user, login_required
 from flask_login import current_user, logout_user
 
@@ -63,13 +63,25 @@ def register(role_type):
                             role = role,
                             is_approved = is_approved)
             db.session.add(new_user)
-            db.session.commit()
+            db.session.flush()
             if role == 'trekker':
+                trekker = TrekkerProfile(
+                    trekker_id = new_user.id
+                )
+                db.session.add(trekker)
+                db.session.commit()
                 flash(f'Account Created Successful for {first_name}', 'success')
+                return redirect(url_for('auth.login'))
             else:
+                staff = StaffProfile(
+                    staff_id = new_user.id
+                )
+                db.session.add(staff)
+                db.session.commit()
                 flash(f'Account Registration Successful for {first_name}', 'success')
                 flash(f'You Can View Your Approval Status By Login with your Email And Password', 'info')
-            return redirect(url_for('auth.login'))
+                return redirect(url_for('auth.login'))
+    
     return render_template('auth/register.html', page = f'register {role_type}', form = form, role_type = role_type)
 
 

@@ -17,36 +17,34 @@ class User(UserMixin, db.Model):
     is_blocked = db.Column(db.Boolean, unique = False, nullable = False, default = False)
     password = db.Column(db.String(120), nullable = False, unique = False)
 
+    trekker_p = db.relationship('TrekkerProfile', back_populates = 'trekker', uselist = False)
+    staff_p = db.relationship('StaffProfile', back_populates = 'staff', uselist = False)
 
-class Trekker(db.Model):
+class TrekkerProfile(db.Model):
 
     __tablename__ = 'trekkers'
     trekker_id = db.Column(
-        db.String(20),
-        Sequence('trekker-', start = 101, increment=1),
+        db.Integer,
+        db.ForeignKey('users.id'),
         primary_key = True
-    )
-    first_name = db.Column(db.String(50), nullable = False, unique = False)
-    last_name = db.Column(db.String(50), nullable = True, unique = False)
-    email = db.Column(db.String(120), unique = True, nullable = False)
-    contact = db.Column(db.Integer, unique = True, nullable = False)
+        )
+    trekker = db.relationship('User', back_populates='trekker_p')
+    contact = db.Column(db.Integer, unique = True, nullable = True)
     bio = db.Column(db.Text(1000), nullable = True, unique = False)
     dob = db.Column(db.Date, nullable = True, unique = False)
     user_since = db.Column(db.Date, nullable = False, default = date.today())
     booking_id = db.relationship('Booking', back_populates='trekker_id')
 
 
-class Staff(db.Model):
+class StaffProfile(db.Model):
     __tablename__ = 'staffs'
     staff_id = db.Column(
-        db.String(20),
-        Sequence('staff-', start = 101, increment=1),
+        db.Integer,
+        db.ForeignKey('users.id'),
         primary_key = True
     )
-    first_name = db.Column(db.String(50), nullable = False, unique = False)
-    last_name = db.Column(db.String(50), nullable = True, unique = False)
-    email = db.Column(db.String(120), unique = True, nullable = False)
-    contact = db.Column(db.Integer, unique = True, nullable = False)
+    staff = db.relationship('User', back_populates='staff_p')
+    contact = db.Column(db.Integer, unique = True, nullable = True)
     bio = db.Column(db.Text(1000), nullable = True, unique = False)
     dob = db.Column(db.Date, nullable = True, unique = False)
     staff_since = db.Column(db.Date, nullable = False, default = date.today())
@@ -73,7 +71,7 @@ class Trek(db.Model):
     end_date = db.Column(db.Date, nullable = False, unique = False)
     price = db.Column(db.Integer, nullable  = False, unique = False)
     description = db.Column(db.String(1000), nullable = False, unique = False)
-    staff_id = db.relationship('Staff', back_populates='trek_id')
+    staff_id = db.relationship('StaffProfile', back_populates='trek_id')
 
 class Booking(db.Model):
     __tablename__ = 'bookings'
@@ -84,7 +82,7 @@ class Booking(db.Model):
     )
     trek_id = db.Column(db.String(20), db.ForeignKey('treks.trek_id'), nullable = False, unique = False)
     user_id = db.Column(db.String(20), db.ForeignKey('trekkers.trekker_id'), nullable = False, unique = False)
-    trekker_id = db.relationship('Trekker', back_populates='booking_id')
+    trekker_id = db.relationship('TrekkerProfile', back_populates='booking_id')
 
 # class UserHistory(db.Model):
 #     __tablename__ = "users_history"
