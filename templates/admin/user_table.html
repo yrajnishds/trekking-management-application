@@ -32,15 +32,6 @@
                     Contact
                 </th>
                 <th>
-                    Approval Status
-                </th>
-                <th>
-                    Active Status
-                </th>
-                <th>
-                    Block Status
-                </th>
-                <th>
                     Bio
                 </th>
                 <th>
@@ -48,6 +39,15 @@
                 </th>
                 <th>
                     {{ role_type|capitalize + '_since' }}
+                </th>
+                <th>
+                    Approval Status
+                </th>
+                <th>
+                    Active Status
+                </th>
+                <th>
+                    Block Status
                 </th>
                 <th>
                     Approval
@@ -70,10 +70,12 @@
                     {{ users[user].id }}
                 </td>
                 <td>
-                    {{ users[user].first_name }}
+                    {{ users[user].first_name|title }}
                 </td>
                 <td>
-                    {{ users[user].last_name }}
+                    {% if users[user].last_name %}
+                    {{ users[user].last_name|title }}
+                    {% endif %}
                 </td>
                 <td>
                     {{ users[user].email }}
@@ -82,7 +84,18 @@
                     {{ users[user].contact }}
                 </td>
                 <td>
-                    {{ users[user].approval_status }}
+                    {{ users[user].bio }}
+                </td>
+                <td>
+                    {{ users[user].dob }}
+                </td>
+                <td>
+                    {{ users[user].created_at }}
+                    </td>
+                <td>
+                    {% if users[user].is_approved %} Approved
+                    {% else %} Pending
+                    {% endif %}
                 </td>
                 <td>
                     {% if users[user].is_active %} Active
@@ -95,17 +108,8 @@
                     {% endif %}
                 </td>
                 <td>
-                    {{ users[user].bio }}
-                </td>
-                <td>
-                    {{ users[user].dob }}
-                </td>
-                <td>
-                    {{ users[user].user_since }}
-                </td>
-                <td>
                     
-                    {% if users[user].approval_status == 'pending' %}
+                    {% if not users[user].is_approved %}
                     <form
                         action="{{ url_for('admin.admin_action',role_type = role_type, id = users[user].id, action = 'approved') }}"
                         method="post">

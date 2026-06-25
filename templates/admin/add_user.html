@@ -19,13 +19,6 @@
                 {% endfor %}
             </div><br>
             <div>
-                <p>{{ form.contact.label }}</p>
-                <p>{{ form.contact }}</p>
-                {% for error in form.contact.errors %}
-                <p><span style="color: red;">[{{ error }}]</span></p>
-                {% endfor %}
-            </div><br>
-            <div>
                 <p>{{ form.role.label }}</p>
                 <p> {{ form.role }} </p>
                     {% for error in form.role.errors %}

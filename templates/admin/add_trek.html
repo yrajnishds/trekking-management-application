@@ -3,10 +3,11 @@
     <form action="{{ url_for('admin.add_trek') }}" method="POST">
         {{ form.hidden_tag() }}
 
+        
         <div>
-            <p>{{ form.trek_id.label }}</p>
-            <p>{{ form.trek_id }}</p>
-            {% for error in form.trek_id.errors %}
+            <p>{{ form.trek_code.label }}</p>
+            <p>{{ form.trek_code }}</p>
+            {% for error in form.trek_code.errors %}
             <p><span style="color: red;">[{{ error }}]</span></p>
             {% endfor %}
         </div><br>

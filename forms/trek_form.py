@@ -7,10 +7,10 @@ from datetime import date, timedelta
 
 
 class TrekAddForm(FlaskForm):
-    trek_id = StringField(
-        "Trek Id",
-        validators=[DataRequired(message='Trek Id Required'),
-                    Length(min=3, max=10, message='Id Must in Between 3 to 10 Characters')]
+    trek_code = StringField(
+        'Trek Code',
+        validators=[DataRequired(message='Trek Code is required'),
+                                 Length(min=3, max=20, message='Trek COde Must In between 3 to 20 characters')]
     )
     trek_name = StringField(
         'Trek Name',
@@ -64,7 +64,19 @@ class TrekAddForm(FlaskForm):
     submit = SubmitField('Create Trek')
 
 class TrekBookForm(FlaskForm):
-    pass
+    trek_id = SelectField(
+        'Select Trek',
+        choices=[],
+        validators=[DataRequired(message='Select a Trek')]
+    )
+    trekker_id = SelectField(
+        'Select trekker',
+        choices=[]
+    )
+    date = DateField(
+        'Date', default=date.today(),
+        validators=[DataRequired(message='Select the Booking date.')]
+    )
 
 class TrekUpdateForm(FlaskForm):
     pass
@@ -75,4 +87,11 @@ class AssignStaffForm(FlaskForm):
         'Select Staff',
         validators=[DataRequired()], choices=[]
     )
-    # submit = SubmitField('Assign')
+
+
+class TrekActionForm(FlaskForm):
+    trek_action = SelectField(
+        'Select Status',
+        validators=[DataRequired()],
+        choices=[]
+    )

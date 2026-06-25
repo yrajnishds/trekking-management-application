@@ -5,10 +5,10 @@
     <table border='1'>
         <thead>
             <tr>
-                <th colspan="13">
+                <th colspan="15">
                     Treks Details
                 </th>
-                <th colspan="3">
+                <th colspan="2">
                     Actions
                 </th>
             </tr>
@@ -17,13 +17,16 @@
                     S.no.
                 </th>
                 <th>
-                    Trek Id
+                    Id
+                </th>
+                <th>
+                    Trek Code
                 </th>
                 <th>
                     Trek Name
                 </th>
                 <th>
-                    Assigned Staff Id
+                    Staff Id
                 </th>
                 <th>
                     Location
@@ -38,7 +41,10 @@
                     Trek Status
                 </th>
                 <th>
-                    No. of Slots
+                    Slots
+                </th>
+                <th>
+                    Booked Slots
                 </th>
                 <th>
                     Start Date
@@ -58,9 +64,6 @@
                 <th>
                     Activation
                 </th>
-                <th>
-                    Restriction
-                </th>
             </tr>
         </thead>
         <tbody>
@@ -70,13 +73,16 @@
                     {{ trek + 1 }}
                 </td>
                 <td>
-                    {{ treks[trek].trek_id }}
+                    {{ treks[trek].id }}
+                </td>
+                <td>
+                    {{ treks[trek].trek_code }}
                 </td>
                 <td>
                     {{ treks[trek].trek_name }}
                 </td>
                 <td>
-                    {{ treks[trek].assigned_staff_id }}
+                    {{ treks[trek].staff_id }}
                 </td>
                 <td>
                     {{ treks[trek].location }}
@@ -91,7 +97,10 @@
                     {{ treks[trek].trek_status }}
                 </td>
                 <td>
-                    {{ treks[trek].no_of_slots }}
+                    {{ treks[trek].slots }}
+                </td>
+                <td>
+                    {{ treks[trek].booked_slots }}
                 </td>
                 <td>
                     {{ treks[trek].start_date }}
@@ -106,9 +115,9 @@
                     {{ treks[trek].description }}
                 </td>
                 <td>
-                    {% if not treks[trek].assigned_staff_id %}
+                    {% if not treks[trek].staff_id %}
                     <form
-                        action="{{ url_for('admin.admin_trek_action', trek_id = treks[trek].trek_id, action = 'assign_staff') }}"
+                        action="{{ url_for('admin.admin_trek_action', code = treks[trek].trek_code , action = 'assign_staff') }}"
                         method="post">
                         <div>
                             {{ assign_staff_form.assigned_staff }}
@@ -116,9 +125,9 @@
                         <button>Assign</button>
                         
                     </form>
-                    {% elif treks[trek].assigned_staff_id %}
+                    {% else %}
                     <form
-                        action="{{ url_for('admin.admin_trek_action', trek_id = treks[trek].trek_id, action = 'change_staff') }}"
+                        action="{{ url_for('admin.admin_trek_action', code = treks[trek].trek_code, action = 'change_staff') }}"
                         method="post">
                         {{ assign_staff_form.hidden_tag() }}
 
@@ -130,34 +139,22 @@
                     {% endif %}
                 </td>
                 <td>
-                    {% if treks[trek].is_active %}
+            
                     <form
-                        action="{{ url_for('admin.admin_trek_action', trek_id = treks[trek].trek_id, action = 'deactivate') }}"
+                        action="{{ url_for('admin.admin_trek_action_status', code = treks[trek].trek_code) }}"
                         method="post">
-                        <button>Deactivate</button>
+                        {{ trek_action_form.hidden_tag() }}
+                        <div>
+
+                            {{ trek_action_form.trek_action }}
+                            {% for errors in trek_action_form.trek_action.errors %}
+                            <span style="color: red;">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        <div>
+                            <button>Update</button>
+                        </div>
                     </form>
-                    {% else %}
-                    <form
-                        action="{{ url_for('admin.admin_trek_action', trek_id = treks[trek].trek_id, action = 'activate') }}"
-                        method="post">
-                        <button>Activate</button>
-                    </form>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if treks[trek].is_blocked %}
-                    <form
-                        action="{{ url_for('admin.admin_trek_action', trek_id = treks[trek].trek_id, action = 'unblock') }}"
-                        method="post">
-                        <button>Unblacklist</button>
-                    </form>
-                    {% else %}
-                    <form
-                        action="{{ url_for('admin.admin_trek_action', trek_id = treks[trek].trek_id, action = 'block') }}"
-                        method="post">
-                        <button>Blacklist</button>
-                    </form>
-                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

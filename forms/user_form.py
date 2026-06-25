@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, IntegerField
 from wtforms import EmailField, SubmitField, RadioField
-from wtforms import DateField, TextAreaField
+from wtforms import DateField, TextAreaField, SelectField   
 from wtforms.validators import DataRequired, Email, Length
 from wtforms.validators import EqualTo, Optional
 
@@ -92,15 +92,10 @@ class UsersAddForm(FlaskForm):
         validators=[DataRequired(message='Email Required'),
                     Email(message='Please enter a valid email address.')]
     )
-    contact = IntegerField(
-        'Contact No', validators=[DataRequired(message='Provide Contact Number'),
-                                  Length(min=10, max=10, message='Contact Number Should be 10 digits Only')]
-    )
-    role = RadioField(
+    role = SelectField(
         'Role',
         validators=[DataRequired()],
-        choices=[('trekker', 'Trekker'),('staff', 'Staff')],
-        default='staff'
+        choices=[('trekker', 'Trekker'), ('staff', 'Staff')]
     )
     password = PasswordField(
         'Password',

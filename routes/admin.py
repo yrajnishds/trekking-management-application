@@ -1,11 +1,13 @@
 from flask import Blueprint,  render_template, redirect, url_for
 from flask import flash, request
 from flask_login import current_user, login_required
-from models.model import User, Trek
+from models.model import User, Trek, Booking
+from models.model import TrekkerProfile, StaffProfile
 from routes.decorators import role_required
 from models import db
 from forms.user_form import UsersAddForm, ProfileUpdateForm
-from forms.trek_form import TrekAddForm, AssignStaffForm
+from forms.trek_form import TrekAddForm, AssignStaffForm, TrekActionForm
+from forms.user_form import TrekkerRegisterForm
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -32,9 +34,11 @@ def dashboard():
 @role_required('admin')
 def trekker():
     trekkers = User.query.filter_by(role = 'trekker').all()
+    trekkers_data = User.query.filter_by(role = 'trekker').all()
     form = UsersAddForm()
+
     total = User.query.filter_by(role = 'trekker').count()
-    approved = User.query.filter_by(role = 'trekker', approval_status = 'approved').count()
+    approved = User.query.filter_by(role = 'trekker', is_approved = True).count()
     pending = total - approved
     active = User.query.filter_by(role = 'trekker', is_active = True).count()
     inactive = total - active
@@ -43,8 +47,8 @@ def trekker():
 
     return render_template('admin/trekker.html',
                            page = 'trekkers',
-                           users = trekkers, form = form,
                            role_type = 'trekker',
+                           users = trekkers, form = form,
                            total = total,
                            approved = approved,
                            pending = pending,
@@ -52,14 +56,16 @@ def trekker():
                            inactive = inactive,
                            blacklisted = blacklisted,
                            unblacklisted = unblacklisted)
+
+
 @admin_bp.route('/staff')
 @login_required
 @role_required('admin')
 def staff():
-    trekkers = User.query.filter_by(role = 'staff').all()
+    staffs = User.query.filter_by(role = 'staff').all()
     form = UsersAddForm()
     total = User.query.filter_by(role = 'staff').count()
-    approved = User.query.filter_by(role = 'staff', approval_status = 'approved').count()
+    approved = User.query.filter_by(role = 'staff', is_approved = True).count()
     pending = total - approved
     active = User.query.filter_by(role = 'staff', is_active = True).count()
     inactive = total - active
@@ -67,8 +73,8 @@ def staff():
     unblacklisted = total - blacklisted
 
     return render_template('admin/staff.html',
-                           page = 'trekkers',
-                           users = trekkers, form = form,
+                           page = 'staffs',
+                           users = staffs, form = form,
                            role_type = 'staff',
                            total = total,
                            approved = approved,
@@ -83,15 +89,19 @@ def staff():
 @login_required
 @role_required('admin')
 def add_user(role_type):
+    
+    
     form = UsersAddForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email = form.email.data).first()
         if user:
-            flash(f'{user.role.caplitalize()} With this email already exits', 'error')
-            return redirect(url_for('auth.register'))
-        
+            
+            flash(f'{user.role.capitalize()} With this email already exits', 'error')
+
+            return redirect(url_for(f'admin.{role_type}'))
+            
         else:
-            name = form.name.data.strip().split()
+            name = form.name.data.split()
             if len(name) != 1:
                 first_name = name[0].lower()
                 last_name = " ".join(name[1:]).lower()
@@ -102,42 +112,49 @@ def add_user(role_type):
             password = form.password.data
             role = form.role.data
             if role == 'trekker':
-                approval_status = 'approved'
+                is_approved = True
             else:
-                approval_status = 'pending'
+                is_approved = False
             new_user = User(first_name = first_name,
                             last_name = last_name,
                             email = email,
+                            password = password,
                             role = role,
-                            approval_status = approval_status)
-            new_user.set_password(password)
+                            is_approved = is_approved)
             db.session.add(new_user)
             db.session.commit()
-            flash(f'New {role.capitalize()} Added', 'success')
-            if role == 'staff':
+            if role == 'trekker':            
+                flash(f'Account Created Successful for {first_name}', 'success')
+                return redirect(url_for(f'admin.{role_type}'))
+            else:
+                flash(f'Account Registration Successful for {first_name}', 'success')
                 flash(f'Now You Can Update {role.capitalize()} Approval Status', 'info')
-            return redirect(url_for(f'admin.{role_type}'))
-    return redirect(url_for(f'admin.{role_type}'))
+                return redirect(url_for(f'admin.{role_type}'))
+    else:
+        return redirect(url_for(f'admin.{role_type}'))
+
+
 
 
 @admin_bp.route('/<string:role_type>/<int:id>/<string:action>', methods = ['GET', 'POST'])
 @login_required
 @role_required('admin')
 def admin_action(role_type, id, action):
+
     if request.method == 'POST':
-        if role_type == 'staff':
-            trek_data = Trek.query.filter_by(assigned_staff_id = id).all()
         user_data = User.query.get_or_404(id)
+        if role_type == 'staff':
+            trek_data = Trek.query.filter_by(staff_id = id).all()
         if not user_data:
             flash('Invalid Id', 'error')
             return redirect(url_for(f'admin.{role_type}'))
         if action == 'approved':
-            user_data.approval_status = action
+            user_data.is_approved = True
             db.session.commit()
             flash(f'Now Approval for {user_data.first_name} changed to {action}', 'success')
             return redirect(url_for(f'admin.{role_type}'))
         elif action == 'pending':
-            user_data.approval_status = action
+            user_data.is_approved = False
             db.session.commit()
             flash(f'Now Approval for {user_data.first_name} changed to {action}', 'info')
             return redirect(url_for(f'admin.{role_type}'))
@@ -148,25 +165,25 @@ def admin_action(role_type, id, action):
             return redirect(url_for(f'admin.{role_type}'))
         elif action == 'deactivate':
             user_data.is_active = False
-
             db.session.commit()
             flash(f'{user_data.first_name} is now Deactivated', 'danger')
             return redirect(url_for(f'admin.{role_type}'))
         elif action == 'block':
             user_data.is_blocked = True
             user_data.is_active = False
-            user_data.approval_status = 'pending'
-            if trek_data:
-                for trek in trek_data:
-                    trek.assigned_staff_id = None
-                    db.session.commit()
+            user_data.is_approved = False
+            if role_type == 'staff':
+                if trek_data:
+                    for trek in trek_data:
+                        trek.assigned_staff_email = None
+                        db.session.commit()
             db.session.commit()
             flash(f'{user_data.first_name} is now Blacklisted', 'danger')
             return redirect(url_for(f'admin.{role_type}'))
         elif action == 'unblock':
             user_data.is_blocked = False
             user_data.is_active = True
-            user_data.approval_status = 'approved'
+            user_data.is_approved = True
             db.session.commit()
             flash(f'{user_data.first_name} is now Unblacklisted', 'success')
             return redirect(url_for(f'admin.{role_type}'))
@@ -184,7 +201,7 @@ def trek():
 
     form = TrekAddForm()
     treks = Trek.query.all()
-    total_treks = Trek.query.count()
+    total_treks = len(treks)
     approved = Trek.query.filter_by(trek_status = 'approved').count()
     pending = Trek.query.filter_by(trek_status = 'pending').count()
     open = Trek.query.filter_by(trek_status = 'open').count()
@@ -196,10 +213,13 @@ def trek():
 
 
     assign_staff_form = AssignStaffForm()
-    staffs = User.query.filter_by(role = 'staff', approval_status = 'approved', is_active = True, is_blocked = False).all()
+
+    staffs = User.query.filter_by(role = 'staff', is_approved = True, is_active = True, is_blocked = False).all()
     # if staffs:
     assign_staff_form.assigned_staff.choices = [('', '---Choose Staff---')] + [(staff.id, staff.email) for staff in staffs]
     
+    trek_action_form = TrekActionForm()
+    trek_action_form.trek_action.choices = [('', '---Choose Status---')] +  [('pending', 'Pending'), ('approved', 'Approved'), ('open', 'Open'), ('closed', 'Closed'), ('completed', 'Completed'), ('cancelled', 'Cancelled')]
 
     return render_template('admin/trek.html',
                            page = 'Treks',
@@ -214,7 +234,8 @@ def trek():
                            easy = easy,
                            moderate = moderate,
                            hard = hard,
-                           assign_staff_form = assign_staff_form
+                           assign_staff_form = assign_staff_form,
+                           trek_action_form = trek_action_form
                            )
 
 @admin_bp.route('/add-trek', methods = ['GET', 'POST'])
@@ -223,19 +244,19 @@ def trek():
 def add_trek():
     form = TrekAddForm()
     if form.validate_on_submit():
-        trek = Trek.query.filter_by(trek_id = form.trek_id.data).first()
+        trek = Trek.query.filter_by(trek_code = form.trek_code.data).first()
         if trek:
-            flash(f'Trek with id {form.trek_id.data} Already exists..', 'error')
+            flash(f'Trek with code "{form.trek_code.data}" Already exists..', 'error')
             flash(f'Trek Name is {trek.trek_name}.', 'info')
             return redirect(url_for('admin.trek'))
         else:
             new_trek = Trek(
-                trek_id = form.trek_id.data.strip().lower(),
+                trek_code = form.trek_code.data.strip().lower(),
                 trek_name = form.trek_name.data.strip().lower(),
                 location = form.location.data.strip().lower(),
                 difficulty = form.difficulty.data.strip().lower(),
                 duration = form.duration.data,
-                no_of_slots = form.no_of_slots.data,
+                slots = form.no_of_slots.data,
                 trek_status = form.trek_status.data.strip().lower(),
                 start_date = form.start_date.data,
                 end_date = form.end_date.data,
@@ -244,31 +265,51 @@ def add_trek():
             )
             db.session.add(new_trek)
             db.session.commit()
-            flash(f'Trek with Id: {form.trek_id.data} Created Successfully', 'success')
+            flash(f'Trek with Code: {form.trek_code.data} Created Successfully', 'success')
             flash(f'Trek Name: {form.trek_name.data}', 'info')
             return redirect(url_for('admin.trek'))
 
-@admin_bp.route('/trek/<string:trek_id>/<string:action>', methods = ['GET', 'POST'])
+@admin_bp.route('/trek/<string:code>/<string:action>', methods = ['GET', 'POST'])
 @login_required
 @role_required('admin')
-def admin_trek_action(trek_id, action):
+def admin_trek_action(code, action):
 
     if request.method == "POST":
         staff_id = request.form.get('assigned_staff')
         staffs = User.query.filter_by(id = staff_id).first()
-        trek = Trek.query.filter_by(trek_id = trek_id).first()
+        trek = Trek.query.filter_by(trek_code = code).first()
         if not trek:
-            flash('Invalid Trek Id', 'error')
+            flash('Invalid Trek Code', 'error')
             return redirect(url_for('admin.trek'))
         if action == 'assign_staff' or action == 'change_staff':
-            trek.assigned_staff_id = staff_id
+            trek.staff_id = staff_id
+            staffs.id = staff_id
+            
+
             db.session.commit()
-            flash(f'staff {staffs.email} is assigned for {trek.trek_id} successfully', 'success')
+            flash(f'staff {staffs.id} is assigned for {trek.trek_code} successfully', 'success')
             return redirect(url_for('admin.trek'))
         
 
 
-    pass
+@admin_bp.route('/trek/<string:code>', methods = ['GET', 'POST'])
+@login_required
+@role_required('admin')
+def admin_trek_action_status(code):
+    if request.method == "POST":
+        trek = Trek.query.filter_by(trek_code = code).first()
+        if not trek:
+            flash('Invalid Trek Code', 'error')
+            return redirect(url_for('admin.trek'))
+        
+        trek_action = request.form.get('trek_action')
+        trek.trek_status = trek_action
+        db.session.commit()
+        flash(f'Trek Status for trek code {code} changed to {trek_action}', 'info')
+        return redirect(url_for('admin.trek'))
+
+
+
 
 
 

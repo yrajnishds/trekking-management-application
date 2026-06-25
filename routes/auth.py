@@ -63,21 +63,11 @@ def register(role_type):
                             role = role,
                             is_approved = is_approved)
             db.session.add(new_user)
-            db.session.flush()
+            db.session.commit()
             if role == 'trekker':
-                trekker = TrekkerProfile(
-                    trekker_id = new_user.id
-                )
-                db.session.add(trekker)
-                db.session.commit()
                 flash(f'Account Created Successful for {first_name}', 'success')
                 return redirect(url_for('auth.login'))
             else:
-                staff = StaffProfile(
-                    staff_id = new_user.id
-                )
-                db.session.add(staff)
-                db.session.commit()
                 flash(f'Account Registration Successful for {first_name}', 'success')
                 flash(f'You Can View Your Approval Status By Login with your Email And Password', 'info')
                 return redirect(url_for('auth.login'))
