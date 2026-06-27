@@ -29,10 +29,12 @@ def dashboard():
 def trek():
     trekker_id = current_user.id
     trekker_data = User.query.filter_by(id = trekker_id).first()
+    treks = Trek.query.all()
     return render_template('trekker/trek.html',
                            page = 'Treks', first_name = trekker_data.first_name,
                            email = trekker_data.email,
-                           role = trekker_data.role)
+                           role = trekker_data.role,
+                           treks = treks)
 
 @trekker_bp.route('/booking')
 @login_required

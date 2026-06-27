@@ -1,0 +1,138 @@
+<section>
+
+    <h1> Treks </h1>
+
+    <table border='1'>
+        <thead>
+            <tr>
+                <th colspan="15">
+                    Treks Details
+                </th>
+                <th colspan="1">
+                    Actions
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    S.no.
+                </th>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Trek Code
+                </th>
+                <th>
+                    Trek Name
+                </th>
+                <th>
+                    Staff Id
+                </th>
+                <th>
+                    Location
+                </th>
+                <th>
+                    Difficulty
+                </th>
+                <th>
+                    Duration
+                </th>
+                <th>
+                    Trek Status
+                </th>
+                <th>
+                    Slots
+                </th>
+                <th>
+                    Booked Slots
+                </th>
+                <th>
+                    Start Date
+                </th>
+                <th>
+                    End Date
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Book Slots
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trek in range(treks|length) %}
+            <tr>
+                <td>
+                    {{ trek + 1 }}
+                </td>
+                <td>
+                    {{ treks[trek].id }}
+                </td>
+                <td>
+                    {{ treks[trek].trek_code }}
+                </td>
+                <td>
+                    {{ treks[trek].trek_name }}
+                </td>
+                <td>
+                    {{ treks[trek].staff_id }}
+                </td>
+                <td>
+                    {{ treks[trek].location }}
+                </td>
+                <td>
+                    {{ treks[trek].difficulty }}
+                </td>
+                <td>
+                    {{ treks[trek].duration }}
+                </td>
+                <td>
+                    {{ treks[trek].trek_status }}
+                </td>
+                <td>
+                    {{ treks[trek].slots }}
+                </td>
+                <td>
+                    {{ treks[trek].booked_slots }}
+                </td>
+                <td>
+                    {{ treks[trek].start_date }}
+                </td>
+                <td>
+                    {{ treks[trek].end_date }}
+                </td>
+                <td>
+                    {{ treks[trek].price }}
+                </td>
+                <td>
+                    {{ treks[trek].description }}
+                </td>
+                <td>
+                    {% if (treks[trek].trek_status == 'open') and (treks[trek].booked_slots < treks[trek].slots) %}
+                    <form action="{{ url_for('trekker.trekker_booking_action') }}" method="POST">
+                        <input type="number", name="trekker_id", value="{{ current_user.id }}" hidden>
+                        <input type="number", name="trek_id", value="{{ treks[trek].id }}" hidden>
+                        <button type="submit">Book Now</button>
+                    </form>
+                    {% elif (treks[trek].trek_status == 'open') and (treks[trek].booked_slots >= treks[trek].slots) %}
+                    Slot Full
+                    {% elif treks[trek].trek_status == 'completed' %}
+                    Ended
+                    {% elif treks[trek].trek_status == 'closed' %}
+                    Booking Closed
+                    {% elif treks[trek].trek_status == 'cancelled' %}
+                    Cancelled
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+
+    </table>
+
+</section>

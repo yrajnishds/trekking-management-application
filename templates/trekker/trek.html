@@ -2,6 +2,7 @@
 
 {% block content %}
 
-<h1> {{ current_user.first_name|capitalize }} {{ page|capitalize }} Page</h1>
+
+{% include 'trekker/trek_table.html' %}
 
 {% endblock %}
