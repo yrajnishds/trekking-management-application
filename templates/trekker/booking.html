@@ -4,4 +4,11 @@
 
 <h1> {{ current_user.first_name|capitalize }} {{ page|capitalize }} Page</h1>
 
+<div>
+    {% include 'trekker/booking_form.html' %}
+</div> <br>
+<div>
+    {% include 'trekker/booking_table.html' %}
+</div>
+
 {% endblock %}

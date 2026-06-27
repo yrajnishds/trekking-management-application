@@ -66,8 +66,8 @@ class TrekAddForm(FlaskForm):
 class TrekBookForm(FlaskForm):
     trek_id = SelectField(
         'Select Trek',
-        choices=[],
-        validators=[DataRequired(message='Select a Trek')]
+        validators=[DataRequired(message='Select a Trek')],
+        choices=[]
     )
     trekker_id = SelectField(
         'Select trekker',
@@ -77,6 +77,10 @@ class TrekBookForm(FlaskForm):
         'Date', default=date.today(),
         validators=[DataRequired(message='Select the Booking date.')]
     )
+    # submit = SubmitField(
+    #     'Book'
+    # )
+
 
 class TrekUpdateForm(FlaskForm):
     pass

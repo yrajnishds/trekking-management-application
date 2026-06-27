@@ -1,0 +1,37 @@
+<section>
+    <div>
+        <h2>Book Available Treks</h2>
+    </div>
+    <div>
+        <form action="{{ url_for('trekker.trekker_booking_action') }}" method="POST">
+            {{ form.hidden_tag() }}
+            <div>{{ form.trekker_id.label }}</div>
+            <div>{{ form.trekker_id() }}
+                <span style="color: red;">
+                    {% for error in form.trekker_id.errors %}
+                    {{ error }}
+                    {% endfor %}
+                </span>
+            </div> <br>
+            <div>{{ form.trek_id.label }}</div>
+            <div>{{ form.trek_id() }}
+                <span style="color: red;">
+                    {% for error in form.trek_id.errors %}
+                    {{ error }}
+                    {% endfor %}
+                </span>
+            </div> <br>
+            <div>{{ form.date.label }}</div>
+            <div>{{ form.date() }}
+                <span style="color: red;">
+                    {% for error in form.date.errors %}
+                    {{ error }}
+                    {% endfor %}
+                </span>
+            </div> <br>
+            <div>
+                <button>Book</button>
+            </div>
+        </form>
+    </div>
+</section>

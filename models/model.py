@@ -246,13 +246,16 @@ class Booking(db.Model):
     trek_id = db.Column(
         db.Integer,
         db.ForeignKey("treks.id"),
-        nullable=False
+        nullable=False,
+        unique=False
+
     )
 
     trekker_id = db.Column(
         db.Integer,
         db.ForeignKey("trekkers.user_id"),
-        nullable=False
+        nullable=False,
+        unique=False
     )
 
     booking_date = db.Column(
@@ -264,12 +267,13 @@ class Booking(db.Model):
     status = db.Column(
         db.String(20),
         nullable=False,
-        default="Confirmed"
+        default="pending"
     )
 
     amount_paid = db.Column(
         db.Integer,
-        nullable=False
+        nullable=False,
+        default=0
     )
 
     trek = db.relationship(

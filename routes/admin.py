@@ -311,8 +311,6 @@ def admin_trek_action_status(code):
 
 
 
-
-
 @admin_bp.route('/booking')
 @login_required
 @role_required('admin')
@@ -322,15 +320,66 @@ def booking():
     pending = Booking.query.filter_by(status = 'pending').count()
     approved = Booking.query.filter_by(status = 'approved').count()
     rejected = Booking.query.filter_by(status = 'rejected').count()
-    cancalled = Booking.query.filter_by(status = 'cancalled').count()
+    cancelled = Booking.query.filter_by(status = 'cancelled').count()
+    requested = Booking.query.filter_by(status = 'requested').count()
     return render_template('admin/booking.html',page = 'booking',
                            bookings = bookings,
                            total = total,
                            approved = approved,
                            pending = pending,
                            rejected = rejected,
-                           cancalled = cancalled)
+                           cancelled = cancelled,
+                           requested = requested)
 
+
+@admin_bp.route('/booking/<int:id>/<string:action>/<int:trek_id>', methods = ['GET', 'POST'])
+@login_required
+@role_required('admin')
+def admin_booking_action(id, trek_id, action):
+    if request.method == 'POST':
+        booking = Booking.query.filter_by(id=id).first()
+        trek = Trek.query.filter_by(id=trek_id).first()
+
+        # Safety check: make sure both records actually exist in the database
+        if not booking or not trek:
+            flash('Booking or Trek record not found.', 'danger')
+            return redirect(url_for('admin.booking'))
+
+        if action == 'approved':
+            booking.status = action            # FIX: Changed '==' to '=' to save status
+            trek.booked_slots += 1             # FIX: Fixed assignment order for incrementing
+            
+            db.session.add(booking)
+            db.session.add(trek)
+            db.session.commit()
+            
+            flash('Booking Approval Successful', 'success')
+            return redirect(url_for('admin.booking'))
+
+        elif action == 'rejected':
+            booking.status = action            # FIX: Changed '==' to '=' to save status
+            trek.booked_slots -= 1             # Decrement slots
+            
+            db.session.add(booking)
+            db.session.add(trek)
+            db.session.commit()
+            
+            flash('Booking Rejection Successful', 'danger')
+            return redirect(url_for('admin.booking'))
+        elif action == 'cancelled':
+            booking.status = action            # FIX: Changed '==' to '=' to save status
+            trek.booked_slots -= 1             # Decrement slots
+            
+            db.session.add(booking)
+            db.session.add(trek)
+            db.session.commit()
+            
+            flash('Booking Cancellation Successful', 'danger')
+            return redirect(url_for('admin.booking'))
+            
+        else:
+            flash('Invalid Action', 'warning')
+            return redirect(url_for('admin.booking'))
 
 
 @admin_bp.route('/history')
