@@ -1,0 +1,138 @@
+<section>
+
+    <h1> Manage Assigned Treks </h1>
+
+    <table border='1'>
+        <thead>
+            <tr>
+                <th colspan="14">
+                    Treks Details
+                </th>
+                <th colspan="2">
+                    Actions
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    S.no.
+                </th>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Trek Code
+                </th>
+                <th>
+                    Trek Name
+                </th>
+                <th>
+                    Location
+                </th>
+                <th>
+                    Difficulty
+                </th>
+                <th>
+                    Duration
+                </th>
+                <th>
+                    Trek Status
+                </th>
+                <th>
+                    Slots
+                </th>
+                <th>
+                    Booked Slots
+                </th>
+                <th>
+                    Start Date
+                </th>
+                <th>
+                    End Date
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Activation
+                </th>
+                <th>
+                    Edit Details
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trek in range(treks|length) %}
+            <tr>
+                <td>
+                    {{ trek + 1 }}
+                </td>
+                <td>
+                    {{ treks[trek].id }}
+                </td>
+                <td>
+                    {{ treks[trek].trek_code }}
+                </td>
+                <td>
+                    {{ treks[trek].trek_name }}
+                </td>
+                <td>
+                    {{ treks[trek].location }}
+                </td>
+                <td>
+                    {{ treks[trek].difficulty }}
+                </td>
+                <td>
+                    {{ treks[trek].duration }}
+                </td>
+                <td>
+                    {{ treks[trek].trek_status }}
+                </td>
+                <td>
+                    {{ treks[trek].slots }}
+                </td>
+                <td>
+                    {{ treks[trek].booked_slots }}
+                </td>
+                <td>
+                    {{ treks[trek].start_date }}
+                </td>
+                <td>
+                    {{ treks[trek].end_date }}
+                </td>
+                <td>
+                    {{ treks[trek].price }}
+                </td>
+                <td>
+                    {{ treks[trek].description }}
+                </td>
+                <td>
+
+                    <form action="{{ url_for('staff.staff_trek_action_status', code = treks[trek].trek_code) }}"
+                        method="post">
+                        {{ trek_action_form.hidden_tag() }}
+                        <div>
+
+                            {{ trek_action_form.trek_action }}
+                            {% for errors in trek_action_form.trek_action.errors %}
+                            <span style="color: red;">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        <div>
+                            <button>Update</button>
+                        </div>
+                    </form>
+                </td>
+                <td>
+                    Edit
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+
+    </table>
+
+</section>
