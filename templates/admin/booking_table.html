@@ -1,0 +1,70 @@
+<section>
+
+    <h1> Manage Bookings </h1>
+
+    <table border='1'>
+        <thead>
+            <tr>
+                <th colspan="6">
+                    Booking Details
+                </th>
+                <th colspan="1">
+                    Actions
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    S.no.
+                </th>
+                <th>
+                   Booking Id
+                </th>
+                <th>
+                    Trek Id
+                </th>
+                <th>
+                    Trekker Id
+                </th>
+                <th>
+                    Booking Date
+                </th>
+                <th>
+                    Amount Paid
+                </th>
+                <th>
+                    Status
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in range(bookings|length) %}
+            <tr>
+                <td>
+                    {{ booking + 1 }}
+                </td>
+                <td>
+                    {{ bookings[booking].id }}
+                </td>
+                <td>
+                    {{ bookings[booking].trek_id }}
+                </td>
+                <td>
+                    {{ bookings[booking].trekker_id }}
+                </td>
+                <td>
+                    {{ bookings[booking].booking_date }}
+                </td>
+                <td>
+                    {{ bookings[booking].amount_paid }}
+                </td>
+                <td>
+                    {{ Booings[Booking].status }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+
+    </table>
+
+</section>

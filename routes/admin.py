@@ -317,11 +317,21 @@ def admin_trek_action_status(code):
 @login_required
 @role_required('admin')
 def booking():
-    admin_id = current_user.id
-    admin_data = User.query.filter_by(id = admin_id).first()
-    return render_template('admin/booking.html',page = 'booking', first_name = admin_data.first_name,
-                           email = admin_data.email,
-                           role = admin_data.role)
+    bookings = Booking.query.all()
+    total = Booking.query.count()
+    pending = Booking.query.filter_by(status = 'pending').count()
+    approved = Booking.query.filter_by(status = 'approved').count()
+    rejected = Booking.query.filter_by(status = 'rejected').count()
+    cancalled = Booking.query.filter_by(status = 'cancalled').count()
+    return render_template('admin/booking.html',page = 'booking',
+                           bookings = bookings,
+                           total = total,
+                           approved = approved,
+                           pending = pending,
+                           rejected = rejected,
+                           cancalled = cancalled)
+
+
 
 @admin_bp.route('/history')
 @login_required

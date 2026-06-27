@@ -2,6 +2,23 @@
 
 {% block content %}
 
-<h1> {{ current_user.first_name|capitalize }} {{ page|capitalize }} Page</h1>
+<div>
+    <h3>Total Bookings:{{ total }}</h3>
+</div>
+<div>
+    <h3>Approved Bookings:{{ approved }}</h3>
+</div>
+<div>
+    <h3>Pending Bookings:{{ pending }}</h3>
+</div>
+<div>
+    <h3>Cancalled Bookings:{{ cancalled }}</h3>
+</div>
+<div>
+    <h3>Rejected Bookings:{{ rejected }}</h3>
+</div>
+<div>
+    {% include 'admin/booking_table.html' %}
+</div>
 
 {% endblock %}
