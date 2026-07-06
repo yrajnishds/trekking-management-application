@@ -138,6 +138,14 @@ def staff_booking_action(id, trek_id, action, status):
             
             flash('Booking Cancellation Successful', 'danger')
             return redirect(url_for('staff.booking'))
+        elif action == 'completed':
+            booking.status = action                      
+            
+            db.session.add(booking)
+            db.session.commit()
+            
+            flash('Trek Completed', 'success')
+            return redirect(url_for('staff.booking'))
             
         else:
             flash('Invalid Action', 'warning')

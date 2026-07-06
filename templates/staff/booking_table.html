@@ -70,6 +70,11 @@
                         , method="POST">
                         <button>Reject</button>
                     </form>
+                    <form
+                        action="{{ url_for('staff.staff_booking_action', id = bookings[booking].id, trek_id = bookings[booking].trek_id, action = 'completed', status = bookings[booking].status) }}"
+                        , method="POST">
+                        <button>Complete</button>
+                    </form>
                     {% elif bookings[booking].status == 'pending' %}
                     <form
                         action="{{ url_for('staff.staff_booking_action', id = bookings[booking].id, trek_id = bookings[booking].trek_id, action = 'approved', status = bookings[booking].status) }}"
