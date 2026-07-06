@@ -62,8 +62,19 @@ def register(role_type):
                             password = password,
                             role = role,
                             is_approved = is_approved)
+
+
+            if new_user.role == "staff":
+                new_user.staff_profile = StaffProfile()
+
+            elif new_user.role == "trekker":
+                new_user.trekker_profile = TrekkerProfile()
+
+                
             db.session.add(new_user)
             db.session.commit()
+
+
             if role == 'trekker':
                 flash(f'Account Created Successful for {first_name}', 'success')
                 return redirect(url_for('auth.login'))
