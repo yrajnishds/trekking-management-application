@@ -1,10 +1,10 @@
 <nav>
-    <div>
+    <div class="logo">
         Trek Management
     </div>
     <!-- Nav Links -->
 
-    <div>
+    <div class="nav-links">
         <a href="{{ url_for('admin.dashboard') }}">Dashborad</a>
         <a href="{{ url_for('admin.booking') }}">Bookings</a>
         <a href="{{ url_for('admin.trek') }}">Treks</a>
@@ -13,14 +13,14 @@
         <a href="{{ url_for('admin.history') }}">History</a>
     </div>
     <!-- Search Bar-->
-    <div>
+    <div class="search-bar">
         <form action="">
             <input type="text" placeholder="Search treks, trekkers, staffs, bookings...">
             <button type="submit">Search</button>
         </form>
     </div>
     <!-- Action Links -->
-    <div>
+    <div class="actions">
         <a href="{{ url_for('admin.profile') }}">Profile</a>
         <a href="{{ url_for('auth.logout') }}">Logout</a>
     </div>

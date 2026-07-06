@@ -23,6 +23,10 @@ def staff():
 def dashboard():
     user_id = current_user.id
     user_data = User.query.filter_by(id = user_id).first()
+
+    # totalAssignedTreks = Trek.filter_by(staff_id = user_id).count()
+    # totalBookings = Booking.query.join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
+
     return render_template('staff/dashboard.html',
                            page = 'dashboard', first_name = user_data.first_name,
                            email = user_data.email,
@@ -243,5 +247,4 @@ def profile():
     return render_template('staff/profile.html',
                            page = 'profile', first_name = user_data.first_name,
                            email = user_data.email,
-                           role = user_data.role,
-                           user_status = user_data.user_status)
+                           role = user_data.role)

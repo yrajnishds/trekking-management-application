@@ -1,24 +1,24 @@
 <nav>
-    <div>
+    <div class="logo">
         Trek Management
     </div>
 <!-- Nav Links -->
 
-    <div>
+    <div class="nav-links">
         <a href="{{ url_for('trekker.dashboard') }}">Dashborad</a>
         <a href="{{ url_for('trekker.booking') }}">Bookings</a>
         <a href="{{ url_for('trekker.trek') }}">Treks</a>
         <a href="{{ url_for('trekker.history') }}">History</a>
     </div>
     <!-- Search Bar-->
-    <div>
+    <div class="search-bar">
         <form action="">
             <input type="text" placeholder="Search treks...">
             <button type="submit">Search</button>
         </form>
     </div>
     <!-- Action Links -->
-    <div>
+    <div class="actions">
         <a href="{{ url_for('trekker.profile') }}">Profile</a>
         <a href="{{ url_for('auth.logout') }}">Logout</a>
     </div>
