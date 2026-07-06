@@ -6,7 +6,7 @@ from models import db
 from models.model import User, Trek
 from models.model import Booking
 from routes.decorators import role_required
-from forms.trek_form import TrekActionForm
+from forms.trek_form import TrekActionForm, TrekUpdateForm
 
 staff_bp = Blueprint('staff', __name__, url_prefix='/staff')
 
@@ -57,6 +57,72 @@ def staff_trek_action_status(code):
         db.session.commit()
         flash(f'Trek Status for trek code {code} changed to {trek_action}', 'info')
         return redirect(url_for('staff.trek'))
+
+    return redirect(url_for('staff.trek'))
+
+
+@staff_bp.route('/trek/<string:code>/update', methods = ['GET', 'POST'])
+@login_required
+@role_required('staff')
+def update_trek(code):
+
+    trek = Trek.query.filter_by(trek_code = code).first()
+    form = TrekUpdateForm()
+
+    form.trek_code.choices = [(trek.trek_code, trek.trek_code)]
+    form.trek_name.choices = [(trek.trek_name, trek.trek_name)]
+
+    return render_template('staff/update_trek_details.html',
+                           form = form)
+
+
+
+
+@staff_bp.route('/trek/details/update', methods = ['GET', 'POST'])
+@login_required
+@role_required('staff')
+def update_trek_details():
+    form = TrekUpdateForm()
+    if request.method == 'POST':
+        trek_code = form.trek_code.data
+        location = form.location.data
+        difficulty = form.difficulty.data
+        duration = form.duration.data
+        no_of_slots = form.no_of_slots.data
+        start_date = form.start_date.data
+        end_date = form.end_date.data
+        price = form.price.data
+        description = form.description.data
+
+        trek_detail = Trek.query.filter_by(trek_code = trek_code).first()
+
+        if trek_detail:
+            if location:
+                trek_detail.location = location
+            if difficulty:
+                trek_detail.difficulty = difficulty
+            if duration:
+                trek_detail.duration = duration
+            if no_of_slots:
+                trek_detail.slots = no_of_slots
+            if start_date:
+                trek_detail.start_date = start_date
+            if end_date:
+                trek_detail.end_date = end_date
+            if price:
+                trek_detail.price = price
+            if description:
+                trek_detail.description = description
+                
+            db.session.commit() 
+
+            flash(f'Trek Details Upadted Successful', 'success')
+
+        return redirect(url_for('staff.trek'))
+
+    else:
+        return redirect(url_for('staff.trek'))
+
 
 
 

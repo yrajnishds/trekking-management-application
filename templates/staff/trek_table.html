@@ -126,7 +126,7 @@
                     </form>
                 </td>
                 <td>
-                    Edit
+                    <a href="{{ url_for('staff.update_trek', code = treks[trek].trek_code) }}">Edit</a>
                 </td>
             </tr>
             {% endfor %}

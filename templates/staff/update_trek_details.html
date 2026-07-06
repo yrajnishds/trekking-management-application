@@ -1,0 +1,88 @@
+<section>
+    <div>
+        <form action="{{ url_for('staff.update_trek_details') }}" method="POST">
+
+            {{ form.hidden_tag() }}
+
+            <div>
+                <p>{{ form.trek_code.label }}</p>
+                <p>{{ form.trek_code }}</p>
+                {% for error in form.trek_code.errors %}
+                <p><span style="color: red">[{{ error }}]</span></p>
+                {% endfor %}
+            </div>
+            <div>
+                <p>{{ form.trek_name.label }}</p>
+                <p>{{ form.trek_name }}</p>
+                {% for error in form.trek_name.errors %}
+                <p><span style="color: red">[{{ error }}]</span></p>
+                {% endfor %}
+            </div>
+            <div>
+                <p>{{ form.location.label }}</p>
+                <p>{{ form.location }}</p>
+                {% for error in form.location.errors %}
+                <p><span style="color: red">[{{ error }}]</span></p>
+                {% endfor %}
+            </div>
+            <div>
+                <p>{{ form.difficulty.label }}</p>
+                <p>{{ form.difficulty }}</p>
+                {% for error in form.difficulty.errors %}
+                <p><span style="color: red">[{{ error }}]</span></p>
+                {% endfor %}
+            </div>
+            <div>
+                <p>{{ form.duration.label }}</p>
+                <p>{{ form.duration }}</p>
+                {% for error in form.duration.errors %}
+                <p><span style="color: red">[{{ error }}]</span></p>
+                {% endfor %}
+            </div>
+            <div>
+                <p>{{ form.no_of_slots.label }}</p>
+                <p>{{ form.no_of_slots }}</p>
+                {% for error in form.no_of_slots.errors %}
+                <p><span style="color: red">[{{ error }}]</span></p>
+                {% endfor %}
+            </div>
+            <div>
+                <p>{{ form.start_date.label }}</p>
+                <p>{{ form.start_date }}</p>
+                {% for error in form.start_date.errors %}
+                <p><span style="color: red">[{{ error }}]</span></p>
+                {% endfor %}
+            </div>
+            <div>
+                <p>{{ form.end_date.label }}</p>
+                <p>{{ form.end_date }}</p>
+                {% for error in form.end_date.errors %}
+                <p><span style="color: red">[{{ error }}]</span></p>
+                {% endfor %}
+            </div>
+            <div>
+                <p>{{ form.price.label }}</p>
+                <p>{{ form.price }}</p>
+                {% for error in form.price.errors %}
+                <p><span style="color: red">[{{ error }}]</span></p>
+                {% endfor %}
+            </div>
+            <div>
+                <p>{{ form.description.label }}</p>
+                <p>{{ form.description }}</p>
+                {% for error in form.description.errors %}
+                <p><span style="color: red">[{{ error }}]</span></p>
+                {% endfor %}
+            </div>
+            <div>
+                <p>{{ form.submit }}</p>
+            </div>
+        </form>
+    </div>
+
+
+<div>
+    <a href="{{ url_for('staff.trek') }}">Go to Trek</a>
+</div>
+
+</section>

@@ -3,6 +3,7 @@ from wtforms import StringField, RadioField, TextAreaField
 from wtforms import IntegerField, DateField, SubmitField
 from wtforms import SelectField
 from wtforms.validators import DataRequired, NumberRange, Length
+from wtforms.validators import Optional
 from datetime import date, timedelta
 
 
@@ -46,12 +47,12 @@ class TrekAddForm(FlaskForm):
     start_date = DateField(
         'Start Date',
         validators=[DataRequired(message='Please Provide the start date')],
-        default=date.today()
+        default=date.today() + timedelta(days=7)
     )
     end_date = DateField(
         'End Date',
         validators=[DataRequired(message='Please Provide the start date')],
-        default=date.today() + timedelta(days=7)
+        default=date.today() + timedelta(days=14)
     )
     price = IntegerField(
         'Price',
@@ -77,13 +78,58 @@ class TrekBookForm(FlaskForm):
         'Date', default=date.today(),
         validators=[DataRequired(message='Select the Booking date.')]
     )
-    # submit = SubmitField(
-    #     'Book'
-    # )
+
 
 
 class TrekUpdateForm(FlaskForm):
-    pass
+    trek_code = SelectField(
+        'Trek Code',
+        validators=[DataRequired(message='Trek Code is required')],
+        choices=[]
+    )
+    trek_name = SelectField(
+        'Trek Name',
+        validators=[DataRequired(message='Trek name is required')],
+        choices=[]
+        )
+    location = StringField(
+        'Update Location',
+        validators=[Optional(),
+                    Length(min=3, max=100, message='Trek location Must In between 3 to 100 characters')]
+    )
+    difficulty = RadioField(
+        'Update Difficulty',
+        validators=[Optional()],
+        choices=[('easy', 'Easy'), ('moderate', 'Moderate'), ('hard', 'Hard')]
+    )
+    duration = IntegerField(
+        'Update Duration (In Days)',
+        validators=[Optional(),
+                    NumberRange(min=1, message='Please Provide a positive Number.')]
+    )
+    no_of_slots = IntegerField(
+        'No of Slots',
+        validators=[Optional(),
+                    NumberRange(min=1, message='Please Provide a Positive Number greater than 1')]
+    )
+
+    start_date = DateField(
+        'Start Date',
+        validators=[Optional()]
+    )
+    end_date = DateField(
+        'End Date',
+        validators=[Optional()]
+    )
+    price = IntegerField(
+        'Update Price',
+        validators=[Optional(),
+                    NumberRange(min=0, message='Price Must be greater than zero.')]
+    )
+    description = TextAreaField(
+        'Description'
+    )
+    submit = SubmitField('Update Details')
 
 
 class AssignStaffForm(FlaskForm):
