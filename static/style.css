@@ -40,8 +40,19 @@ nav a {
     gap: 15px;
 }
 
+
+
 main {
     flex: 1;
-    padding: 0 1rem;
+    padding: 0.4rem 1rem;
 }
 
+
+
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #1f2937;
+    color: white;
+}
