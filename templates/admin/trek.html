@@ -2,54 +2,86 @@
 
 {% block content %}
 
-<section>
-    <div>
-        <h3>
-            Total {{ page|capitalize  }}: {{ total }}
-        </h3>
-    </div>
-    <div>
-        <h3>
-            Approved {{ page|capitalize  }}: {{ approved }}
-        </h3>
-    </div>
-    <div>
-        <h3>
-            Pending {{ page|capitalize  }}: {{ pending }}
-        </h3>
-    </div>
-    <div>
-        <h3>
-            Open {{ page|capitalize  }}: {{ open }}
-        </h3>
-    </div>
-    <div>
-        <h3>
-            Completed {{ page|capitalize  }}: {{ completed }}
-        </h3>
-    </div>
-    <div>
-        <h3>
-            Closed {{ page|capitalize  }}: {{ closed }}
-        </h3>
-    </div>
-    <div>
-        <h3>
-            Easy {{ page|capitalize  }}: {{ easy }}
-        </h3>
-    </div>
-    <div>
-        <h3>
-            Moderate {{ page|capitalize  }}: {{ moderate }}
-        </h3>
-    </div>
-    <div>
-        <h3>
-            Hard {{ page|capitalize  }}: {{ hard }}
-        </h3>
+<section class="m-auto p-1 d-flex flex-column border border-dark">
+    <h2>Treks Stats</h2>
+    <div class="container-fluid border border-success p-2">
+        <div class="row g-4">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 bg-primary text-white">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">
+                            Total Treks
+                        </h4>
+                        <p class="display-5 fw-bold mb-0">
+                            {{ total_treks }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 bg-success text-white">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">
+                            Approved Treks
+                        </h4>
+                        <p class="display-5 fw-bold mb-0">
+                            {{ approved }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 bg-warning text-dark">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">
+                            Pending Treks
+                        </h4>
+                        <p class="display-5 fw-bold mb-0">
+                            {{ pending }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 bg-info text-danger-emphasis">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">
+                            Open Treks
+                        </h4>
+                        <p class="display-5 fw-bold mb-0">
+                            {{ open }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 bg-success text-white">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">
+                            Comleted Treks
+                        </h4>
+                        <p class="display-5 fw-bold mb-0">
+                            {{ completed }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 bg-danger-subtle text-dark">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">
+                            Closed Treks
+                        </h4>
+                        <p class="display-5 fw-bold mb-0">
+                            {{ closed }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-</section><br><br>
+</section><br>
 <section>
 
     {% include 'admin/add_trek.html' %}

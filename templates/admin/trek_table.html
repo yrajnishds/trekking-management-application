@@ -5,7 +5,7 @@
     <table border='1'>
         <thead>
             <tr>
-                <th colspan="15">
+                <th colspan="13">
                     Treks Details
                 </th>
                 <th colspan="2">
@@ -13,9 +13,6 @@
                 </th>
             </tr>
             <tr>
-                <th>
-                    S.no.
-                </th>
                 <th>
                     Id
                 </th>
@@ -56,9 +53,6 @@
                     Price
                 </th>
                 <th>
-                    Description
-                </th>
-                <th>
                     Assign Staff
                 </th>
                 <th>
@@ -69,9 +63,6 @@
         <tbody>
             {% for trek in range(treks|length) %}
             <tr>
-                <td>
-                    {{ trek + 1 }}
-                </td>
                 <td>
                     {{ treks[trek].id }}
                 </td>
@@ -110,9 +101,6 @@
                 </td>
                 <td>
                     {{ treks[trek].price }}
-                </td>
-                <td>
-                    {{ treks[trek].description }}
                 </td>
                 <td>
                     {% if not treks[trek].staff_id %}

@@ -216,9 +216,6 @@ def trek():
     open = Trek.query.filter_by(trek_status = 'open').count()
     closed = Trek.query.filter_by(trek_status = 'closed').count()
     completed = Trek.query.filter_by(trek_status = 'completed').count()
-    easy = Trek.query.filter_by(difficulty = 'easy').count()
-    moderate = Trek.query.filter_by(difficulty = 'moderate').count()
-    hard = Trek.query.filter_by(difficulty = 'hard').count()
 
 
     assign_staff_form = AssignStaffForm()
@@ -240,9 +237,6 @@ def trek():
                            open = open,
                            closed = closed,
                            completed = completed,
-                           easy = easy,
-                           moderate = moderate,
-                           hard = hard,
                            assign_staff_form = assign_staff_form,
                            trek_action_form = trek_action_form
                            )
