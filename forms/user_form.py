@@ -95,17 +95,12 @@ class UsersAddForm(FlaskForm):
     role = SelectField(
         'Role',
         validators=[DataRequired()],
-        choices=[('trekker', 'Trekker'), ('staff', 'Staff')]
+        choices=[('trekker', 'Treker'), ('staff', 'Staff')]
     )
     password = PasswordField(
         'Password',
         validators=[DataRequired(message='Enter the Password'),
                     Length(min=3, message='Password Must Atleast 4 characters')]
-    )
-    confirm_password = PasswordField(
-        'Confirm Password',
-        validators=[DataRequired(message='Enter the Confirm Password'),
-                    EqualTo('password', message='Password and Confirm Password Must be same.')]
     )
     submit = SubmitField('Add')
 

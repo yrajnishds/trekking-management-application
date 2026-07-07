@@ -36,6 +36,7 @@ def trekker():
     trekkers = User.query.filter_by(role = 'trekker').all()
     trekkers_data = User.query.filter_by(role = 'trekker').all()
     form = UsersAddForm()
+    form.role.choices = [('trekker', 'Trekker')]
 
     total = User.query.filter_by(role = 'trekker').count()
     approved = User.query.filter_by(role = 'trekker', is_approved = True).count()
@@ -64,6 +65,7 @@ def trekker():
 def staff():
     staffs = User.query.filter_by(role = 'staff').all()
     form = UsersAddForm()
+    form.role.choices = [('staff', 'Staff')]
     total = User.query.filter_by(role = 'staff').count()
     approved = User.query.filter_by(role = 'staff', is_approved = True).count()
     pending = total - approved
