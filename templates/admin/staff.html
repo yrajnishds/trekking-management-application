@@ -2,41 +2,95 @@
 
 {% block content %}
 
-<section>
-    <div>
-        <h3>
-            Total {{ role_type|capitalize + 's' }}: {{ total }}
-        </h3>
-    </div>
-    <div>
-        <h3>
-            Approved {{ role_type|capitalize + 's' }}: {{ approved }}
-        </h3>
-    </div>
-    <div>
-        <h3>
-            Pending {{ role_type|capitalize + 's' }}: {{ pending }}
-        </h3>
-    </div>
-    <div>
-        <h3>
-            Active {{ role_type|capitalize + 's' }}: {{ active }}
-        </h3>
-    </div>
-    <div>
-        <h3>
-            Inactive {{ role_type|capitalize + 's' }}: {{ inavtive }}
-        </h3>
-    </div>
-    <div>
-        <h3>
-            Blacklisted {{ role_type|capitalize + 's' }}: {{ blacklisted }}
-        </h3>
-    </div>
-    <div>
-        <h3>
-            Unblacklisted {{ role_type|capitalize + 's' }}: {{ unblacklisted }}
-        </h3>
+<section class="m-auto p-1 d-flex flex-column border border-black">
+    <h2>Staff Stats</h2>
+    <div class="container-fluid border border-success p-2">
+        <div class="row g-4">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 bg-primary text-white">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">
+                            Total Staffs
+                        </h4>
+                        <p class="display-5 fw-bold mb-0">
+                            {{ total }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 bg-success text-white">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">
+                            Approved Staffs
+                        </h4>
+                        <p class="display-5 fw-bold mb-0">
+                            {{ approved }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 bg-warning text-dark">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">
+                            Pending Staffs
+                        </h4>
+                        <p class="display-5 fw-bold mb-0">
+                            {{ pending }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 bg-info text-danger-emphasis">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">
+                            Active Staffs
+                        </h4>
+                        <p class="display-5 fw-bold mb-0">
+                            {{ active }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 bg-success text-white">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">
+                            Inactive Staffs
+                        </h4>
+                        <p class="display-5 fw-bold mb-0">
+                            {{ inactive }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 bg-danger-subtle text-dark">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">
+                            Unblacklisted Staffs
+                        </h4>
+                        <p class="display-5 fw-bold mb-0">
+                            {{ unblacklisted }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 bg-danger text-dark">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">
+                            Blacklisted Staffs
+                        </h4>
+                        <p class="display-5 fw-bold mb-0">
+                            {{ blacklisted }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 </section><br><br>
