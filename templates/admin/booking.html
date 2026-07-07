@@ -2,25 +2,35 @@
 
 {% block content %}
 
-<div>
-    <h3>Total Bookings:{{ total }}</h3>
+<div class="container-stats">
+    <div class="card">
+        <h3>Total Bookings</h3>
+        <p>{{ total }}</p>
+    </div>
+    <div class="card">
+        <h3>Approved Bookings</h3>
+        <p>{{ approved }}</p>
+    </div>
+    <div class="card">
+        <h3>Pending Bookings</h3>
+        <p>{{ pending }}</p>
+    </div>
+    <div class="card">
+        <h3>Cancalled Bookings</h3>
+        <p>{{ cancelled }}</p>
+    </div>
+    <div class="card">
+        <h3>Rejected Bookings</h3>
+        <p>{{ rejected }}</p>
+    </div>
+    <div class="card">
+        <h3>Cancellations Requests</h3>
+        <p>{{ requested }}</p>
+    </div>
 </div>
-<div>
-    <h3>Approved Bookings:{{ approved }}</h3>
-</div>
-<div>
-    <h3>Pending Bookings:{{ pending }}</h3>
-</div>
-<div>
-    <h3>Cancalled Bookings:{{ cancelled }}</h3>
-</div>
-<div>
-    <h3>Rejected Bookings:{{ rejected }}</h3>
-</div>
-<div>
-    <h3>Cancellations Requests:{{ requested }}</h3>
-</div>
-<div>
+
+
+<div class="container-table">
     {% include 'admin/booking_table.html' %}
 </div>
 

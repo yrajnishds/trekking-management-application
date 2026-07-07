@@ -1,28 +1,63 @@
-<nav>
-    <div class="logo">
-        Trek Management
-    </div>
-<!-- Nav Links -->
+<nav class="navbar navbar-expand-lg bg-white shadow-sm border-bottom">
+    <div class="container-fluid">
 
-    <div class="nav-links">
-        <a href="{{ url_for('trekker.dashboard') }}">Dashborad</a>
-        <a href="{{ url_for('trekker.booking') }}">Bookings</a>
-        <a href="{{ url_for('trekker.trek') }}">Treks</a>
-        <a href="{{ url_for('trekker.history') }}">History</a>
-    </div>
-    <!-- Search Bar-->
-    <div class="search-bar">
-        <form action="">
-            <input type="text" placeholder="Search treks...">
-            <button type="submit">Search</button>
-        </form>
-    </div>
-    <!-- Action Links -->
-    <div class="actions">
-        <a href="{{ url_for('trekker.profile') }}">Profile</a>
-        <a href="{{ url_for('auth.logout') }}">Logout</a>
-    </div>
+        <a class="navbar-brand fw-bold" href="{{ url_for('trekker.trekker') }}">
+            Trek Management
+        </a>
 
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
 
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <ul class="navbar-nav me-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('trekker.dashboard') }}">
+                        Dashboard
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('trekker.trek') }}">
+                        Treks
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('trekker.booking') }}">
+                        Bookings
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('trekker.history') }}">
+                        History
+                    </a>
+                </li>
+
+            </ul>
+
+            <form class="d-flex me-3">
+
+                <input class="form-control me-2" placeholder="Search treks...">
+
+                <button class=" btn btn-outline-primary">
+                    Search
+                </button>
+
+            </form>
+
+            <a href="{{ url_for('trekker.profile') }}" class="btn btn-outline-secondary me-2">
+                Profile
+            </a>
+
+            <a href="{{ url_for('auth.logout') }}" class="btn btn-danger">
+                Logout
+            </a>
+
+        </div>
+
+    </div>
 </nav>
-

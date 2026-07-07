@@ -1,29 +1,65 @@
-<nav>
-    <div class="logo">
-        Trek Management
+
+
+<nav class="navbar navbar-expand-lg bg-white shadow-sm border-bottom">
+    <div class="container-fluid">
+
+        <a class="navbar-brand fw-bold" href="{{ url_for('staff.staff') }}">
+            Trek Management
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <ul class="navbar-nav me-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('staff.dashboard') }}">
+                        Dashboard
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('staff.trek') }}">
+                        Treks
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('staff.booking') }}">
+                        Bookings
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('staff.history') }}">
+                        History
+                    </a>
+                </li>
+
+            </ul>
+
+            <form class="d-flex me-3">
+
+                <input class="form-control me-2" placeholder="Search treks...">
+
+                <button class=" btn btn-outline-primary">
+                Search
+                </button>
+
+            </form>
+
+            <a href="{{ url_for('staff.profile') }}" class="btn btn-outline-secondary me-2">
+                Profile
+            </a>
+
+            <a href="{{ url_for('auth.logout') }}" class="btn btn-danger">
+                Logout
+            </a>
+
+        </div>
+
     </div>
-
-    <!-- Navlinks Links -->
-    <div class="nav-links">
-        <a href="{{ url_for('staff.dashboard') }}">Dashboard</a>
-        <a href="{{ url_for('staff.trek') }}">Assigned Treks</a>
-        <a href="{{ url_for('staff.booking') }}">Bookings</a>
-        <a href="{{ url_for('staff.history') }}">History</a>
-    </div>
-
-    <!-- Search Bar-->
-    <div class="search-bar">
-        <form action="">
-            <input type="text" placeholder="Search treks...">
-            <button type="submit">Search</button>
-        </form>
-    </div>
-    <!-- Action Links -->
-
-    <div class="actions">
-        <a href="{{ url_for('staff.profile') }}">Profile</a>
-        <a href="{{ url_for('auth.logout') }}">Logout</a>
-    </div>
-
-
 </nav>

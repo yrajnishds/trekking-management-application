@@ -11,6 +11,12 @@ from forms.trek_form import TrekBookForm
 trekker_bp = Blueprint('trekker', __name__)
 
 
+@trekker_bp.route('/trekker')
+@login_required
+@role_required('trekker')
+def trekker():
+    return redirect(url_for('trekker.dashboard'))
+
 @trekker_bp.route('/dashboard')
 @login_required
 @role_required('trekker')

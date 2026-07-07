@@ -22,7 +22,7 @@ def login():
 
             return redirect(url_for(f'{role}.dashboard'))
         else:
-            flash('Invalid email or password', 'error')
+            flash('Invalid email or password', 'warning')
             return redirect(url_for('auth.login'))
     return render_template('auth/login.html', page = 'Login', form = form)
 
@@ -38,7 +38,7 @@ def register(role_type):
     if form.validate_on_submit():
         user = User.query.filter_by(email = form.email.data).first()
         if user:
-            flash(f'{user.role.caplitalize()} With this email already exits', 'error')
+            flash(f'{user.role.caplitalize()} With this email already exits', 'warning')
             return redirect(url_for('auth.register'))
         
         else:
@@ -93,6 +93,6 @@ def logout():
     logout_user()
     session.clear()
 
-    flash("Logged out successfully.")
+    flash("Logged out successfully.", 'info')
 
     return redirect(url_for("auth.login"))
