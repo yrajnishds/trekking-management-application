@@ -2,113 +2,128 @@
 
 {% block content %}
 
-<section class="my-3">
-    <div class="container border border-success p-3">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-info">
-                <h3 class="mb-0">Staffs Stats</h3>
-            </div>
-            <div class="card-body">
-                <div class="row g-4">
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-100 shadow-sm border-0 bg-primary text-white">
-                            <div class="card-body text-center">
-                                <h4 class="card-title">
-                                    Total Staffs
-                                </h4>
-                                <p class="display-5 fw-bold mb-0">
-                                    {{ total }}
-                                </p>
-                            </div>
+<section class="d-flex justify-content-between gap-3">
+    <div>
+        <section class="my-3">
+            <div class="container p-4 border border-danger">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-primary text-white">
+                        <div class="d-flex justify-content-between gap-3">
+                            <h3 class="mb-0">Staff Stats</h3>
+                            <button class="btn btn-warning btn-sm fs-6 fw-bold" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#viewStats" aria-expanded="false" aria-controls="viewStats">
+                                View
+                            </button>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-100 shadow-sm border-0 bg-success text-white">
-                            <div class="card-body text-center">
-                                <h4 class="card-title">
-                                    Approved Staffs
-                                </h4>
-                                <p class="display-5 fw-bold mb-0">
-                                    {{ approved }}
-                                </p>
+                    <div class="card-body collapse" id="viewStats">
+                        <div class="row g-4">
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="card h-100 shadow-sm border-0 bg-primary text-white">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title">
+                                            Total Staffs
+                                        </h4>
+                                        <p class="display-5 fw-bold mb-0">
+                                            {{ total }}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-100 shadow-sm border-0 bg-warning text-dark">
-                            <div class="card-body text-center">
-                                <h4 class="card-title">
-                                    Pending Staffs
-                                </h4>
-                                <p class="display-5 fw-bold mb-0">
-                                    {{ pending }}
-                                </p>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="card h-100 shadow-sm border-0 bg-success text-white">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title">
+                                            Approved Staffs
+                                        </h4>
+                                        <p class="display-5 fw-bold mb-0">
+                                            {{ approved }}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-100 shadow-sm border-0 bg-success text-white">
-                            <div class="card-body text-center">
-                                <h4 class="card-title">
-                                    Active Staffs
-                                </h4>
-                                <p class="display-5 fw-bold mb-0">
-                                    {{ active }}
-                                </p>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="card h-100 shadow-sm border-0 bg-warning text-dark">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title">
+                                            Pending Staffs
+                                        </h4>
+                                        <p class="display-5 fw-bold mb-0">
+                                            {{ pending }}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-100 shadow-sm border-0 bg-warning text-dark">
-                            <div class="card-body text-center">
-                                <h4 class="card-title">
-                                    Inactive Staffs
-                                </h4>
-                                <p class="display-5 fw-bold mb-0">
-                                    {{ inactive }}
-                                </p>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="card h-100 shadow-sm border-0 bg-success text-white">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title">
+                                            Active Staffs
+                                        </h4>
+                                        <p class="display-5 fw-bold mb-0">
+                                            {{ active }}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-100 shadow-sm border-0 bg-danger-subtle text-dark">
-                            <div class="card-body text-center">
-                                <h4 class="card-title">
-                                    Unblacklisted Staffs
-                                </h4>
-                                <p class="display-5 fw-bold mb-0">
-                                    {{ unblacklisted }}
-                                </p>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="card h-100 shadow-sm border-0 bg-warning text-dark">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title">
+                                            Inactive Staffs
+                                        </h4>
+                                        <p class="display-5 fw-bold mb-0">
+                                            {{ inactive }}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-100 shadow-sm border-0 bg-danger text-dark">
-                            <div class="card-body text-center">
-                                <h4 class="card-title">
-                                    Blacklisted Staffs
-                                </h4>
-                                <p class="display-5 fw-bold mb-0">
-                                    {{ blacklisted }}
-                                </p>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="card h-100 shadow-sm border-0 bg-danger-subtle text-dark">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title">
+                                            Unblacklisted Staffs
+                                        </h4>
+                                        <p class="display-5 fw-bold mb-0">
+                                            {{ unblacklisted }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="card h-100 shadow-sm border-0 bg-danger text-dark">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title">
+                                            Blacklisted Staffs
+                                        </h4>
+                                        <p class="display-5 fw-bold mb-0">
+                                            {{ blacklisted }}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
         
+            </div>
+        
+        </section>
     </div>
-
+    <div>
+        <section class="my-3">
+            {% include 'admin/add_user.html' %}
+        </section>
+    </div>
 </section>
+
+
 
 <section class="my-3">
 
-    {% include 'admin/add_user.html' %}
-</section>
-
-<section class="my-3">
     {% include 'admin/user_table.html' %}
 </section>
+
+
 
 {% endblock %}

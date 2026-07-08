@@ -3,12 +3,18 @@
 {% block content %}
 
 <section class="my-3">
-    <div class="container p-3 border border-black">
-        <div class="card border-0 shadow-sm">
-            <div class="card-header bg-danger-subtle">
-                <h3 class="mb-0">Bookings Stats</h3>
+    <div class="container p-4 border border-danger">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between">
+                    <h3 class="mb-0">Booking Stats</h3>
+                    <button class="btn btn-warning btn-sm fs-6 fw-bold" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#viewStats" aria-expanded="false" aria-controls="viewStats">
+                        View
+                    </button>
+                </div>
             </div>
-            <div class="card-body">
+            <div class="card-body collapse" id="viewStats">
                 <div class="row g-4">
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="card h-100 shadow-sm border-0 bg-primary text-white">

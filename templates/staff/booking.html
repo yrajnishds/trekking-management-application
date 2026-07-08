@@ -2,26 +2,100 @@
 
 {% block content %}
 
-<div>
-    <h3>Total Bookings:{{ total }}</h3>
-</div>
-<div>
-    <h3>Approved Bookings:{{ approved }}</h3>
-</div>
-<div>
-    <h3>Pending Bookings:{{ pending }}</h3>
-</div>
-<div>
-    <h3>Cancalled Bookings:{{ cancelled }}</h3>
-</div>
-<div>
-    <h3>Rejected Bookings:{{ rejected }}</h3>
-</div>
-<div>
-    <h3>Cancellations Requests:{{ requested }}</h3>
-</div>
-<div>
+<section class="my-3">
+    <div class="container p-4 border border-danger">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between">
+                    <h3 class="mb-0">Booking Stats</h3>
+                    <button class="btn btn-warning btn-sm fs-6 fw-bold" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#viewStats" aria-expanded="false" aria-controls="viewStats">
+                        View
+                    </button>
+                </div>
+            </div>
+            <div class="card-body collapse" id="viewStats">
+                <div class="row g-4">
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0 bg-primary text-white">
+                            <div class="card-body text-center">
+                                <h4 class="card-title">
+                                    Total Bookings
+                                </h4>
+                                <p class="display-5 fw-bold mb-0">
+                                    {{ total }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0 bg-success text-white">
+                            <div class="card-body text-center">
+                                <h4 class="card-title">
+                                    Approved Bookings
+                                </h4>
+                                <p class="display-5 fw-bold mb-0">
+                                    {{ approved }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0 bg-warning text-dark">
+                            <div class="card-body text-center">
+                                <h4 class="card-title">
+                                    Pending Bookings
+                                </h4>
+                                <p class="display-5 fw-bold mb-0">
+                                    {{ pending }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0 bg-info text-danger-emphasis">
+                            <div class="card-body text-center">
+                                <h4 class="card-title">
+                                    Cancelled Bookings
+                                </h4>
+                                <p class="display-5 fw-bold mb-0">
+                                    {{ cancelled }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0 bg-danger text-white">
+                            <div class="card-body text-center">
+                                <h4 class="card-title">
+                                    Rejected Bookings
+                                </h4>
+                                <p class="display-5 fw-bold mb-0">
+                                    {{ rejected }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0 bg-danger-subtle text-dark">
+                            <div class="card-body text-center">
+                                <h4 class="card-title">
+                                    Cancellations Requests
+                                </h4>
+                                <p class="display-5 fw-bold mb-0">
+                                    {{ requested }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="my-3">
     {% include 'staff/booking_table.html' %}
-</div>
+</section>
 
 {% endblock %}

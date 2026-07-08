@@ -1,104 +1,120 @@
-<section>
+<div class="conatiner border border-warning p-3">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-success-subtle   ">
+            <h3 class="mb-0">Manage Bookings</h3>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-striped text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th colspan="7" class="text-info">
+                            Booking Details
+                        </th>
+                        <th colspan="1" class="text-info">
+                            Actions
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            S.no.
+                        </th>
+                        <th>
+                            Booking Id
+                        </th>
+                        <th>
+                            Trek Id
+                        </th>
+                        <th>
+                            Trekker Id
+                        </th>
+                        <th>
+                            Booking Date
+                        </th>
+                        <th>
+                            Amount Paid
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in range(bookings|length) %}
+                    <tr>
+                        <td>
+                            {{ booking + 1 }}
+                        </td>
+                        <td>
+                            {{ bookings[booking].id }}
+                        </td>
+                        <td>
+                            {{ bookings[booking].trek_id }}
+                        </td>
+                        <td>
+                            {{ bookings[booking].trekker_id }}
+                        </td>
+                        <td>
+                            {{ bookings[booking].booking_date }}
+                        </td>
+                        <td>
+                            {{ bookings[booking].amount_paid }}
+                        </td>
+                        <td>
+                            {% if bookings[booking].status == 'approved' %}<span
+                                class="badge bg-success text-white fs-6">Approved</span>
+                            {% elif bookings[booking].status == 'pending' %}<span
+                                class="badge bg-warning text-dark fs-6">Pending</span>
+                            {% elif bookings[booking].status == 'rejected' %}<span
+                                class="badge bg-danger text-white fs-6">Rejected</span>
+                            {% elif bookings[booking].status == 'requested' %}<span
+                                class="badge bg-danger-subtle text-dark fs-6">Requested</span>
+                            {% elif bookings[booking].status == 'cancelled' %}<span
+                                class="badge bg-info text-dark fs-6">Cancelled</span>
+                            {% elif bookings[booking].status == 'completed' %}<span
+                                class="badge bg-primary text-white fs-6">Completed</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-center gap-2">
+                                {% if bookings[booking].status == 'approved' %}
+                                <form
+                                    action="{{ url_for('staff.staff_booking_action', id = bookings[booking].id, trek_id = bookings[booking].trek_id, action = 'rejected', status = bookings[booking].status) }}"
+                                    , method="POST">
+                                    <button class="btn btn-danger btn-sm fw-semibold">Reject</button>
+                                </form>
+                                <form
+                                    action="{{ url_for('staff.staff_booking_action', id = bookings[booking].id, trek_id = bookings[booking].trek_id, action = 'completed', status = bookings[booking].status) }}"
+                                    , method="POST">
+                                    <button class="btn btn-primary btn-sm fw-semibold">Complete</button>
+                                </form>
+                                {% elif bookings[booking].status == 'pending' %}
+                                <form
+                                    action="{{ url_for('staff.staff_booking_action', id = bookings[booking].id, trek_id = bookings[booking].trek_id, action = 'approved', status = bookings[booking].status) }}"
+                                    , method="POST">
+                                    <button class="btn btn-sm btn-success fw-semibold">Approve</button>
+                                </form>
+                                <form
+                                    action="{{ url_for('staff.staff_booking_action', id = bookings[booking].id, trek_id = bookings[booking].trek_id, action = 'rejected', status = bookings[booking].status) }}"
+                                    , method="POST">
+                                    <button class='btn btn-sm btn-outline-danger text-dark fw-semibold'>Reject</button>
+                                </form>
+                                {% elif bookings[booking].status == 'requested' %}
+                                <form
+                                    action="{{ url_for('staff.staff_booking_action', id = bookings[booking].id, trek_id = bookings[booking].trek_id, action = 'cancelled', status = bookings[booking].status) }}"
+                                    , method="POST">
+                                    <button class="btn btn-sm btn-primary fw-semibold">Accept</button>
+                                </form>
+                                {% endif %}
+                            </div>
 
-    <h1> Manage Bookings </h1>
-
-    <table border='1'>
-        <thead>
-            <tr>
-                <th colspan="7">
-                    Booking Details
-                </th>
-                <th colspan="1">
-                    Actions
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    S.no.
-                </th>
-                <th>
-                    Booking Id
-                </th>
-                <th>
-                    Trek Id
-                </th>
-                <th>
-                    Trekker Id
-                </th>
-                <th>
-                    Booking Date
-                </th>
-                <th>
-                    Amount Paid
-                </th>
-                <th>
-                    Status
-                </th>
-                <th>
-                    Action
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for booking in range(bookings|length) %}
-            <tr>
-                <td>
-                    {{ booking + 1 }}
-                </td>
-                <td>
-                    {{ bookings[booking].id }}
-                </td>
-                <td>
-                    {{ bookings[booking].trek_id }}
-                </td>
-                <td>
-                    {{ bookings[booking].trekker_id }}
-                </td>
-                <td>
-                    {{ bookings[booking].booking_date }}
-                </td>
-                <td>
-                    {{ bookings[booking].amount_paid }}
-                </td>
-                <td>
-                    {{ bookings[booking].status }}
-                </td>
-                <td>
-                    {% if bookings[booking].status == 'approved' %}
-                    <form
-                        action="{{ url_for('staff.staff_booking_action', id = bookings[booking].id, trek_id = bookings[booking].trek_id, action = 'rejected', status = bookings[booking].status) }}"
-                        , method="POST">
-                        <button>Reject</button>
-                    </form>
-                    <form
-                        action="{{ url_for('staff.staff_booking_action', id = bookings[booking].id, trek_id = bookings[booking].trek_id, action = 'completed', status = bookings[booking].status) }}"
-                        , method="POST">
-                        <button>Complete</button>
-                    </form>
-                    {% elif bookings[booking].status == 'pending' %}
-                    <form
-                        action="{{ url_for('staff.staff_booking_action', id = bookings[booking].id, trek_id = bookings[booking].trek_id, action = 'approved', status = bookings[booking].status) }}"
-                        , method="POST">
-                        <button>Approve</button>
-                    </form>
-                    <form
-                        action="{{ url_for('staff.staff_booking_action', id = bookings[booking].id, trek_id = bookings[booking].trek_id, action = 'rejected', status = bookings[booking].status) }}"
-                        , method="POST">
-                        <button>Reject</button>
-                    </form>
-                    {% elif bookings[booking].status == 'requested' %}
-                    <form
-                        action="{{ url_for('staff.staff_booking_action', id = bookings[booking].id, trek_id = bookings[booking].trek_id, action = 'cancelled', status = bookings[booking].status) }}"
-                        , method="POST">
-                        <button>Accept</button>
-                    </form>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-
-
-    </table>
-
-</section>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
