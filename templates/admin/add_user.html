@@ -1,66 +1,75 @@
 <div class="container p-4 border border-info">
     <div class="card shadow-sm border-0">
         <div class="card-header bg-dark-subtle">
-            <h3 class="mb-0">Add New {{ role_type|capitalize }}</h3>
+            <div class="d-flex justify-content-between">
+                <h3 class="mb-0">Add New {{ role_type|capitalize }}</h3>
+                <button class="btn btn-warning btn-sm fs-6 fw-bold" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#addUser" aria-expanded="false" aria-controls="addUser">
+                    Click Here
+                </button>
+            </div>
+            
         </div>
-        <div class="card-body">
-            <form action="{{ url_for('admin.add_user', role_type = role_type) }}" method="POST">
-                {{ form.hidden_tag() }}
-
-                <div class="row g-3 mb-3">
-                    <div class="col-12 col-md-6">
-                        <div class="mb-3">
-                            {{ form.name.label(class='form-label') }}
-                            {{ form.name(class='form-control', placeholder='Enter Name') }}
-                            {% for error in form.name.errors %}
-                            <div class="text-danger small">
-                                {{ error }}
+        <div class="collapse" id="addUser">
+            <div class="card-body">
+                <form action="{{ url_for('admin.add_user', role_type = role_type) }}" method="POST">
+                    {{ form.hidden_tag() }}
+                
+                    <div class="row g-3 mb-3">
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                {{ form.name.label(class='form-label') }}
+                                {{ form.name(class='form-control', placeholder='Enter Name') }}
+                                {% for error in form.name.errors %}
+                                <div class="text-danger small">
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
                         </div>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <div class="mb-3">
-                            {{ form.email.label(class='form-label') }}
-                            {{ form.email(class='form-control', placeholder='Enter Email') }}
-                            {% for error in form.email.errors %}
-                            <div class="text-danger small">
-                                {{ error }}
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                {{ form.email.label(class='form-label') }}
+                                {{ form.email(class='form-control', placeholder='Enter Email') }}
+                                {% for error in form.email.errors %}
+                                <div class="text-danger small">
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
                         </div>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <div class="mb-3">
-                            {{ form.role.label(class='form-label') }}
-                            {{ form.role(class='form-select') }}
-                            {% for error in form.role.errors %}
-                            <div class="text-danger small">
-                                {{ error }}
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                {{ form.role.label(class='form-label') }}
+                                {{ form.role(class='form-select') }}
+                                {% for error in form.role.errors %}
+                                <div class="text-danger small">
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
                         </div>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <div class="mb-3">
-                            {{ form.password.label(class='form-label') }}
-                            {{ form.password(class='form-control', placeholder='Enter Password') }}
-                            {% for error in form.password.errors %}
-                            <div class="text-danger small">
-                                {{ error }}
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                {{ form.password.label(class='form-label') }}
+                                {{ form.password(class='form-control', placeholder='Enter Password') }}
+                                {% for error in form.password.errors %}
+                                <div class="text-danger small">
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
                         </div>
                     </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-auto">
-                        <div class="mb-3">
-                            {{ form.submit(class='btn btn-outline-primary px-5') }}
+                    <div class="row justify-content-center">
+                        <div class="col-auto">
+                            <div class="mb-3">
+                                {{ form.submit(class='btn btn-outline-primary px-5') }}
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </div>

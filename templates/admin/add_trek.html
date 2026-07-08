@@ -1,153 +1,161 @@
 <div class="container p-4 border border-danger">
     <div class="card shadow-sm border-0">
         <div class="card-header bg-primary text-white">
-            <h3 class="mb-0">Add New Trek</h3>
+            <div class="d-flex justify-content-between">
+                <h3 class="mb-0">Add New Trek</h3>
+                <button class="btn btn-warning btn-sm fs-6 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#addTrekForm"
+                    aria-expanded="false" aria-controls="addTrekForm">
+                    Click Here
+                </button>
+            </div>
         </div>
-        <div class="card-body">
-            <form action="{{ url_for('admin.add_trek') }}" method="POST">
-                {{ form.hidden_tag() }}
-                
-                <div class="row g-3 mb-3">
-                    <div class="col-12 col-md-6">
-                        <div class="mb-3">
-                            {{ form.trek_code.label(class="form-label") }}
-                            {{ form.trek_code(class="form-control", placeholder='Enter Trek Code') }}
-                            {% for error in form.trek_code.errors %}
-                            <div class="text-danger small">
-                                {{ error }}
-                            </div>   
-                            {% endfor %}
+        <div class="collapse" id="addTrekForm">
+            <div class="card-body">
+                <form action="{{ url_for('admin.add_trek') }}" method="POST">
+                    {{ form.hidden_tag() }}
+            
+                    <div class="row g-3 mb-3">
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                {{ form.trek_code.label(class="form-label") }}
+                                {{ form.trek_code(class="form-control", placeholder='Enter Trek Code') }}
+                                {% for error in form.trek_code.errors %}
+                                <div class="text-danger small">
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                {{ form.trek_name.label(class="form-label") }}
+                                {{ form.trek_name(class="form-control", placeholder='Enter Trek Name') }}
+                                {% for error in form.trek_name.errors %}
+                                <div class="text-danger small">
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                {{ form.difficulty.label(class='form-label') }}
+                                {% for option in form.difficulty %}
+                                <div class="form-check">
+                                    {{ option(class="form-check-input") }}
+                                    {{ option.label(class="form-check-label") }}
+                                </div>
+                                {% endfor %}
+                                {% for error in form.difficulty.errors %}
+                                <div class="text-danger small">
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                {{ form.trek_status.label(class='form-label') }}
+                                {% for option in form.trek_status %}
+                                <div class="form-check">
+                                    {{ option(class='form-check-input') }}
+                                    {{ option.label(class='form-check-label') }}
+                                </div>
+                                {% endfor %}
+                                {% for error in form.trek_status.errors %}
+                                <div class="text-danger small">
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                {{ form.duration.label(class='form-label') }}
+                                {{ form.duration(class='form-control', placeholder='Enter The Duration In days') }}
+                                {% for error in form.duration.errors %}
+                                <div class="text-danger small">
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                {{ form.no_of_slots.label(class='form-label') }}
+                                {{ form.no_of_slots(class='form-control', placeholder='Enter The Total Slots') }}
+                                {% for error in form.no_of_slots.errors %}
+                                <div class="text-danger small">
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                {{ form.start_date.label(class='form-label') }}
+                                {{ form.start_date(class='form-control', placeholder='Select The Start Date') }}
+                                {% for error in form.start_date.errors %}
+                                <div class="text-danger small">
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                {{ form.end_date.label(class='form-label') }}
+                                {{ form.end_date(class='form-control', placeholder='Select The End Date') }}
+                                {% for error in form.end_date.errors %}
+                                <div class="text-danger small">
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                {{ form.price.label(class='form-label') }}
+                                {{ form.price(class='form-control', placeholder='Enter The Price') }}
+                                {% for error in form.price.errors %}
+                                <div class="text-danger small">
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                {{ form.location.label(class='form-label') }}
+                                {{ form.location(class='form-control', placeholder='Enter The Location') }}
+                                {% for error in form.location.errors %}
+                                <div class="text-danger small">
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <div class="mb-3">
-                            {{ form.trek_name.label(class="form-label") }}
-                            {{ form.trek_name(class="form-control", placeholder='Enter Trek Name') }}
-                            {% for error in form.trek_name.errors %}
-                            <div class="text-danger small">
-                                {{ error }}
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                {{ form.description.label(class='form-label') }}
+                                {{ form.description(class='form-control', placeholder='Enter The Description') }}
+                                {% for error in form.description.errors %}
+                                <div class="text-danger small">
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
                         </div>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <div class="mb-3">
-                            {{ form.difficulty.label(class='form-label') }}
-                            {% for option in form.difficulty %}
-                            <div class="form-check">
-                                {{ option(class="form-check-input") }}
-                                {{ option.label(class="form-check-label") }}
-                            </div>
-                            {% endfor %}
-                            {% for error in form.difficulty.errors %}
-                            <div class="text-danger small">
-                                {{ error }}
-                            </div>
-                            {% endfor %}
+                    <div class="row justify-content-center">
+                        <div class="col-auto">
+                            {{ form.submit(class="btn btn-primary px-5") }}
                         </div>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <div class="mb-3">
-                            {{ form.trek_status.label(class='form-label') }}
-                            {% for option in form.trek_status %}
-                            <div class="form-check">
-                                {{ option(class='form-check-input') }}
-                                {{ option.label(class='form-check-label') }}
-                            </div>
-                            {% endfor %}
-                            {% for error in form.trek_status.errors %}
-                            <div class="text-danger small">
-                                {{ error }}
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <div class="mb-3">
-                            {{ form.duration.label(class='form-label') }}
-                            {{ form.duration(class='form-control', placeholder='Enter The Duration In days') }}
-                            {% for error in form.duration.errors %}
-                            <div class="text-danger small">
-                                {{ error }}
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <div class="mb-3">
-                            {{ form.no_of_slots.label(class='form-label') }}
-                            {{ form.no_of_slots(class='form-control', placeholder='Enter The Total Slots') }}
-                            {% for error in form.no_of_slots.errors %}
-                            <div class="text-danger small">
-                                {{ error }}
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <div class="mb-3">
-                            {{ form.start_date.label(class='form-label') }}
-                            {{ form.start_date(class='form-control', placeholder='Select The Start Date') }}
-                            {% for error in form.start_date.errors %}
-                            <div class="text-danger small">
-                                {{ error }}
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <div class="mb-3">
-                            {{ form.end_date.label(class='form-label') }}
-                            {{ form.end_date(class='form-control', placeholder='Select The End Date') }}
-                            {% for error in form.end_date.errors %}
-                            <div class="text-danger small">
-                                {{ error }}
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <div class="mb-3">
-                            {{ form.price.label(class='form-label') }}
-                            {{ form.price(class='form-control', placeholder='Enter The Price') }}
-                            {% for error in form.price.errors %}
-                            <div class="text-danger small">
-                                {{ error }}
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <div class="mb-3">
-                            {{ form.location.label(class='form-label') }}
-                            {{ form.location(class='form-control', placeholder='Enter The Location') }}
-                            {% for error in form.location.errors %}
-                            <div class="text-danger small">
-                                {{ error }}
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="mb-3">
-                            {{ form.description.label(class='form-label') }}
-                            {{ form.description(class='form-control', placeholder='Enter The Description') }}
-                            {% for error in form.description.errors %}
-                            <div class="text-danger small">
-                                {{ error }}
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-auto">
-                        {{ form.submit(class="btn btn-primary px-5") }}
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </div>
