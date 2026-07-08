@@ -107,14 +107,18 @@ class UsersAddForm(FlaskForm):
 
 
 class ProfileUpdateForm(FlaskForm):
-    name = StringField(
-        'Name',
+    first_name = StringField(
+        'First Name',
+        validators=[Optional(),
+                    Length(min=3, max=50, message='Name must be between 3 and 50 characters.')]
+    )
+    last_name = StringField(
+        'Last Name',
         validators=[Optional(),
                     Length(min=3, max=50, message='Name must be between 3 and 50 characters.')]
     )
     contact = IntegerField(
-        'Contact No', validators=[Optional(),
-                    Length(min=10, max=10, message='Contact Number Should be 10 digits Only')]
+        'Contact No', validators=[Optional()]
     )
     dob = DateField(
         'Date of Birth',

@@ -5,6 +5,7 @@ from models import db
 from models.model import User, Trek, Booking
 from routes.decorators import role_required
 from forms.trek_form import TrekBookForm
+from forms.user_form import ProfileUpdateForm
 
 
 
@@ -151,15 +152,41 @@ def history():
                            email = trekker_data.email,
                            role = trekker_data.role)
 
+
 @trekker_bp.route('/profile')
 @login_required
 @role_required('trekker')
 def profile():
-    trekker_id = current_user.id
-    trekker_data = User.query.filter_by(id = trekker_id).first()
+    update_form = ProfileUpdateForm()
+    return render_template('trekker/profile.html',page = 'Profile',
+                           update_form = update_form)
 
-
-    return render_template('trekker/profile.html',
-                           page = 'profile', first_name = trekker_data.first_name,
-                           email = trekker_data.email,
-                           role = trekker_data.role)
+@trekker_bp.route('/profile/update', methods = ['GET', 'POST'])
+@login_required
+@role_required('trekker')
+def update_profile():
+    update_form = ProfileUpdateForm()
+    if update_form.validate_on_submit():
+        user_data = User.query.filter_by(id = current_user.id).first()
+        if update_form.first_name.data:
+            user_data.first_name = update_form.first_name.data
+            flash('First Name Changed Successfully', 'success')
+        if update_form.last_name.data:
+            user_data.last_name = update_form.last_name.data
+            flash('Last Name Changed Successfully', 'success')
+        if update_form.contact.data:
+            user_data.trekker_profile.contact = int(update_form.contact.data)
+            flash('Contact Details Update Successful', 'success')
+        if update_form.dob.data:
+            user_data.trekker_profile.dob = update_form.dob.data
+            flash('Date Of Birth Update Successful', 'success')
+        if update_form.bio.data:
+            user_data.trekker_profile.bio = update_form.bio.data
+            flash('About Update Successful', 'success')
+        if update_form.password.data:
+            user_data.password = update_form.password.data
+            flash('Password Update Successful', 'success')
+        db.session.commit()
+        flash('Profile Updated Successfully', 'success')
+        return redirect(url_for(f'{current_user.role}.profile'))
+    return render_template('components/update_profile.html', update_form = update_form)

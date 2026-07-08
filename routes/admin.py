@@ -410,14 +410,11 @@ def history():
 
 
 
-
 @admin_bp.route('/profile')
 @login_required
 @role_required('admin')
 def profile():
-    admin_id = current_user.id
     update_form = ProfileUpdateForm()
-    admin_data = User.query.filter_by(id = admin_id).first()
     return render_template('admin/profile.html',page = 'Profile',
                            update_form = update_form)
 
@@ -428,17 +425,12 @@ def update_profile():
     update_form = ProfileUpdateForm()
     if update_form.validate_on_submit():
         user_data = User.query.filter_by(id = current_user.id).first()
-        if update_form.name.data:
-            name = update_form.name.data.strip().split()
-            if len(name) != 1:
-                first_name = name[0].lower()
-                last_name = " ".join(name[1:]).lower()
-            else:
-                first_name = name[0].lower()
-                last_name = None
-            user_data.first_name = first_name
-            flash('Name Chnaged Successfully', 'success')
-            user_data.last_name = last_name
+        if update_form.first_name.data:
+            user_data.first_name = update_form.first_name.data
+            flash('First Name Changed Successfully', 'success')
+        if update_form.last_name.data:
+            user_data.last_name = update_form.last_name.data
+            flash('Last Name Changed Successfully', 'success')
         if update_form.contact.data:
             user_data.contact = update_form.contact.data
             flash('Contact Details Update Successful', 'success')
@@ -449,11 +441,9 @@ def update_profile():
             user_data.bio = update_form.bio.data
             flash('About Update Successful', 'success')
         if update_form.password.data:
-            user_data.password_hash = update_form.password.data
+            user_data.password = update_form.password.data
             flash('Password Update Successful', 'success')
         db.session.commit()
         flash('Profile Updated Successfully', 'success')
         return redirect(url_for(f'{current_user.role}.profile'))
     return render_template('components/update_profile.html', update_form = update_form)
-
-
