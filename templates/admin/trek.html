@@ -2,79 +2,84 @@
 
 {% block content %}
 
-<section class="m-auto p-1 d-flex flex-column border border-dark">
-    <h2>Treks Stats</h2>
-    <div class="container-fluid border border-success p-2">
-        <div class="row g-4">
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm border-0 bg-primary text-white">
-                    <div class="card-body text-center">
-                        <h4 class="card-title">
-                            Total Treks
-                        </h4>
-                        <p class="display-5 fw-bold mb-0">
-                            {{ total_treks }}
-                        </p>
-                    </div>
-                </div>
+<section class="m-auto p-1 d-flex flex-column">
+    <div class="container border border-success p-3">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-info">
+                <h3 class="mb-0">Treks Stats</h3>
             </div>
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm border-0 bg-success text-white">
-                    <div class="card-body text-center">
-                        <h4 class="card-title">
-                            Approved Treks
-                        </h4>
-                        <p class="display-5 fw-bold mb-0">
-                            {{ approved }}
-                        </p>
+            <div class="card-body">
+                <div class="row g-4">
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0 bg-primary text-white">
+                            <div class="card-body text-center">
+                                <h4 class="card-title">
+                                    Total Treks
+                                </h4>
+                                <p class="display-5 fw-bold mb-0">
+                                    {{ total_treks }}
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm border-0 bg-warning text-dark">
-                    <div class="card-body text-center">
-                        <h4 class="card-title">
-                            Pending Treks
-                        </h4>
-                        <p class="display-5 fw-bold mb-0">
-                            {{ pending }}
-                        </p>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0 bg-success text-white">
+                            <div class="card-body text-center">
+                                <h4 class="card-title">
+                                    Approved Treks
+                                </h4>
+                                <p class="display-5 fw-bold mb-0">
+                                    {{ approved }}
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm border-0 bg-info text-danger-emphasis">
-                    <div class="card-body text-center">
-                        <h4 class="card-title">
-                            Open Treks
-                        </h4>
-                        <p class="display-5 fw-bold mb-0">
-                            {{ open }}
-                        </p>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0 bg-warning text-dark">
+                            <div class="card-body text-center">
+                                <h4 class="card-title">
+                                    Pending Treks
+                                </h4>
+                                <p class="display-5 fw-bold mb-0">
+                                    {{ pending }}
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm border-0 bg-success text-white">
-                    <div class="card-body text-center">
-                        <h4 class="card-title">
-                            Comleted Treks
-                        </h4>
-                        <p class="display-5 fw-bold mb-0">
-                            {{ completed }}
-                        </p>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0 bg-info text-danger-emphasis">
+                            <div class="card-body text-center">
+                                <h4 class="card-title">
+                                    Open Treks
+                                </h4>
+                                <p class="display-5 fw-bold mb-0">
+                                    {{ open }}
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm border-0 bg-danger-subtle text-dark">
-                    <div class="card-body text-center">
-                        <h4 class="card-title">
-                            Closed Treks
-                        </h4>
-                        <p class="display-5 fw-bold mb-0">
-                            {{ closed }}
-                        </p>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0 bg-success text-white">
+                            <div class="card-body text-center">
+                                <h4 class="card-title">
+                                    Comleted Treks
+                                </h4>
+                                <p class="display-5 fw-bold mb-0">
+                                    {{ completed }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0 bg-danger-subtle text-dark">
+                            <div class="card-body text-center">
+                                <h4 class="card-title">
+                                    Closed Treks
+                                </h4>
+                                <p class="display-5 fw-bold mb-0">
+                                    {{ closed }}
+                                </p>
+                            </div>
                     </div>
                 </div>
             </div>
