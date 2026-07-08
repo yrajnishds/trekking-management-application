@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+<section class="my-3">
+    {% include 'staff/trek_table.html' %}
+</section>
 
-<h1> {{ current_user.first_name|capitalize }} {{ page|capitalize }} Page</h1>
-<br>
-{% include 'staff/trek_table.html' %}
 
 {% endblock %}

@@ -1,120 +1,121 @@
-<section>
-
-    <h1> Treks </h1>
-
-    <table border='1'>
-        <thead>
-            <tr>
-                <th colspan="12 ">
-                    Treks Details
-                </th>
-                <th colspan="1">
-                    Actions
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    S.no.
-                </th>
-                <th>
-                    Id
-                </th>
-                <th>
-                    Trek Code
-                </th>
-                <th>
-                    Trek Name
-                </th>
-                <th>
-                    Staff Id
-                </th>
-                <th>
-                    Location
-                </th>
-                <th>
-                    Difficulty
-                </th>
-                <th>
-                    Duration
-                </th>
-                <th>
-                    Start Date
-                </th>
-                <th>
-                    End Date
-                </th>
-                <th>
-                    Price
-                </th>
-                <th>
-                    Description
-                </th>
-                <th>
-                    Book Slots
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for trek in range(treks|length) %}
-            <tr>
-                <td>
-                    {{ trek + 1 }}
-                </td>
-                <td>
-                    {{ treks[trek].id }}
-                </td>
-                <td>
-                    {{ treks[trek].trek_code }}
-                </td>
-                <td>
-                    {{ treks[trek].trek_name }}
-                </td>
-                <td>
-                    {{ treks[trek].staff_id }}
-                </td>
-                <td>
-                    {{ treks[trek].location }}
-                </td>
-                <td>
-                    {{ treks[trek].difficulty }}
-                </td>
-                <td>
-                    {{ treks[trek].duration }}
-                </td>
-                <td>
-                    {{ treks[trek].start_date }}
-                </td>
-                <td>
-                    {{ treks[trek].end_date }}
-                </td>
-                <td>
-                    {{ treks[trek].price }}
-                </td>
-                <td>
-                    {{ treks[trek].description }}
-                </td>
-                <td>
-                    {% if (treks[trek].trek_status == 'open') and (treks[trek].booked_slots < treks[trek].slots) %}
-                    <form action="{{ url_for('trekker.trekker_booking_action') }}" method="POST">
-                        <input type="number", name="trekker_id", value="{{ current_user.id }}" hidden>
-                        <input type="number", name="trek_id", value="{{ treks[trek].id }}" hidden>
-                        <button type="submit">Book Now</button>
-                    </form>
-                    {% elif (treks[trek].trek_status == 'open') and (treks[trek].booked_slots >= treks[trek].slots) %}
-                    Slot Full
-                    {% elif treks[trek].trek_status == 'completed' %}
-                    Ended
-                    {% elif treks[trek].trek_status == 'closed' %}
-                    Booking Closed
-                    {% elif treks[trek].trek_status == 'cancelled' %}
-                    Cancelled
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-
-
-    </table>
-
-</section>
+<div class="container p-3 border border-black">
+    <div class="card boarder-0 shadow-sm">
+        <div class="card-header bg-warning">
+            <h3 class="mb-0">
+                Treks
+            </h3>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-striped text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th colspan="9" class="text-info">
+                            Treks Details
+                        </th>
+                        <th colspan="1" class="text-info">
+                            Actions
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            Id
+                        </th>
+                        <th>
+                            Code
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Sid
+                        </th>
+                        <th>
+                            Difficulty
+                        </th>
+                        <th>
+                            Duration
+                        </th>
+                        <th>
+                            Trek Status
+                        </th>
+                        <th>
+                            Slots
+                        </th>
+                        <th>
+                            Details
+                        </th>
+                        <th>
+                            Book Slots
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for trek in range(treks|length) %}
+                    <tr>
+                        <td>
+                            {{ treks[trek].id }}
+                        </td>
+                        <td>
+                            {{ treks[trek].trek_code }}
+                        </td>
+                        <td>
+                            {{ treks[trek].trek_name }}
+                        </td>
+                        <td>
+                            {{ treks[trek].staff_id }}
+                        </td>
+                        <td>
+                            {% if treks[trek].difficulty == 'hard' %} <span class="badge bg-danger fs-6">Hard</span>
+                            {% elif treks[trek].difficulty == 'moderate' %} <span
+                                class="badge bg-warning text-dark fs-6">Moderate</span>
+                            {% else %} <span class="badge bg-info text-dark fs-6">Easy</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ treks[trek].duration }}
+                        </td>
+                        <td>
+                            {% if treks[trek].trek_status == 'completed' %} <span
+                                class="badge bg-success fs-6">Completed</span>
+                            {% elif treks[trek].trek_status == 'approved' %} <span
+                                class="badge bg-primary fs-6">Approved</span>
+                            {% elif treks[trek].trek_status == 'pending' %} <span
+                                class="badge bg-warning fs-6">Pending</span>
+                            {% elif treks[trek].trek_status == 'open' %} <span class="badge bg-info fs-6">Open</span>
+                            {% elif treks[trek].trek_status == 'closed' %} <span
+                                class="badge bg-dark-subtle fs-6 text-dark">Closed</span>
+                            {% else %} <span class="badge bg-danger fs-6">Cancelled</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ treks[trek].slots }}
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-outline-info fw-bold text-danger-emphasis">View</a>
+                        </td>
+                        <td>
+                            {% if (treks[trek].trek_status == 'open') and (treks[trek].booked_slots < treks[trek].slots) %} <form
+                                action="{{ url_for('trekker.trekker_booking_action') }}" method="POST">
+                                <input type="number" , name="trekker_id" , value="{{ current_user.id }}" hidden>
+                                <input type="number" , name="trek_id" , value="{{ treks[trek].id }}" hidden>
+                                <button type="submit" class="btn btn-sm fw-semibold btn-outline-primary">Book Now</button>
+                                </form>
+                                {% elif (treks[trek].trek_status == 'open') and (treks[trek].booked_slots >= treks[trek].slots) %}
+                                <span class="badge bg-primary fs-6 fw-bold">Slot Full</span>
+                                {% elif treks[trek].trek_status == 'completed' %}
+                                <span class="badge bg-success fs-6 fw-bold">Ended</span>
+                                {% elif treks[trek].trek_status == 'closed' %}
+                                <span class="badge bg-dark-subtle text-dark fs-6 fw-bold">Booking Closed</span>
+                                {% elif treks[trek].trek_status == 'cancelled' %}
+                                <span class="badge bg-danger fs-6 fw-bold">Cancelled</span>
+                                {% elif treks[trek].trek_status == 'pending' or treks[trek].trek_status == 'approved' %}
+                                <span class="badge bg-info fs-6 fw-bold">Coming Soon</span>
+                                {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

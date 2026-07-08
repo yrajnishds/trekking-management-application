@@ -127,12 +127,12 @@
                 
                             <form action="{{ url_for('admin.admin_trek_action_status', code = treks[trek].trek_code) }}"
                                     method="post" class="d-flex justify-content-md-center gap-1">
-                                {{ trek_action_form.hidden_tag() }}
-                                <div>
-                                    {{ trek_action_form.trek_action(class='form-select-sm') }}
-                                </div>
+                                    {{ trek_action_form.hidden_tag() }}
                                 <div>
                                     <button class="btn btn-sm btn-warning fw-semibold text-dark">Update</button>
+                                </div>
+                                <div>
+                                    {{ trek_action_form.trek_action(class='form-select-sm') }}
                                 </div>
                             </form>
                         </td>
