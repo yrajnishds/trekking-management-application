@@ -48,17 +48,30 @@ def trek():
 def booking():
     form = TrekBookForm()
     bookings = Booking.query.filter_by(trekker_id = current_user.id).all()
+    total = Booking.query.filter_by(trekker_id = current_user.id).count()
+    approved = Booking.query.filter_by(trekker_id = current_user.id, status='approved').count()
+    pending = Booking.query.filter_by(trekker_id = current_user.id, status='pending').count()
+    rejected = Booking.query.filter_by(trekker_id = current_user.id, status='rejected').count()
+    cancelled = Booking.query.filter_by(trekker_id = current_user.id, status='cancelled').count()
+    requested = Booking.query.filter_by(trekker_id = current_user.id, status='requested').count()
+    completed = Booking.query.filter_by(trekker_id = current_user.id, status='completed').count()
     treks = Trek.query.filter_by(
         trek_status = 'open').filter(Trek.booked_slots < Trek.slots)
     form.trekker_id.choices = [(current_user.id, current_user.first_name)]
-    # form.trek_id.choices = ['', '--- Select Trek ---'] + [(trek.id, trek.trek_code) for trek in available_treks]
     form.trek_id.choices = [('', '---Choose Treks---')] + [(trek.id, trek.trek_code) for trek in treks]
     trek = Trek.query.all()
     return render_template('trekker/booking.html',
                            page = 'booking',
                            trek = trek,
                            form = form,
-                           bookings = bookings
+                           bookings = bookings,
+                           total = total,
+                           approved = approved,
+                           pending = pending,
+                           rejected = rejected,
+                           cancelled = cancelled,
+                           requested = requested,
+                           completed = completed
                            )
 
 @trekker_bp.route('/booking/', methods = ['GET', 'POST'])

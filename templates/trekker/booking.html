@@ -2,13 +2,113 @@
 
 {% block content %}
 
-<h1> {{ current_user.first_name|capitalize }} {{ page|capitalize }} Page</h1>
+<section class="d-flex justify-content-between gap-3">
+    <div>
+        <section class="my-3">
+            <div class="container p-3 border border-black">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-danger-subtle">
+                        <div class="d-flex justify-content-between gap-3">
+                            <h3 class="mb-0">Bookings Stats</h3>
+                            <button type="button" class="btn btn-sm btn-primary fw-semibold fs-6" data-bs-toggle="collapse"
+                                data-bs-target="#viewStats" aria-expanded="false" aria-controls="viewStats">
+                                View
+                            </button>
+                        </div>
+                    </div>
+                    <div class="collapse" id="viewStats">
+                        <div class="card-body">
+                            <div class="row g-4">
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <div class="card h-100 shadow-sm border-0 bg-primary text-white">
+                                        <div class="card-body text-center">
+                                            <h4 class="card-title">
+                                                Total Bookings
+                                            </h4>
+                                            <p class="display-5 fw-bold mb-0">
+                                                {{ total }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <div class="card h-100 shadow-sm border-0 bg-success text-white">
+                                        <div class="card-body text-center">
+                                            <h4 class="card-title">
+                                                Approved Bookings
+                                            </h4>
+                                            <p class="display-5 fw-bold mb-0">
+                                                {{ approved }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <div class="card h-100 shadow-sm border-0 bg-warning text-dark">
+                                        <div class="card-body text-center">
+                                            <h4 class="card-title">
+                                                Pending Bookings
+                                            </h4>
+                                            <p class="display-5 fw-bold mb-0">
+                                                {{ pending }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <div class="card h-100 shadow-sm border-0 bg-info text-danger-emphasis">
+                                        <div class="card-body text-center">
+                                            <h4 class="card-title">
+                                                Cancelled Bookings
+                                            </h4>
+                                            <p class="display-5 fw-bold mb-0">
+                                                {{ cancelled }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <div class="card h-100 shadow-sm border-0 bg-danger text-white">
+                                        <div class="card-body text-center">
+                                            <h4 class="card-title">
+                                                Rejected Bookings
+                                            </h4>
+                                            <p class="display-5 fw-bold mb-0">
+                                                {{ rejected }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <div class="card h-100 shadow-sm border-0 bg-danger-subtle text-dark">
+                                        <div class="card-body text-center">
+                                            <h4 class="card-title">
+                                                Cancellations Requests
+                                            </h4>
+                                            <p class="display-5 fw-bold mb-0">
+                                                {{ requested }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <div>
+        <section class="my-3">
+            {% include 'trekker/booking_form.html' %}
+        </section>
+    </div>
+</section>
 
-<div>
-    {% include 'trekker/booking_form.html' %}
-</div> <br>
-<div>
+<section class="my-3">
     {% include 'trekker/booking_table.html' %}
-</div>
+</section>
 
 {% endblock %}

@@ -1,37 +1,48 @@
-<section>
-    <div>
-        <h2>Book Available Treks</h2>
-    </div>
-    <div>
-        <form action="{{ url_for('trekker.trekker_booking_action') }}" method="POST">
-            {{ form.hidden_tag() }}
-            <div>{{ form.trekker_id.label }}</div>
-            <div>{{ form.trekker_id() }}
-                <span style="color: red;">
-                    {% for error in form.trekker_id.errors %}
-                    {{ error }}
-                    {% endfor %}
-                </span>
-            </div> <br>
-            <div>{{ form.trek_id.label }}</div>
-            <div>{{ form.trek_id() }}
-                <span style="color: red;">
-                    {% for error in form.trek_id.errors %}
-                    {{ error }}
-                    {% endfor %}
-                </span>
-            </div> <br>
-            <div>{{ form.date.label }}</div>
-            <div>{{ form.date() }}
-                <span style="color: red;">
-                    {% for error in form.date.errors %}
-                    {{ error }}
-                    {% endfor %}
-                </span>
-            </div> <br>
-            <div>
-                <button>Book</button>
+<div class="container p-3 border border-primary">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary-subtle">
+            <div class="d-flex justify-content-between gap-3">
+                <h3 class="mb-0">Book Available Treks</h3>
+                <button type="button" class="btn btn-info btn-sm fw-bold fs-6"
+                    data-bs-toggle="collapse" data-bs-target="#bookTrek" aria-expanded="false" aria-controls="bookTerk">
+                    Click Here
+                </button>
             </div>
-        </form>
+        </div>
+        <div class="collapse" id="bookTrek">
+            <div class="card-body">
+                <form action="{{ url_for('trekker.trekker_booking_action') }}" method="POST">
+                    {{ form.hidden_tag() }}
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                {{ form.trekker_id.label(class='form-label') }}
+                                {{ form.trekker_id(class='form-select') }}
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                {{ form.date.label(class='form-label') }}
+                                {{ form.date(class='form-select') }}
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                {{ form.trek_id.label(class='form-label') }}
+                                {{ form.trek_id(class='form-select') }}
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="col-auto text-center mb-0">
+                                <button type="submit" class="btn btn-success px-3 fw-bold fs-5">Book</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                </form>
+            </div>
+        </div>
     </div>
-</section>
+</div>
