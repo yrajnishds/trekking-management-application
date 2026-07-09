@@ -1,9 +1,8 @@
-
 <div class="container p-3 border border-black">
     <div class="card boarder-0 shadow-sm">
         <div class="card-header bg-warning">
             <h3 class="mb-0">
-                Manage Treks
+                Treks
             </h3>
         </div>
         <div class="card-body table-responsive">
@@ -60,7 +59,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for trek in treks %}
+                    {% for trek in results.treks %}
                     <tr>
                         <td>
                             {{ trek.id }}
@@ -76,7 +75,8 @@
                         </td>
                         <td>
                             {% if trek.difficulty == 'hard' %} <span class="badge bg-danger fs-6">Hard</span>
-                            {% elif trek.difficulty == 'moderate' %} <span class="badge bg-warning text-dark fs-6">Moderate</span>
+                            {% elif trek.difficulty == 'moderate' %} <span
+                                class="badge bg-warning text-dark fs-6">Moderate</span>
                             {% else %} <span class="badge bg-info text-dark fs-6">Easy</span>
                             {% endif %}
                         </td>
@@ -84,11 +84,14 @@
                             {{ trek.duration }}
                         </td>
                         <td>
-                            {% if trek.trek_status == 'completed' %} <span class="badge bg-success fs-6">Completed</span>
-                            {% elif trek.trek_status == 'approved' %} <span class="badge bg-primary fs-6">Approved</span>
+                            {% if trek.trek_status == 'completed' %} <span
+                                class="badge bg-success fs-6">Completed</span>
+                            {% elif trek.trek_status == 'approved' %} <span
+                                class="badge bg-primary fs-6">Approved</span>
                             {% elif trek.trek_status == 'pending' %} <span class="badge bg-warning fs-6">Pending</span>
                             {% elif trek.trek_status == 'open' %} <span class="badge bg-info fs-6">Open</span>
-                            {% elif trek.trek_status == 'closed' %} <span class="badge bg-dark-subtle fs-6">Closed</span>
+                            {% elif trek.trek_status == 'closed' %} <span
+                                class="badge bg-dark-subtle fs-6">Closed</span>
                             {% else %} <span class="badge bg-danger fs-6">Cancelled</span>
                             {% endif %}
                         </td>
@@ -96,7 +99,8 @@
                             {{ trek.slots }}
                         </td>
                         <td>
-                            <a href="{{ url_for('admin.view_trek', id = trek.id) }}" class="btn btn-sm btn-outline-info fw-bold text-danger-emphasis">View</a>
+                            <a href="{{ url_for('admin.view_trek', id = trek.id) }}"
+                                class="btn btn-sm btn-outline-info fw-bold text-danger-emphasis">View</a>
                         </td>
                         <td>
                             {% if not trek.staff_id %}
@@ -108,14 +112,14 @@
                                     {{ assign_staff_form.assigned_staff(class='form-select-sm') }}
                                 </div>
                                 <button class="btn btn-primary btn-sm fw-semibold">Assign</button>
-                
+
                             </form>
                             {% else %}
                             <form
                                 action="{{ url_for('admin.admin_trek_action', code = trek.trek_code, action = 'change_staff') }}"
                                 method="post" class="d-flex justify-content-md-center gap-1">
                                 {{ assign_staff_form.hidden_tag() }}
-                
+
                                 <div>
                                     {{ assign_staff_form.assigned_staff(class='form-select-sm') }}
                                 </div>
@@ -124,10 +128,10 @@
                             {% endif %}
                         </td>
                         <td>
-                
+
                             <form action="{{ url_for('admin.admin_trek_action_status', code = trek.trek_code) }}"
-                                    method="post" class="d-flex justify-content-md-center gap-1">
-                                    {{ trek_action_form.hidden_tag() }}
+                                method="post" class="d-flex justify-content-md-center gap-1">
+                                {{ trek_action_form.hidden_tag() }}
                                 <div>
                                     <button class="btn btn-sm btn-warning fw-semibold text-dark">Update</button>
                                 </div>
@@ -143,4 +147,3 @@
         </div>
     </div>
 </div>
-

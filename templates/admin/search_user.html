@@ -1,15 +1,14 @@
-
 <div class="container p-3 border border-primary">
     <div class="card shadow-sm border-0">
         <div class="card-header bg-danger-subtle">
-            <h3 class="mb-0"> Manage {{ role_type|capitalize + 's' }} </h3>
+            <h3 class="mb-0"> Trekkers/Staffs </h3>
         </div>
         <div class="card-body table-responsive">
             <table class="table table-bordered table-striped text-center">
                 <thead class="table-dark">
                     <tr>
                         <th colspan="7" class=" text-info">
-                            {{ role_type|capitalize + 's' }} Details
+                            Trekkers/Staffs Details
                         </th>
                         <th colspan="4" class="text-info">
                             Actions
@@ -52,7 +51,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for user in users %}
+                    {% for user in results.users %}
                     <tr>
                         <td>
                             {{ user.id }}
@@ -98,7 +97,7 @@
                         
                         </td>
                         <td>
-                
+
                             {% if not user.is_approved %}
                             <form
                                 action="{{ url_for('admin.admin_action',role_type = role_type, id = user.id, action = 'approved') }}"
