@@ -243,6 +243,34 @@ def trek():
                            trek_action_form = trek_action_form
                            )
 
+
+
+@admin_bp.route('/trek/<int:id>')
+@login_required
+@role_required('admin')
+def view_trek(id):
+    trek_details = Trek.query.filter_by(id = id).first()
+    
+    return render_template(
+        'admin/view_trek.html',
+        id = trek_details.id,
+        trek_code = trek_details.trek_code,
+        trek_name = trek_details.trek_name,
+        location = trek_details.location,
+        difficulty = trek_details.difficulty,
+        duration = trek_details.duration,
+        start_date = trek_details.start_date,
+        end_date = trek_details.end_date,
+        trek_status = trek_details.trek_status,
+        slots = trek_details.slots,
+        booked_slots = trek_details.booked_slots,
+        price = trek_details.price,
+        description = trek_details.description,
+        staff_id = trek_details.staff_id
+    )
+
+
+
 @admin_bp.route('/add-trek', methods = ['GET', 'POST'])
 @login_required
 @role_required('admin')
