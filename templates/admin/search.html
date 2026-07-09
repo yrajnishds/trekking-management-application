@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3 class="mb-0">Results for {{search}}</h3>
+
+{% if results.users %}
+
+<section class="my-3">
+    <div class="container p-3 border border-black">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-secondary">
+                <h3 class="mb-0">Users</h3>
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table table-bordered table-striped text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>
+                                Id
+                            </th>
+                            <th>
+                                First Name
+                            </th>
+                            <th>
+                                Last Name
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th>
+                                Role
+                            </th>
+                            <th>
+                                Approval Status
+                            </th>
+                            <th>
+                                Active Status
+                            </th>
+                            <th>
+                                Block Status
+                            </th>
+                            <th>
+                                Profile
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in results.users %}
+                        <tr>
+                            <td>
+                                {{ user.id }}
+                            </td>
+                            <td>
+                                {{ user.first_name|title }}
+                            </td>
+                            <td>
+                                {% if user.last_name %}
+                                {{ user.last_name|title }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ user.email }}
+                            </td>
+                            <td>
+                                {% if user.role == 'admin' %} <span class="badge bg-danger text-white fs-6">Admin</span>
+                                {% elif user.role == 'staff' %} <span class="badge bg-warning text-dark fs-6">Staff</span>
+                                {% else %} <span class="badge bg-primary text-white fs-6">Trekker</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user.is_approved %} <span class="badge bg-success text-white fs-6">Approved</span>
+                                {% else %} <span class="badge bg-warning text-dark fs-6">Pending</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user.is_active %} <span class="badge bg-success text-white fs-6">Active</span>
+                                {% else %} <span class="badge bg-warning text-dark fs-6">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user.is_blocked %} <span class="badge bg-danger text-dark fs-6">Blacklisted</span>
+                                {% else %} <span class="badge bg-danger-subtle text-dark fs-6">Not Blacklisted</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user.role == 'staff' or user.role == 'admin' %}
+                                <a href="{{ url_for('admin.view_staff', id = user.id ) }}"
+                                    class="btn btn-sm btn-outline-info fw-bold text-danger-emphasis">
+                                    View
+                                </a>
+                                {% else %}
+                                <a href="{{ url_for('admin.view_trekker', id = user.id ) }}"
+                                    class="btn btn-sm btn-outline-info fw-bold text-danger-emphasis">
+                                    View
+                                </a>
+                                {% endif %}
+                            
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+                {% for user in users %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endif %}
+
+{% endblock %}
