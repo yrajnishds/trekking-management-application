@@ -80,7 +80,16 @@
                     </tr>
                 </table>
             </div>
-            
+            <div class="card-footer bg-primary-subtle">
+                <div class="d-flex justify-content-between gap-3">
+                    <a href="{{ url_for('admin.view_staff', id = staff_id) }}" class="btn btn-sm btn-outline-info fw-bold text-primary">View
+                        Staff Details
+                    </a>
+                    <a href="{{ url_for('admin.view_booking', trek_id = id) }}" class="btn btn-sm btn-outline-danger fw-bold text-primary">View
+                        All Bookings
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </section>
