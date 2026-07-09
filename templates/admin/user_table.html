@@ -84,7 +84,7 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a href="#" class="btn btn-sm btn-outline-info fw-bold text-danger-emphasis">View</a>
+                            <a href="{{ url_for(current_user.role ~ '.view_' ~ role_type, id = users[user].id ) }}" class="btn btn-sm btn-outline-info fw-bold text-danger-emphasis">View</a>
                         </td>
                         <td>
                 

@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="my-3">
+    <div class="container border border-primary p-3">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-secondary-subtle">
+                <div class="d-flex justify-content-between gap-3">
+                    <h3 class="mb-0">Staff Details</h3>
+                    <code class="fs-3 fw-semibold mb-0">Staff Id: {{ id }}</code>
+                    <a href="{{ url_for('admin.staff') }}" class="btn btn-info text-dark fs-5 fw-semibold">Back</a>
+                </div>
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table-borderless">
+                    <tr>
+                        <td class="fs-5 w-25 p-2">First Name</td>
+                        <td class="fs-5 p-2">:</td>
+                        <td class="fs-5 w-75 p-2">{{ first_name|title }}</td>
+                    </tr>
+                    <tr>
+                        <td class="fs-5 p-2">Last Name</td>
+                        <td class="fs-5 p-2">:</td>
+                        <td class="fs-5 p-2">{{ last_name|title }}</td>
+                    </tr>
+                    <tr>
+                        <td class="fs-5 p-2">Email</td>
+                        <td class="fs-5 p-2">:</td>
+                        <td class="fs-5 p-2">{{ email }}</td>
+                    </tr>
+                    <tr>
+                        <td class="fs-5 p-2">Contact</td>
+                        <td class="fs-5 p-2">:</td>
+                        <td class="fs-5 p-2">{{ contact }}</td>
+                    </tr>
+                    <tr>
+                        <td class="fs-5 p-2">Date of Birth</td>
+                        <td class="fs-5 p-2">:</td>
+                        <td class="fs-5 p-2">{{ dob }}</td>
+                    </tr>
+                    <tr>
+                        <td class="fs-5 p-2">Created Date</td>
+                        <td class="fs-5 p-2">:</td>
+                        <td class="fs-5 p-2">{{ created_at }}</td>
+                    </tr>
+                    <tr>
+                        <td class="fs-5 align-top p-2">Bio</td>
+                        <td>:</td>
+                        <td class="fs-5 text-wrap p-2">{{ bio }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="my-3">
+    <div class="container border border-secondary p-3">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-secondary-subtle">
+                <div class="d-flex justify-content-between gap-3">
+                    <h3 class="mb-0">Assigned Trek Details</h3>
+                </div>
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table table-borderless table-striped text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>
+                                Id
+                            </th>
+                            <th>
+                                Code
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Trek Status
+                            </th>
+                            <th>
+                                Details
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for trek in trek_details %}
+                        <tr>
+                            <td>
+                                {{ trek.id }}                                
+                            </td>
+                            <td>
+                                {{ trek.trek_code }}                                
+                            </td>
+                            <td>
+                                {{ trek.trek_name }}                                
+                            </td>
+                            <td>
+                                {% if trek.trek_status == 'completed' %} <span class="badge bg-success fs-6">Completed</span>
+                                {% elif trek.trek_status == 'approved' %} <span class="badge bg-primary fs-6">Approved</span>
+                                {% elif trek.trek_status == 'pending' %} <span class="badge bg-warning fs-6">Pending</span>
+                                {% elif trek.trek_status == 'open' %} <span class="badge bg-info fs-6">Open</span>
+                                {% elif trek.trek_status == 'closed' %} <span class="badge bg-dark-subtle fs-6">Closed</span>
+                                {% else %} <span class="badge bg-danger fs-6">Cancelled</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('admin.view_trek', id = trek.id) }}"
+                                    class="btn btn-sm btn-outline-info fw-bold text-danger-emphasis">View</a>
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
