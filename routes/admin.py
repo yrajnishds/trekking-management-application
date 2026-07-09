@@ -59,6 +59,26 @@ def trekker():
                            unblacklisted = unblacklisted)
 
 
+@admin_bp.route('trekker/<int:id>')
+@login_required
+@role_required('admin')
+def view_trekker(id):
+    trekker_details = User.query.filter_by(id = id).first()
+    booking_details = Booking.query.filter_by(trekker_id = id).all()
+    return render_template(
+        'admin/view_trekker.html',
+        id = trekker_details.id,
+        first_name = trekker_details.first_name,
+        last_name = trekker_details.last_name,
+        email = trekker_details.email,
+        created_at = trekker_details.created_at,
+        contact = trekker_details.trekker_profile.contact,
+        dob = trekker_details.trekker_profile.dob,
+        bio = trekker_details.trekker_profile.bio,
+        booking_details = booking_details
+    )
+
+
 @admin_bp.route('/staff')
 @login_required
 @role_required('admin')
