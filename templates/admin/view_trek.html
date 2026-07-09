@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="my-3">
+    <div class="container border border-primary p-3">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-secondary-subtle">
+                <div class="d-flex justify-content-between gap-3">
+                    <h3 class="mb-0">Trek Detail</h3>
+                    <code class="fs-3 fw-semibold mb-0">Trek Id: {{ id }}</code>
+                    <a href="{{ url_for('admin.trek') }}" class="btn btn-info text-dark fs-5 fw-semibold">Back</a>
+                </div>
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table-borderless">
+                    <tr>
+                        <td class="fs-5 w-25 p-2"><code>Staff Id</code></td>
+                        <td class="fs-5 p-2">:</td>
+                        <td class="fs-5 w-75 p-2"><code>{{ staff_id }}</code></td>
+                    </tr>
+                    <tr>
+                        <td class="fs-5 w-25 p-2"><code>Trek Code</code></td>
+                        <td class="fs-5 p-2">:</td>
+                        <td class="fs-5 w-75 p-2"><code>{{ trek_code }}</code></td>
+                    </tr>
+                    <tr>
+                        <td class="fs-5 w-25 p-2">Trek Name</td>
+                        <td class="fs-5 p-2">:</td>
+                        <td class="fs-5 w-75 p-2">{{ trek_name|title }}</td>
+                    </tr>
+                    <tr>
+                        <td class="fs-5 w-25 p-2">Total Slots</td>
+                        <td class="fs-5 p-2">:</td>
+                        <td class="fs-5 w-75 p-2">{{ slots }}</td>
+                    </tr>
+                    <tr>
+                        <td class="fs-5 w-25 p-2">Booked Slots</td>
+                        <td class="fs-5 p-2">:</td>
+                        <td class="fs-5 w-75 p-2">{{ booked_slots }}</td>
+                    </tr>
+                    <tr>
+                        <td class="fs-5 w-25 p-2">Available Slots</td>
+                        <td class="fs-5 p-2">:</td>
+                        <td class="fs-5 w-75 p-2">{{ slots - booked_slots }}</td>
+                    </tr>
+                    <tr>
+                        <td class="fs-5 w-25 p-2">Location</td>
+                        <td class="fs-5 p-2">:</td>
+                        <td class="fs-5 w-75 p-2">{{ location }}</td>
+                    </tr>
+                    <tr>
+                        <td class="fs-5 w-25 p-2">Trek Status</td>
+                        <td class="fs-5 p-2">:</td>
+                        <td class="fs-5 w-75 p-2">{{ trek_status|title }}</td>
+                    </tr>
+                    <tr>
+                        <td class="fs-5 w-25 p-2">Difficulty</td>
+                        <td class="fs-5 p-2">:</td>
+                        <td class="fs-5 w-75 p-2">{{ difficulty|title }}</td>
+                    </tr>
+                    <tr>
+                        <td class="fs-5 w-25 p-2">Start Date</td>
+                        <td class="fs-5 p-2">:</td>
+                        <td class="fs-5 w-75 p-2">{{ start_date }}</td>
+                    </tr>
+                    <tr>
+                        <td class="fs-5 w-25 p-2">End Date</td>
+                        <td class="fs-5 p-2">:</td>
+                        <td class="fs-5 w-75 p-2">{{ end_date }}</td>
+                    </tr>
+                    <tr>
+                        <td class="fs-5 w-25 p-2">Price</td>
+                        <td class="fs-5 p-2">:</td>
+                        <td class="fs-5 w-75 p-2">{{ price }}</td>
+                    </tr>
+                    <tr>
+                        <td class="fs-5 align-top p-2">Description</td>
+                        <td>:</td>
+                        <td class="fs-5 text-wrap p-2">{{ description|title }}</td>
+                    </tr>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -96,7 +96,7 @@
                             {{ treks[trek].slots }}
                         </td>
                         <td>
-                            <a href="#" class="btn btn-sm btn-outline-info fw-bold text-danger-emphasis">View</a>
+                            <a href="{{ url_for('admin.view_trek', id = treks[trek].id) }}" class="btn btn-sm btn-outline-info fw-bold text-danger-emphasis">View</a>
                         </td>
                         <td>
                             {% if not treks[trek].staff_id %}
