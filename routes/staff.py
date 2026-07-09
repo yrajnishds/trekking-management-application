@@ -276,3 +276,23 @@ def update_profile():
         flash('Profile Updated Successfully', 'success')
         return redirect(url_for(f'{current_user.role}.profile'))
     return render_template('components/update_profile.html', update_form = update_form)
+
+
+@staff_bp.route('/search', methods = ['GET', 'POST'])
+@login_required
+@role_required('staff')
+def search():
+
+    trek_action_form = TrekActionForm()
+    trek_action_form.trek_action.choices = [('', '---Choose Status---')] +  [('open', 'Open'), ('closed', 'Closed'), ('completed', 'Completed')]
+    from search import staff_search
+    search = request.args.get('search', '').strip()
+    if not search:
+        return redirect(url_for('staff.staff'))
+    results = staff_search(current_user.id, search)
+    return render_template(
+        'staff/search.html',
+        search = search,
+        results = results,
+        trek_action_form = trek_action_form
+    )

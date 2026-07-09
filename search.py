@@ -101,3 +101,43 @@ def trekker_search(trekker_id, search):
         'bookings': search_my_bookings(trekker_id, search).all(),
         'available_treks': search_available_treks(trekker_id, search).all()
     }
+
+
+def search_staff_treks(staff_id, search):
+    query = Trek.query.filter(
+        Trek.staff_id == staff_id
+    )
+    if search:
+        query = query.filter(
+            or_(
+                Trek.trek_name.ilike(f"%{search}%"),
+                Trek.location.ilike(f"%{search}%"),
+                Trek.trek_status.ilike(f"%{search}%")
+            )
+        )
+    return query
+
+def search_staff_bookings(staff_id, search):
+    query = (
+        Booking.query
+        .join(Trek)
+        .join(TrekkerProfile)
+        .join(User)
+        .filter(Trek.staff_id == staff_id)
+    )
+    if search:
+        query = query.filter(
+            or_(
+                Trek.trek_name.ilike(f"%{search}%"),
+                User.first_name.ilike(f"%{search}%"),
+                User.last_name.ilike(f"%{search}%"),
+                Booking.status.ilike(f"%{search}%")
+            )
+        )
+    return query
+
+def staff_search(staff_id, search):
+    return {
+        'treks': search_staff_treks(staff_id, search).all(),
+        'bookings': search_staff_bookings(staff_id, search).all()
+    }
