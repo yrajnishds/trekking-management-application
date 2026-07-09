@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3 class="mb-0">Results for {{search}}</h3>
+
+{% if results.treks %}
+
+<section class="my-3">
+    {% include 'staff/search_trek.html' %}
+</section>
+
+{% endif %}
+
+
+{% if results.bookings %}
+
+<section class="my-3">
+    {% include 'staff/search_booking.html' %}
+</section>
+
+{% endif %}
+
+
+{% endblock %}

@@ -2,7 +2,7 @@
     <div class="card shadow-sm boarder-0">
         <div class="card-header bg-warning">
             <h3 class="mb-0">
-                Manage Treks
+                Treks
             </h3>
         </div>
         <div class="card-body table-responsive">
@@ -53,7 +53,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for trek in treks %}
+                    {% for trek in results.treks %}
                     <tr>
                         <td>
                             {{ trek.id }}
@@ -82,8 +82,7 @@
                                 class="badge bg-success fs-6">Completed</span>
                             {% elif trek.trek_status == 'approved' %} <span
                                 class="badge bg-primary fs-6">Approved</span>
-                            {% elif trek.trek_status == 'pending' %} <span
-                                class="badge bg-warning fs-6">Pending</span>
+                            {% elif trek.trek_status == 'pending' %} <span class="badge bg-warning fs-6">Pending</span>
                             {% elif trek.trek_status == 'open' %} <span class="badge bg-info fs-6">Open</span>
                             {% elif trek.trek_status == 'closed' %} <span
                                 class="badge bg-dark-subtle fs-6">Closed</span>
@@ -97,28 +96,28 @@
                             <a href="#" class="btn btn-sm btn-outline-info fw-bold text-danger-emphasis">View</a>
                         </td>
                         <td>
-                            <a href="{{ url_for('staff.update_trek', code = trek.trek_code) }}" 
-                                 class="btn btn-secondary btn-sm fw-semibold">
+                            <a href="{{ url_for('staff.update_trek', code = trek.trek_code) }}"
+                                class="btn btn-secondary btn-sm fw-semibold">
                                 Edit
                             </a>
                         </td>
                         <td>
-                        
-                            <form action="{{ url_for('staff.staff_trek_action_status', code = trek.trek_code) }}" method="post" 
-                                    class="d-flex gap-1 justify-content-md-center">
+
+                            <form action="{{ url_for('staff.staff_trek_action_status', code = trek.trek_code) }}"
+                                method="post" class="d-flex gap-1 justify-content-md-center">
                                 {{ trek_action_form.hidden_tag() }}
                                 <div></div>
-                                    {{ trek_action_form.trek_action(class='form-select-sm') }}
-                                </div>
-                                <div>
-                                    <button class="btn btn-sm btn-warning fw-semibold text-dark">Update</button>
-                                </div>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                                {{ trek_action_form.trek_action(class='form-select-sm') }}
         </div>
+        <div>
+            <button class="btn btn-sm btn-warning fw-semibold text-dark">Update</button>
+        </div>
+        </form>
+        </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
     </div>
+</div>
 </div>
