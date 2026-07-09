@@ -405,6 +405,20 @@ def booking():
                            requested = requested)
 
 
+
+@admin_bp.route('/booking/trek/<int:trek_id>')
+@login_required
+@role_required('admin')
+def view_booking(trek_id):
+    booking_details = Booking.query.filter_by(trek_id = trek_id).all()
+
+    return render_template(
+        'admin/view_booking.html',
+        booking_details = booking_details
+    )
+
+
+
 @admin_bp.route('/booking/<int:id>/<string:action>/<int:trek_id>/<string:status>', methods = ['GET', 'POST'])
 @login_required
 @role_required('admin')
