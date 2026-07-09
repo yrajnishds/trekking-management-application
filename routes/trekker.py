@@ -190,3 +190,22 @@ def update_profile():
         flash('Profile Updated Successfully', 'success')
         return redirect(url_for(f'{current_user.role}.profile'))
     return render_template('components/update_profile.html', update_form = update_form)
+
+
+@trekker_bp.route('/search')
+@login_required
+@role_required('trekker')
+def search():
+    trek_book_form = TrekBookForm
+    from search import trekker_search
+    search = request.args.get('search', '').strip()
+    if not search:
+        flash(f'Please enter the text to search...', 'info')
+        return redirect(url_for('admin.admin'))
+    results = trekker_search(current_user.id, search)
+    return render_template(
+        'trekker/search.html',
+        search = search,
+        results = results,
+        trek_book_form = trek_book_form
+    )
