@@ -479,19 +479,6 @@ def admin_booking_action(id, trek_id, action, status):
             return redirect(url_for('admin.booking'))
 
 
-@admin_bp.route('/history')
-@login_required
-@role_required('admin')
-def history():
-    admin_id = current_user.id
-    admin_data = User.query.filter_by(id = admin_id).first()
-    return render_template('admin/history.html',
-                           page = 'history', first_name = admin_data.first_name,
-                           email = admin_data.email,
-                           role = admin_data.role)
-
-
-
 @admin_bp.route('/profile')
 @login_required
 @role_required('admin')
@@ -514,13 +501,13 @@ def update_profile():
             user_data.last_name = update_form.last_name.data
             flash('Last Name Changed Successfully', 'success')
         if update_form.contact.data:
-            user_data.contact = update_form.contact.data
+            user_data.admin_profile.contact = update_form.contact.data
             flash('Contact Details Update Successful', 'success')
         if update_form.dob.data:
-            user_data.dob = update_form.dob.data
+            user_data.admin_profile.dob = update_form.dob.data
             flash('Date Of Birth Update Successful', 'success')
         if update_form.bio.data:
-            user_data.bio = update_form.bio.data
+            user_data.admin_profile.bio = update_form.bio.data
             flash('About Update Successful', 'success')
         if update_form.password.data:
             user_data.password = update_form.password.data
@@ -529,3 +516,39 @@ def update_profile():
         flash('Profile Updated Successfully', 'success')
         return redirect(url_for(f'{current_user.role}.profile'))
     return render_template('components/update_profile.html', update_form = update_form)
+
+
+@admin_bp.route('/hist')
+@login_required
+@role_required('admin')
+def history():
+    pass
+
+
+@admin_bp.route('/search')
+@login_required
+@role_required('admin')
+def search():
+
+    assign_staff_form = AssignStaffForm()
+
+    staffs = User.query.filter_by(role = 'staff', is_approved = True, is_active = True, is_blocked = False).all()
+    # if staffs:
+    assign_staff_form.assigned_staff.choices = [('', '---Choose Staff---')] + [(staff.id, staff.email) for staff in staffs]
+    
+    trek_action_form = TrekActionForm()
+    trek_action_form.trek_action.choices = [('', '---Choose Status---')] +  [('pending', 'Pending'), ('approved', 'Approved'), ('open', 'Open'), ('closed', 'Closed'), ('completed', 'Completed'), ('cancelled', 'Cancelled')]
+
+    from search import admin_search
+    search = request.args.get("search", "").strip()
+    if not search:
+        flash(f'Please enter the text to search...', 'info')
+        return redirect(url_for('admin.admin'))
+    results = admin_search(search)
+    return render_template(
+        'admin/search.html',
+        search = search,
+        results = results,
+        assign_staff_form = assign_staff_form,
+        trek_action_form = trek_action_form
+    )

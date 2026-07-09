@@ -64,6 +64,13 @@ class User(UserMixin, db.Model):
         cascade="all, delete-orphan"
     )
 
+    admin_profile = db.relationship(
+        "AdminProfile",
+        back_populates="user",
+        uselist=False,
+        cascade="all, delete-orphan"
+    )
+
 
 
 # Trekker Profile
@@ -135,6 +142,36 @@ class StaffProfile(db.Model):
         "Trek",
         back_populates="staff",
         cascade="all"
+    )
+
+
+
+# Admin Profile
+
+class AdminProfile(db.Model):
+    __tablename__ = "admin"
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey("users.id"),
+        primary_key=True
+    )
+
+    contact = db.Column(db.String(15), unique=True)
+
+    bio = db.Column(db.Text)
+
+    dob = db.Column(db.Date)
+
+    admin_since = db.Column(
+        db.Date,
+        default=date.today,
+        nullable=False
+    )
+
+    user = db.relationship(
+        "User",
+        back_populates="admin_profile"
     )
 
 
