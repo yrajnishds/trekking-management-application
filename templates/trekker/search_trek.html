@@ -50,7 +50,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for trek in treks %}
+                    {% for trek in results.available_treks %}
                     <tr>
                         <td>
                             {{ trek.id }}
@@ -79,8 +79,7 @@
                                 class="badge bg-success fs-6">Completed</span>
                             {% elif trek.trek_status == 'approved' %} <span
                                 class="badge bg-primary fs-6">Approved</span>
-                            {% elif trek.trek_status == 'pending' %} <span
-                                class="badge bg-warning fs-6">Pending</span>
+                            {% elif trek.trek_status == 'pending' %} <span class="badge bg-warning fs-6">Pending</span>
                             {% elif trek.trek_status == 'open' %} <span class="badge bg-info fs-6">Open</span>
                             {% elif trek.trek_status == 'closed' %} <span
                                 class="badge bg-dark-subtle fs-6 text-dark">Closed</span>
@@ -98,7 +97,8 @@
                                 action="{{ url_for('trekker.trekker_booking_action') }}" method="POST">
                                 <input type="number" , name="trekker_id" , value="{{ current_user.id }}" hidden>
                                 <input type="number" , name="trek_id" , value="{{ trek.id }}" hidden>
-                                <button type="submit" class="btn btn-sm fw-semibold btn-outline-primary">Book Now</button>
+                                <button type="submit" class="btn btn-sm fw-semibold btn-outline-primary">Book
+                                    Now</button>
                                 </form>
                                 {% elif (trek.trek_status == 'open') and (trek.booked_slots >= trek.slots) %}
                                 <span class="badge bg-primary fs-6 fw-bold">Slot Full</span>
