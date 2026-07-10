@@ -2,318 +2,577 @@
 
 {% block content %}
 
-<section class="my-4">
-    <div class="container">
+<section class="container py-4">
 
-        <div class="card shadow border-0">
+    <div class="card shadow-sm border-0">
 
-            <form action="{{ url_for('staff.update_trek_details') }}" method="POST">
+        <form action="{{ url_for('staff.update_trek_details') }}" method="POST">
 
-                {{ form.hidden_tag() }}
+            {{ form.hidden_tag() }}
 
-                <!-- Header -->
-                <div class="card-header bg-dark text-white">
-                    <div class="d-flex justify-content-between align-items-center">
+            <!-- =========================
+                    Header
+            ========================== -->
 
-                        <div>
-                            <h3 class="mb-0">Update Trek Details</h3>
-                            <small class="text-light">
-                                Update only the fields you want to change.
-                            </small>
-                        </div>
+            <div class="card-header bg-dark text-white">
 
-                        <a href="{{ url_for('staff.trek') }}" class="btn btn-warning fw-bold">
-                            Go Back
-                        </a>
+                <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center">
+
+                    <div>
+
+                        <h3 class="mb-1">
+                            Update Trek
+                        </h3>
+
+                        <p class="mb-0 text-light">
+                            Update only the fields you want to modify.
+                        </p>
 
                     </div>
+
+                    <a href="{{ url_for('staff.trek') }}" class="btn btn-warning fw-semibold">
+
+                        ← Back to Treks
+
+                    </a>
+
                 </div>
 
-                <!-- Body -->
-                <div class="card-body">
+            </div>
 
-                    <div class="d-flex flex-column gap-4">
+            <!-- =========================
+                    Body
+            ========================== -->
+
+            <div class="card-body">
+
+                <!-- ===========================================
+                        General Information
+                ============================================ -->
+
+                <div class="mb-4 card border">
+
+                    <div class="card-header bg-warning-subtle">
+
+                        <h5 class="mb-0 fw-bold">
+
+                            General Information
+
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <!-- Column Heading -->
+
+                        <div class="row pb-2 mb-4 fw-bold border-bottom">
+
+                            <div class="col-md-3">
+
+                                Field
+
+                            </div>
+
+                            <div class="col-md-4 text-danger">
+
+                                Current Value
+
+                            </div>
+
+                            <div class="col-md-5 text-success">
+
+                                New Value
+
+                            </div>
+
+                        </div>
 
                         <!-- Trek Code -->
-                        <div class="row gx-4">
 
-                            <div class="col-12 text-center">
-                                {{ form.trek_code.label(class="mb-0 form-label fw-semibold fs-5") }}
-                                <small class="d-block text-info-emphasis">
-                                    Enter only if you want to change the Trek Code.
-                                </small>
+                        <div class="row mb-4 align-items-center">
+
+                            <div class="col-md-3">
+
+                                {{ form.trek_code.label(class="mb-0 form-label fw-semibold") }}
+
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label text-danger fw-semibold">
-                                Current
-                            </label>
-                                <p class="form-control">{{ trek.trek_code }}</p>
+                            <div class="col-md-4">
+
+                                <input type="text" class="form-control bg-light" value="{{ trek.trek_code }}" readonly>
+
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label text-success fw-semibold">
-                                New
-                            </label>
-                                {{ form.trek_code(class="form-control", placeholder="Enter New Trek Code") }}
-                            </div>
+                            <div class="col-md-5">
 
-                            <div class="col-12 text-center">
+                                {{ form.trek_code(
+                                class="form-control",
+                                placeholder="Leave blank to keep current code"
+                                ) }}
+
                                 {% for error in form.trek_code.errors %}
-                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+
+                                <div class="mt-1 text-danger small">
+
+                                    {{ error }}
+
+                                </div>
+
                                 {% endfor %}
+
                             </div>
 
                         </div>
 
                         <!-- Trek Name -->
-                        <div class="row gx-4">
 
-                            <div class="col-12 text-center">
-                                {{ form.trek_name.label(class="mb-0 form-label fw-semibold fs-5") }}
-                                <small class="d-block text-info-emphasis">
-                                    Enter only if you want to change the Trek Name.
-                                </small>
+                        <div class="row mb-4 align-items-center">
+
+                            <div class="col-md-3">
+
+                                {{ form.trek_name.label(class="mb-0 form-label fw-semibold") }}
+
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label text-danger fw-semibold">
-                                Current
-                            </label>
-                                <p class="form-control">{{ trek.trek_name }}</p>
+                            <div class="col-md-4">
+
+                                <input type="text" class="form-control bg-light" value="{{ trek.trek_name }}" readonly>
+
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label text-success fw-semibold">
-                                New
-                            </label>
-                                {{ form.trek_name(class="form-control", placeholder="Enter New Trek Name") }}
-                            </div>
+                            <div class="col-md-5">
 
-                            <div class="col-12 text-center">
+                                {{ form.trek_name(
+                                class="form-control",
+                                placeholder="Leave blank to keep current name"
+                                ) }}
+
                                 {% for error in form.trek_name.errors %}
-                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+
+                                <div class="mt-1 text-danger small">
+
+                                    {{ error }}
+
+                                </div>
+
                                 {% endfor %}
+
                             </div>
 
                         </div>
 
                         <!-- Location -->
-                        <div class="row gx-4">
 
-                            <div class="col-12 text-center">
-                                {{ form.location.label(class="mb-0 form-label fw-semibold fs-5") }}
+                        <div class="row align-items-center">
+
+                            <div class="col-md-3">
+
+                                {{ form.location.label(class="mb-0 form-label fw-semibold") }}
+
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label text-danger fw-semibold">
-                                Current
-                            </label>
-                                <p class="form-control">{{ trek.location }}</p>
+                            <div class="col-md-4">
+
+                                <input type="text" class="form-control bg-light" value="{{ trek.location }}" readonly>
+
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label text-success fw-semibold">
-                                New
-                            </label>
-                                {{ form.location(class="form-control", placeholder="Enter New Location") }}
-                            </div>
+                            <div class="col-md-5">
 
-                            <div class="col-12 text-center">
+                                {{ form.location(
+                                class="form-control",
+                                placeholder="Leave blank to keep current location"
+                                ) }}
+
                                 {% for error in form.location.errors %}
-                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+
+                                <div class="mt-1 text-danger small">
+
+                                    {{ error }}
+
+                                </div>
+
                                 {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- ===========================================
+                                                        Trek Configuration
+                                                ============================================ -->
+
+                <div class="mb-4 card border">
+
+                    <div class="card-header bg-info-subtle">
+
+                        <h5 class="mb-0 fw-bold">
+
+                            Trek Configuration
+
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <!-- Column Heading -->
+
+                        <div class="row pb-2 mb-4 fw-bold border-bottom">
+
+                            <div class="col-md-3">
+                                Field
+                            </div>
+
+                            <div class="col-md-4 text-danger">
+                                Current Value
+                            </div>
+
+                            <div class="col-md-5 text-success">
+                                New Value
                             </div>
 
                         </div>
 
                         <!-- Difficulty -->
-                        <div class="row gx-4">
 
-                            <div class="col-12 text-center">
-                                {{ form.difficulty.label(class="mb-0 form-label fw-semibold fs-5") }}
+                        <div class="row mb-4 align-items-center">
+
+                            <div class="col-md-3">
+
+                                {{ form.difficulty.label(class="mb-0 form-label fw-semibold") }}
+
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label text-danger fw-semibold">
-                                Current
-                            </label>
-                                <p class="form-control">{{ trek.difficulty }}</p>
+                            <div class="col-md-4">
+
+                                {% if trek.difficulty == "hard" %}
+                                <span class="badge bg-danger fs-6">
+                                    Hard
+                                </span>
+
+                                {% elif trek.difficulty == "moderate" %}
+                                <span class="badge bg-warning text-dark fs-6">
+                                    Moderate
+                                </span>
+
+                                {% else %}
+                                <span class="badge bg-success fs-6">
+                                    Easy
+                                </span>
+                                {% endif %}
+
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label text-success fw-semibold">
-                                New
-                            </label>
+                            <div class="col-md-5">
+
                                 {{ form.difficulty(class="form-select") }}
-                            </div>
 
-                            <div class="col-12 text-center">
                                 {% for error in form.difficulty.errors %}
-                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+                                <div class="mt-1 text-danger small">
+
+                                    {{ error }}
+
+                                </div>
                                 {% endfor %}
+
                             </div>
 
                         </div>
 
                         <!-- Duration -->
-                        <div class="row gx-4">
 
-                            <div class="col-12 text-center">
-                                {{ form.duration.label(class="mb-0 form-label fw-semibold fs-5") }}
+                        <div class="row mb-4 align-items-center">
+
+                            <div class="col-md-3">
+
+                                {{ form.duration.label(class="mb-0 form-label fw-semibold") }}
+
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label text-danger fw-semibold">
-                                Current
-                            </label>
-                                <p class="form-control">{{ trek.duration }}</p>
+                            <div class="col-md-4">
+
+                                <input type="text" class="form-control bg-light" value="{{ trek.duration }}" readonly>
+
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label text-success fw-semibold">
-                                New
-                            </label>
-                                {{ form.duration(class="form-control", placeholder="Enter New Duration") }}
-                            </div>
+                            <div class="col-md-5">
 
-                            <div class="col-12 text-center">
+                                {{ form.duration(
+                                class="form-control",
+                                placeholder="Example: 5 Days"
+                                ) }}
+
                                 {% for error in form.duration.errors %}
-                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+                                <div class="mt-1 text-danger small">
+
+                                    {{ error }}
+
+                                </div>
                                 {% endfor %}
+
                             </div>
 
                         </div>
 
                         <!-- Number of Slots -->
-                        <div class="row gx-4">
 
-                            <div class="col-12 text-center">
-                                {{ form.no_of_slots.label(class="mb-0 form-label fw-semibold fs-5") }}
+                        <div class="row align-items-center">
+
+                            <div class="col-md-3">
+
+                                {{ form.no_of_slots.label(class="mb-0 form-label fw-semibold") }}
+
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label text-danger fw-semibold">
-                                Current
-                            </label>
-                                <p class="form-control">{{ trek.slots }}</p>
+                            <div class="col-md-4">
+
+                                <input type="text" class="form-control bg-light" value="{{ trek.slots }}" readonly>
+
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label text-success fw-semibold">
-                                New
-                            </label>
-                                {{ form.no_of_slots(class="form-control", placeholder="Enter New Number of Slots") }}
-                            </div>
+                            <div class="col-md-5">
 
-                            <div class="col-12 text-center">
+                                {{ form.no_of_slots(
+                                class="form-control",
+                                placeholder="Enter number of slots"
+                                ) }}
+
                                 {% for error in form.no_of_slots.errors %}
-                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+                                <div class="mt-1 text-danger small">
+
+                                    {{ error }}
+
+                                </div>
                                 {% endfor %}
+
                             </div>
 
                         </div>
 
-                        <!-- Dates -->
-                        <div class="row gx-4">
+                    </div>
 
-                            <div class="col-md-6">
+                </div>
+                <!-- ===========================================
+                                                            Trek Schedule
+                                                    ============================================ -->
 
-                                <div class="mb-2 text-center">
-                                    {{ form.start_date.label(class="mb-0 form-label fw-semibold fs-5") }}
-                                </div>
+                <div class="mb-4 card border">
 
-                                <label class="form-label text-danger fw-semibold">
-                                Current
-                            </label>
-                                <p class="form-control">{{ trek.start_date }}</p>
+                    <div class="card-header bg-primary-subtle">
 
-                                <code class="d-block mt-2 text-success">New</code>
+                        <h5 class="mb-0 fw-bold">
+                            Trek Schedule
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <!-- Column Heading -->
+
+                        <div class="row pb-2 mb-4 fw-bold border-bottom">
+
+                            <div class="col-md-3">
+                                Field
+                            </div>
+
+                            <div class="col-md-4 text-danger">
+                                Current Value
+                            </div>
+
+                            <div class="col-md-5 text-success">
+                                New Value
+                            </div>
+
+                        </div>
+
+                        <!-- Start Date -->
+
+                        <div class="row mb-4 align-items-center">
+
+                            <div class="col-md-3">
+
+                                {{ form.start_date.label(class="mb-0 form-label fw-semibold") }}
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <input type="text" class="form-control bg-light" value="{{ trek.start_date }}" readonly>
+
+                            </div>
+
+                            <div class="col-md-5">
+
                                 {{ form.start_date(class="form-control") }}
 
                                 {% for error in form.start_date.errors %}
-                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+                                <div class="mt-1 text-danger small">
+                                    {{ error }}
+                                </div>
                                 {% endfor %}
 
                             </div>
 
-                            <div class="col-md-6">
+                        </div>
 
-                                <div class="mb-2 text-center">
-                                    {{ form.end_date.label(class="mb-0 form-label fw-semibold fs-5") }}
-                                </div>
+                        <!-- End Date -->
 
-                                <label class="form-label text-danger fw-semibold">
-                                Current
-                            </label>
-                                <p class="form-control">{{ trek.end_date }}</p>
+                        <div class="row align-items-center">
 
-                                <code class="d-block mt-2 text-success">New</code>
+                            <div class="col-md-3">
+
+                                {{ form.end_date.label(class="mb-0 form-label fw-semibold") }}
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <input type="text" class="form-control bg-light" value="{{ trek.end_date }}" readonly>
+
+                            </div>
+
+                            <div class="col-md-5">
+
                                 {{ form.end_date(class="form-control") }}
 
                                 {% for error in form.end_date.errors %}
-                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+                                <div class="mt-1 text-danger small">
+                                    {{ error }}
+                                </div>
                                 {% endfor %}
 
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- ===========================================
+                                                            Pricing
+                                                    ============================================ -->
+
+                <div class="mb-4 card border">
+
+                    <div class="card-header bg-success-subtle">
+
+                        <h5 class="mb-0 fw-bold">
+                            Pricing
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <!-- Column Heading -->
+
+                        <div class="row pb-2 mb-4 fw-bold border-bottom">
+
+                            <div class="col-md-3">
+                                Field
+                            </div>
+
+                            <div class="col-md-4 text-danger">
+                                Current Value
+                            </div>
+
+                            <div class="col-md-5 text-success">
+                                New Value
                             </div>
 
                         </div>
 
                         <!-- Price -->
-                        <div class="row gx-4">
 
-                            <div class="col-12 text-center">
-                                {{ form.price.label(class="mb-0 form-label fw-semibold fs-5") }}
+                        <div class="row align-items-center">
+
+                            <div class="col-md-3">
+
+                                {{ form.price.label(class="mb-0 form-label fw-semibold") }}
+
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label text-danger fw-semibold">
-                                Current
-                            </label>
-                                <p class="form-control">₹ {{ trek.price }}</p>
+                            <div class="col-md-4">
+
+                                <input type="text" class="form-control bg-light" value="₹ {{ trek.price }}" readonly>
+
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label text-success fw-semibold">
-                                New
-                            </label>
-                                {{ form.price(class="form-control", placeholder="Enter New Price") }}
-                            </div>
+                            <div class="col-md-5">
 
-                            <div class="col-12 text-center">
+                                {{ form.price(
+                                class="form-control",
+                                placeholder="Enter new price"
+                                ) }}
+
                                 {% for error in form.price.errors %}
-                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+                                <div class="mt-1 text-danger small">
+                                    {{ error }}
+                                </div>
                                 {% endfor %}
+
                             </div>
 
                         </div>
 
-                        <!-- Description -->
-                        <div class="row gx-4">
+                    </div>
 
-                            <div class="col-12 text-center">
-                                {{ form.description.label(class="mb-0 form-label fw-semibold fs-5") }}
+                </div><!-- ===========================================
+                                                            Description
+                                                    ============================================ -->
+
+                <div class="mb-4 card border">
+
+                    <div class="card-header bg-secondary-subtle">
+
+                        <h5 class="mb-0 fw-bold">
+                            Description
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="row">
+
+                            <!-- Current Description -->
+
+                            <div class="col-lg-6 mb-4 mb-lg-0">
+
+                                <label class="form-label fw-semibold text-danger">
+                                    Current Description
+                                </label>
+
+                                <textarea class="form-control bg-light" rows="10"
+                                    readonly>{{ trek.description }}</textarea>
+
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label text-danger fw-semibold">
-                                Current
-                            </label>
-                                <textarea class="form-control" rows="8" readonly>{{ trek.description }}</textarea>
-                            </div>
+                            <!-- New Description -->
 
-                            <div class="col-md-6">
-                                <label class="form-label text-success fw-semibold">
-                                New
-                            </label>
-                                {{ form.description(class="form-control", rows="8", placeholder="Enter New Description")
-                                }}
-                            </div>
+                            <div class="col-lg-6">
 
-                            <div class="col-12 text-center">
+                                {{ form.description.label(class="form-label fw-semibold text-success") }}
+
+                                {{ form.description(
+                                class="form-control",
+                                rows="10",
+                                placeholder="Enter new description"
+                                ) }}
+
                                 {% for error in form.description.errors %}
-                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+                                <div class="mt-2 text-danger small">
+                                    {{ error }}
+                                </div>
                                 {% endfor %}
+
                             </div>
 
                         </div>
@@ -322,20 +581,44 @@
 
                 </div>
 
-                <!-- Footer -->
-                <div class="card-footer">
+            </div>
 
-                    <div class="text-center">
-                        {{ form.submit(class="px-5 btn btn-outline-primary btn-lg fw-bold") }}
+            <!-- ===========================================
+                                                        Footer
+                                                ============================================ -->
+
+            <div class="card-footer bg-light">
+
+                <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center">
+
+                    <a href="{{ url_for('staff.trek') }}" class="btn btn-outline-secondary">
+
+                        Cancel
+
+                    </a>
+
+                    <div class="d-flex gap-2">
+
+                        <button type="reset" class="btn btn-outline-warning">
+
+                            Reset
+
+                        </button>
+
+                        {{ form.submit(
+                        class="px-5 btn btn-primary fw-semibold"
+                        ) }}
+
                     </div>
 
                 </div>
 
-            </form>
+            </div>
 
-        </div>
+        </form>
 
     </div>
+
 </section>
 
 {% endblock %}
