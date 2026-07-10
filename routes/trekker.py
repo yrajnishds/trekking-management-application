@@ -175,13 +175,13 @@ def update_profile():
             user_data.last_name = update_form.last_name.data
             flash('Last Name Changed Successfully', 'success')
         if update_form.contact.data:
-            user_data.trekker_profile.contact = int(update_form.contact.data)
+            user_data.trekker_profile.trekker_profile.contact = int(update_form.contact.data)
             flash('Contact Details Update Successful', 'success')
         if update_form.dob.data:
-            user_data.trekker_profile.dob = update_form.dob.data
+            user_data.trekker_profile.trekker_profile.dob = update_form.dob.data
             flash('Date Of Birth Update Successful', 'success')
         if update_form.bio.data:
-            user_data.trekker_profile.bio = update_form.bio.data
+            user_data.trekker_profile.trekker_profile.bio = update_form.bio.data
             flash('About Update Successful', 'success')
         if update_form.password.data:
             user_data.password = update_form.password.data
@@ -189,7 +189,7 @@ def update_profile():
         db.session.commit()
         flash('Profile Updated Successfully', 'success')
         return redirect(url_for(f'{current_user.role}.profile'))
-    return render_template('components/update_profile.html', update_form = update_form)
+    return render_template('trekker/update_profile.html', update_form = update_form)
 
 
 @trekker_bp.route('/search')

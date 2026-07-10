@@ -515,7 +515,7 @@ def update_profile():
         db.session.commit()
         flash('Profile Updated Successfully', 'success')
         return redirect(url_for(f'{current_user.role}.profile'))
-    return render_template('components/update_profile.html', update_form = update_form)
+    return render_template('admin/update_profile.html', update_form = update_form)
 
 
 @admin_bp.route('/hist')

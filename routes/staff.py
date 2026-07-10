@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for
 from flask import request, flash
 from flask_login import current_user, login_required
+from sqlalchemy import or_, desc
 
 from models import db
 from models.model import User, Trek
@@ -137,15 +138,32 @@ def update_trek_details():
 @login_required
 @role_required('staff')
 def booking():
-    bookings = Booking.query.join(Booking.trek).filter(Trek.staff_id == current_user.id).all()
+    bookings = db.session.query(Booking).join(Booking.trek).filter(
+        Trek.staff_id == current_user.id,
+        Booking.status != 'completed', 
+        Booking.status != 'cancelled', 
+        Booking.status != 'rejected'
+    ).order_by(
+        desc(Booking.booking_date),
+        desc(Booking.id)
+    ).all()
+    total = db.session.query(Booking).join(Booking.trek).filter(
+        Trek.staff_id == current_user.id,
+        
+            Booking.status != 'completed', 
+            Booking.status != 'cancelled', 
+            Booking.status != 'rejected', 
+        
+    ).count()
 
-    total = Booking.query.join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
+    # total = Booking.query.join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
 
     pending = Booking.query.filter_by(status = 'pending').join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
     approved = Booking.query.filter_by(status = 'approved').join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
     rejected = Booking.query.filter_by(status = 'rejected').join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
     cancelled = Booking.query.filter_by(status = 'cancelled').join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
     requested = Booking.query.filter_by(status = 'requested').join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
+    completed = Booking.query.filter_by(status = 'completed').join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
     return render_template('staff/booking.html',page = 'booking',
                            bookings = bookings,
                            total = total,
@@ -153,7 +171,8 @@ def booking():
                            pending = pending,
                            rejected = rejected,
                            cancelled = cancelled,
-                           requested = requested)
+                           requested = requested,
+                           completed = completed)
 
 
 @staff_bp.route('/booking/<int:id>/<string:action>/<int:trek_id>/<string:status>', methods = ['GET', 'POST'])
@@ -229,14 +248,37 @@ def staff_booking_action(id, trek_id, action, status):
 @login_required
 @role_required('staff')
 def history():
-    user_id = current_user.id
-    user_data = User.query.filter_by(id = user_id).first()
+    bookings = db.session.query(Booking).join(Booking.trek).filter(
+        Trek.staff_id == current_user.id,
+        or_(
+            Booking.status == 'completed', 
+            Booking.status == 'cancelled', 
+            Booking.status == 'rejected', 
+        )
+    ).order_by(
+        desc(Booking.booking_date),
+        desc(Booking.id)
+    ).all()
 
-    return render_template('staff/history.html',
-                           page = "history", first_name = user_data.first_name,
-                           email = user_data.email,
-                           role = user_data.role,
-                           user_status = user_data.user_status)
+    total = db.session.query(Booking).join(Booking.trek).filter(
+        Trek.staff_id == current_user.id,
+        or_(
+            Booking.status == 'completed', 
+            Booking.status == 'cancelled', 
+            Booking.status == 'rejected', 
+        )
+    ).count()
+
+    rejected = Booking.query.filter_by(status = 'rejected').join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
+    cancelled = Booking.query.filter_by(status = 'cancelled').join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
+    completed = Booking.query.filter_by(status = 'completed').join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
+    return render_template('staff/history.html',page = 'history',
+                           bookings = bookings,
+                           total = total,
+                           rejected = rejected,
+                           cancelled = cancelled,
+                           completed = completed)
+
 
 
 
@@ -262,13 +304,13 @@ def update_profile():
             user_data.last_name = update_form.last_name.data
             flash('Last Name Changed Successfully', 'success')
         if update_form.contact.data:
-            user_data.contact = update_form.contact.data
+            user_data.staff_profile.contact = update_form.contact.data
             flash('Contact Details Update Successful', 'success')
         if update_form.dob.data:
-            user_data.dob = update_form.dob.data
+            user_data.staff_profile.dob = update_form.dob.data
             flash('Date Of Birth Update Successful', 'success')
         if update_form.bio.data:
-            user_data.bio = update_form.bio.data
+            user_data.staff_profile.bio = update_form.bio.data
             flash('About Update Successful', 'success')
         if update_form.password.data:
             user_data.password = update_form.password.data
@@ -276,7 +318,7 @@ def update_profile():
         db.session.commit()
         flash('Profile Updated Successfully', 'success')
         return redirect(url_for(f'{current_user.role}.profile'))
-    return render_template('components/update_profile.html', update_form = update_form)
+    return render_template('staff/update_profile.html', update_form = update_form)
 
 
 @staff_bp.route('/search', methods = ['GET', 'POST'])
