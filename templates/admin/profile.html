@@ -2,66 +2,109 @@
 
 {% block content %}
 
+<section class="container py-4">
 
-<section class="mb-3">
-    <div class="container p-4 border border-black">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-secondary">
-                <div class="d-flex justify-content-between gap-3">
-                    <h3 class="mb-0 text-white">Profile</h3>
-                    <code class="mb-0 fs-3 text-warning">Id: {{ current_user.id }}</code>
-                    <a href="{{ url_for('admin.update_profile') }}" class="btn btn-primary fw-bold fs-6">
-                        Edit Profile
-                    </a>
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-dark text-white">
+            <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center">
+                <div>
+                    <h3 class="mb-1">My Profile</h3>
+                    <p class="mb-0 text-light">View your account information.</p>
+                </div>
+
+                <a href="{{ url_for('admin.update_profile') }}" class="btn btn-warning fw-semibold">
+                    Edit Profile
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+
+            <div class="mb-4 card border">
+                <div class="card-header bg-secondary-subtle">
+                    <h5 class="mb-0 fw-bold">Account Information</h5>
+                </div>
+
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-semibold">User ID</div>
+                        <div class="col-md-9">{{ current_user.id }}</div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-semibold">Role</div>
+                        <div class="col-md-9">
+                            <span class="badge bg-primary fs-6">{{ current_user.role|title }}</span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3 fw-semibold">Created On</div>
+                        <div class="col-md-9">{{ current_user.created_at }}</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="card-body table-responsive">
-                <table class="table-borderless">
-                    <tr>
-                        <td class="fs-5 w-25 p-2"><code>Role</code></td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 w-75 p-2"><code>{{ current_user.role|title }}</code></td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 w-25 p-2">First Name</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 w-75 p-2">{{ current_user.first_name|title }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 p-2">Last Name</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 p-2">{{ current_user.last_name|title }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 p-2">Email</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 p-2">{{ current_user.email }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 p-2">Contact</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 p-2">{{ current_user.admin_profile.contact }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 p-2">Date of Birth</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 p-2">{{ current_user.admin_profile.dob }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 p-2">Created Date</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 p-2">{{ current_user.created_at }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 align-top p-2">Bio</td>
-                        <td>:</td>
-                        <td class="fs-5 text-wrap p-2">{{ current_user.admin_profile.bio }}</td>
-                    </tr>
-                </table>
+            <div class="mb-4 card border">
+                <div class="card-header bg-warning-subtle">
+                    <h5 class="mb-0 fw-bold">Personal Information</h5>
+                </div>
+
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-semibold">First Name</div>
+                        <div class="col-md-9">{{ current_user.first_name|title }}</div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-semibold">Last Name</div>
+                        <div class="col-md-9">{{ current_user.last_name|title }}</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3 fw-semibold">Email</div>
+                        <div class="col-md-9">{{ current_user.email }}</div>
+                    </div>
+                </div>
             </div>
+
+            <div class="mb-4 card border">
+                <div class="card-header bg-info-subtle">
+                    <h5 class="mb-0 fw-bold">Contact Information</h5>
+                </div>
+
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-semibold">Contact</div>
+                        <div class="col-md-9">{{ current_user.admin_profile.contact }}</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3 fw-semibold">Date of Birth</div>
+                        <div class="col-md-9">{{ current_user.admin_profile.dob }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border">
+                <div class="card-header bg-success-subtle">
+                    <h5 class="mb-0 fw-bold">Bio</h5>
+                </div>
+
+                <div class="card-body">
+                    {% if current_user.admin_profile.bio %}
+                    <p class="mb-0">{{ current_user.admin_profile.bio }}</p>
+                    {% else %}
+                    <p class="mb-0 text-muted">No bio added.</p>
+                    {% endif %}
+                </div>
+            </div>
+
         </div>
+
     </div>
+
 </section>
 
 {% endblock %}
