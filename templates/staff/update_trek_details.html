@@ -1,88 +1,341 @@
-<section>
-    <div>
-        <form action="{{ url_for('staff.update_trek_details') }}" method="POST">
+{% extends "base.html" %}
 
-            {{ form.hidden_tag() }}
+{% block content %}
 
-            <div>
-                <p>{{ form.trek_code.label }}</p>
-                <p>{{ form.trek_code }}</p>
-                {% for error in form.trek_code.errors %}
-                <p><span style="color: red">[{{ error }}]</span></p>
-                {% endfor %}
-            </div>
-            <div>
-                <p>{{ form.trek_name.label }}</p>
-                <p>{{ form.trek_name }}</p>
-                {% for error in form.trek_name.errors %}
-                <p><span style="color: red">[{{ error }}]</span></p>
-                {% endfor %}
-            </div>
-            <div>
-                <p>{{ form.location.label }}</p>
-                <p>{{ form.location }}</p>
-                {% for error in form.location.errors %}
-                <p><span style="color: red">[{{ error }}]</span></p>
-                {% endfor %}
-            </div>
-            <div>
-                <p>{{ form.difficulty.label }}</p>
-                <p>{{ form.difficulty }}</p>
-                {% for error in form.difficulty.errors %}
-                <p><span style="color: red">[{{ error }}]</span></p>
-                {% endfor %}
-            </div>
-            <div>
-                <p>{{ form.duration.label }}</p>
-                <p>{{ form.duration }}</p>
-                {% for error in form.duration.errors %}
-                <p><span style="color: red">[{{ error }}]</span></p>
-                {% endfor %}
-            </div>
-            <div>
-                <p>{{ form.no_of_slots.label }}</p>
-                <p>{{ form.no_of_slots }}</p>
-                {% for error in form.no_of_slots.errors %}
-                <p><span style="color: red">[{{ error }}]</span></p>
-                {% endfor %}
-            </div>
-            <div>
-                <p>{{ form.start_date.label }}</p>
-                <p>{{ form.start_date }}</p>
-                {% for error in form.start_date.errors %}
-                <p><span style="color: red">[{{ error }}]</span></p>
-                {% endfor %}
-            </div>
-            <div>
-                <p>{{ form.end_date.label }}</p>
-                <p>{{ form.end_date }}</p>
-                {% for error in form.end_date.errors %}
-                <p><span style="color: red">[{{ error }}]</span></p>
-                {% endfor %}
-            </div>
-            <div>
-                <p>{{ form.price.label }}</p>
-                <p>{{ form.price }}</p>
-                {% for error in form.price.errors %}
-                <p><span style="color: red">[{{ error }}]</span></p>
-                {% endfor %}
-            </div>
-            <div>
-                <p>{{ form.description.label }}</p>
-                <p>{{ form.description }}</p>
-                {% for error in form.description.errors %}
-                <p><span style="color: red">[{{ error }}]</span></p>
-                {% endfor %}
-            </div>
-            <div>
-                <p>{{ form.submit }}</p>
-            </div>
-        </form>
+<section class="my-4">
+    <div class="container">
+
+        <div class="card shadow border-0">
+
+            <form action="{{ url_for('staff.update_trek_details') }}" method="POST">
+
+                {{ form.hidden_tag() }}
+
+                <!-- Header -->
+                <div class="card-header bg-dark text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+                            <h3 class="mb-0">Update Trek Details</h3>
+                            <small class="text-light">
+                                Update only the fields you want to change.
+                            </small>
+                        </div>
+
+                        <a href="{{ url_for('staff.trek') }}" class="btn btn-warning fw-bold">
+                            Go Back
+                        </a>
+
+                    </div>
+                </div>
+
+                <!-- Body -->
+                <div class="card-body">
+
+                    <div class="d-flex flex-column gap-4">
+
+                        <!-- Trek Code -->
+                        <div class="row gx-4">
+
+                            <div class="col-12 text-center">
+                                {{ form.trek_code.label(class="mb-0 form-label fw-semibold fs-5") }}
+                                <small class="d-block text-info-emphasis">
+                                    Enter only if you want to change the Trek Code.
+                                </small>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-danger fw-semibold">
+                                Current
+                            </label>
+                                <p class="form-control">{{ trek.trek_code }}</p>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-success fw-semibold">
+                                New
+                            </label>
+                                {{ form.trek_code(class="form-control", placeholder="Enter New Trek Code") }}
+                            </div>
+
+                            <div class="col-12 text-center">
+                                {% for error in form.trek_code.errors %}
+                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                        <!-- Trek Name -->
+                        <div class="row gx-4">
+
+                            <div class="col-12 text-center">
+                                {{ form.trek_name.label(class="mb-0 form-label fw-semibold fs-5") }}
+                                <small class="d-block text-info-emphasis">
+                                    Enter only if you want to change the Trek Name.
+                                </small>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-danger fw-semibold">
+                                Current
+                            </label>
+                                <p class="form-control">{{ trek.trek_name }}</p>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-success fw-semibold">
+                                New
+                            </label>
+                                {{ form.trek_name(class="form-control", placeholder="Enter New Trek Name") }}
+                            </div>
+
+                            <div class="col-12 text-center">
+                                {% for error in form.trek_name.errors %}
+                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                        <!-- Location -->
+                        <div class="row gx-4">
+
+                            <div class="col-12 text-center">
+                                {{ form.location.label(class="mb-0 form-label fw-semibold fs-5") }}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-danger fw-semibold">
+                                Current
+                            </label>
+                                <p class="form-control">{{ trek.location }}</p>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-success fw-semibold">
+                                New
+                            </label>
+                                {{ form.location(class="form-control", placeholder="Enter New Location") }}
+                            </div>
+
+                            <div class="col-12 text-center">
+                                {% for error in form.location.errors %}
+                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                        <!-- Difficulty -->
+                        <div class="row gx-4">
+
+                            <div class="col-12 text-center">
+                                {{ form.difficulty.label(class="mb-0 form-label fw-semibold fs-5") }}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-danger fw-semibold">
+                                Current
+                            </label>
+                                <p class="form-control">{{ trek.difficulty }}</p>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-success fw-semibold">
+                                New
+                            </label>
+                                {{ form.difficulty(class="form-select") }}
+                            </div>
+
+                            <div class="col-12 text-center">
+                                {% for error in form.difficulty.errors %}
+                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                        <!-- Duration -->
+                        <div class="row gx-4">
+
+                            <div class="col-12 text-center">
+                                {{ form.duration.label(class="mb-0 form-label fw-semibold fs-5") }}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-danger fw-semibold">
+                                Current
+                            </label>
+                                <p class="form-control">{{ trek.duration }}</p>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-success fw-semibold">
+                                New
+                            </label>
+                                {{ form.duration(class="form-control", placeholder="Enter New Duration") }}
+                            </div>
+
+                            <div class="col-12 text-center">
+                                {% for error in form.duration.errors %}
+                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                        <!-- Number of Slots -->
+                        <div class="row gx-4">
+
+                            <div class="col-12 text-center">
+                                {{ form.no_of_slots.label(class="mb-0 form-label fw-semibold fs-5") }}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-danger fw-semibold">
+                                Current
+                            </label>
+                                <p class="form-control">{{ trek.slots }}</p>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-success fw-semibold">
+                                New
+                            </label>
+                                {{ form.no_of_slots(class="form-control", placeholder="Enter New Number of Slots") }}
+                            </div>
+
+                            <div class="col-12 text-center">
+                                {% for error in form.no_of_slots.errors %}
+                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                        <!-- Dates -->
+                        <div class="row gx-4">
+
+                            <div class="col-md-6">
+
+                                <div class="mb-2 text-center">
+                                    {{ form.start_date.label(class="mb-0 form-label fw-semibold fs-5") }}
+                                </div>
+
+                                <label class="form-label text-danger fw-semibold">
+                                Current
+                            </label>
+                                <p class="form-control">{{ trek.start_date }}</p>
+
+                                <code class="d-block mt-2 text-success">New</code>
+                                {{ form.start_date(class="form-control") }}
+
+                                {% for error in form.start_date.errors %}
+                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+                                {% endfor %}
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="mb-2 text-center">
+                                    {{ form.end_date.label(class="mb-0 form-label fw-semibold fs-5") }}
+                                </div>
+
+                                <label class="form-label text-danger fw-semibold">
+                                Current
+                            </label>
+                                <p class="form-control">{{ trek.end_date }}</p>
+
+                                <code class="d-block mt-2 text-success">New</code>
+                                {{ form.end_date(class="form-control") }}
+
+                                {% for error in form.end_date.errors %}
+                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                        <!-- Price -->
+                        <div class="row gx-4">
+
+                            <div class="col-12 text-center">
+                                {{ form.price.label(class="mb-0 form-label fw-semibold fs-5") }}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-danger fw-semibold">
+                                Current
+                            </label>
+                                <p class="form-control">₹ {{ trek.price }}</p>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-success fw-semibold">
+                                New
+                            </label>
+                                {{ form.price(class="form-control", placeholder="Enter New Price") }}
+                            </div>
+
+                            <div class="col-12 text-center">
+                                {% for error in form.price.errors %}
+                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                        <!-- Description -->
+                        <div class="row gx-4">
+
+                            <div class="col-12 text-center">
+                                {{ form.description.label(class="mb-0 form-label fw-semibold fs-5") }}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-danger fw-semibold">
+                                Current
+                            </label>
+                                <textarea class="form-control" rows="8" readonly>{{ trek.description }}</textarea>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-success fw-semibold">
+                                New
+                            </label>
+                                {{ form.description(class="form-control", rows="8", placeholder="Enter New Description")
+                                }}
+                            </div>
+
+                            <div class="col-12 text-center">
+                                {% for error in form.description.errors %}
+                                <div class="py-2 mt-2 alert alert-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="card-footer">
+
+                    <div class="text-center">
+                        {{ form.submit(class="px-5 btn btn-outline-primary btn-lg fw-bold") }}
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
     </div>
-
-
-<div>
-    <a href="{{ url_for('staff.trek') }}">Go to Trek</a>
-</div>
-
 </section>
+
+{% endblock %}

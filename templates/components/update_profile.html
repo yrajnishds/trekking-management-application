@@ -1,230 +1,465 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
 
-<section class="my-3">
-    <div class="container border border-dark p-3">
-        <div class="card shadow-sm border-0 my-3">
+<section class="my-4">
+
+    <div class="container">
+
+        <div class="card shadow border-0">
+
             <form action="{{ url_for(current_user.role ~ '.update_profile') }}" method="POST">
+
                 {{ update_form.hidden_tag() }}
 
-            <div class="card-header bg-dark-subtle">
-                <div class="d-flex justify-content-between gap-3">
-                    <div class="d-flex flex-column gap-2">
-                        <h3 class="mb-0">Update Profile</h3>
-                        <code class="text-primary-emphasis">Enter Only That Fields You Want to Update</code>
-                    </div>
-                    <div>
-                        <a href="{{ url_for(current_user.role ~ '.profile') }}" class="btn btn-warning fs-6 fw-bold">Go Back</a>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                
-                    <div class="d-flex flex-column gap-3">
-                        <div class="row gx-4">
-                            <div class="col-12">
-                                <div class="d-flex flex-column mb-0 text-center">
-                                    {{ update_form.first_name.label(class='form-label fw-semibold fs-5 mb-0') }}
-                                    <small class="text-info-emphasis">Enter Only If You Want To First Name</small>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class='mb-1'>
-                                    <code class="form-label mb-0 text-danger">Old</code>
-                                    <p class="text-dark form-control">{{ current_user.first_name|title }}</p>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class='mb-1'>
-                                    <code class="form-label mb-0 text-danger">New</code>
-                                    {{ update_form.first_name(class='form-control', placeholder='Enter New First Name') }}
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="d-flex flex-column mb-0 text-center">
-                                    {% for error in update_form.first_name.errors %}
-                                    <div class="alert text-danger">
-                                        {{ error }}
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row gx-4">
-                            <div class="col-12">
-                                <div class="d-flex flex-column mb-0 text-center">
-                                    {{ update_form.last_name.label(class='form-label fw-semibold fs-5 mb-0') }}
-                                    <small class="text-info-emphasis">Enter Only If You Want To Last Name</small>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class='mb-1'>
-                                    <code class="form-label mb-0 text-danger">Old</code>
-                                    <p class="text-dark form-control">{{ current_user.last_name|title }}</p>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class='mb-1'>
-                                    <code class="form-label mb-0 text-danger">New</code>
-                                    {{ update_form.last_name(class='form-control', placeholder='Enter New Last Name') }}
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="d-flex flex-column mb-0 text-center">
-                                    {% for error in update_form.last_name.errors %}
-                                    <div class="alert text-danger">
-                                        {{ error }}
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row gx-4">
-                            <div class="col-12">
-                                <div class="d-flex flex-column mb-0 text-center">
-                                    {{ update_form.contact.label(class='form-label fw-semibold fs-5 mb-0') }}
-                                    <small class="text-info-emphasis">Enter Only If You Want To Change Contact Details</small>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class='mb-1'>
-                                    <code class="form-label mb-0 text-danger">Old</code>
-                                    <p class="text-dark form-control">{{ (current_user|attr(current_user.role ~ '_profile')).contact }}</p>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class='mb-1'>
-                                    <code class="form-label mb-0 text-danger">New</code>
-                                    {{ update_form.contact(class='form-control', placeholder='Enter New Contact') }}
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="d-flex flex-column mb-0 text-center">
-                                    {% for error in update_form.contact.errors %}
-                                    <div class="alert text-danger">
-                                        {{ error }}
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row gx-4">
-                            <div class="col-12">
-                                <div class="d-flex flex-column mb-0 text-center">
-                                    {{ update_form.dob.label(class='form-label fw-semibold fs-5 mb-0') }}
-                                    <small class="text-info-emphasis">Enter Only If You Want To Change Date Of Birth</small>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class='mb-1'>
-                                    <code class="form-label mb-0 text-danger">Old</code>
-                                    <p class="text-dark form-control">{{ (current_user|attr(current_user.role ~ '_profile')).dob }}</p>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class='mb-1'>
-                                    <code class="form-label mb-0 text-danger">New</code>
-                                    {{ update_form.dob(class='form-control') }}
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="d-flex flex-column mb-0 text-center">
-                                    {% for error in update_form.dob.errors %}
-                                    <div class="alert text-danger">
-                                        {{ error }}
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
+                <!-- ================= Header ================= -->
+
+                <div class="card-header bg-dark-subtle">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h3 class="mb-1">
+                                Update Profile
+                            </h3>
+
+                            <small class="text-primary-emphasis">
+                                Enter only the fields you want to update.
+                            </small>
+
                         </div>
 
-                        <div class="row gx-4">
-                            <div class="col-12">
-                                <div class="d-flex flex-column mb-0 text-center">
-                                    {{ update_form.bio.label(class='form-label fw-semibold fs-5 mb-0') }}
-                                    <small class="text-info-emphasis">Enter Only If You Want To Change About Me</small>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class='mb-1'>
-                                    <code class="form-label mb-0 text-danger">Old</code>
-                                    <p class="text-dark form-control">{{ (current_user|attr(current_user.role ~ '_profile')).bio|title }}</p>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class='mb-1'>
-                                    <code class="form-label mb-0 text-danger">New</code>
-                                    {{ update_form.bio(class='form-control', placeholder='Enter New Bio') }}
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="d-flex flex-column mb-0 text-center">
-                                    {% for error in update_form.bio.errors %}
-                                    <div class="alert text-danger">
-                                        {{ error }}
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
+                        <a href="{{ url_for(current_user.role ~ '.profile') }}" class="btn btn-warning fw-bold">
+                            Go Back
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <!-- ================= Body ================= -->
+
+                <div class="card-body">
+
+                    <!-- ===================================== -->
+                    <!-- First Name -->
+                    <!-- ===================================== -->
+
+                    <div class="row g-4 mb-4">
+
+                        <div class="col-12 text-center">
+
+                            {{ update_form.first_name.label(
+                            class="mb-0 form-label fw-semibold fs-5"
+                            ) }}
+
+                            <small class="d-block text-info-emphasis">
+                                Enter only if you want to change your first name.
+                            </small>
+
                         </div>
-                        <div class="row gx-4">
-                            <div class="col-12">
-                                <div class="d-flex flex-column mb-0 text-center">
-                                    <p class='form-label fw-semibold fs-5 mb-0'>Password</p>
-                                    <small class="text-info-emphasis">Enter Only If You Want To Change Password</small>
-                                </div>
+
+                        <!-- Current -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label text-danger fw-semibold">
+                                Current
+                            </label>
+
+                            <p class="mb-0 form-control">
+                                {{ current_user.first_name|title }}
+                            </p>
+
+                        </div>
+
+                        <!-- New -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label text-success fw-semibold">
+                                New
+                            </label>
+
+                            {{ update_form.first_name(
+                            class="form-control",
+                            placeholder="Enter New First Name"
+                            ) }}
+
+                        </div>
+
+                        {% if update_form.first_name.errors %}
+                        <div class="col-12">
+
+                            {% for error in update_form.first_name.errors %}
+
+                            <div class="py-2 mb-2 alert alert-danger">
+                                {{ error }}
                             </div>
-                            <div class="col-12 col-md-6">
-                                <div class='mb-1'>
-                                    <code class="mb-0 text-danger">{{ update_form.password.label(class='form-label mb-0') }}</code>
-                                    {{ update_form.password(class='form-control fw-semibold mb-0', placeholder='Enter New Password') }}
-                                </div>
+
+                            {% endfor %}
+
+                        </div>
+                        {% endif %}
+
+                    </div>
+
+                    <!-- ===================================== -->
+                    <!-- Last Name -->
+                    <!-- ===================================== -->
+
+                    <div class="row g-4 mb-4">
+
+                        <div class="col-12 text-center">
+
+                            {{ update_form.last_name.label(
+                            class="mb-0 form-label fw-semibold fs-5"
+                            ) }}
+
+                            <small class="d-block text-info-emphasis">
+                                Enter only if you want to change your last name.
+                            </small>
+
+                        </div>
+
+                        <!-- Current -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label text-danger fw-semibold">
+                                Current
+                            </label>
+
+                            <p class="mb-0 form-control">
+                                {{ current_user.last_name|title }}
+                            </p>
+
+                        </div>
+
+                        <!-- New -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label text-success fw-semibold">
+                                New
+                            </label>
+
+                            {{ update_form.last_name(
+                            class="form-control",
+                            placeholder="Enter New Last Name"
+                            ) }}
+
+                        </div>
+
+                        {% if update_form.last_name.errors %}
+                        <div class="col-12">
+
+                            {% for error in update_form.last_name.errors %}
+
+                            <div class="py-2 mb-2 alert alert-danger">
+                                {{ error }}
                             </div>
-                            <div class="col-12 col-md-6">
-                                <div class='mb-1'>
-                                    <code class="mb-0 text-danger">{{ update_form.confirm_password.label(class='form-label mb-0') }}</code>
-                                    {{ update_form.confirm_password(class='form-control', placeholder='Confirm New Password') }}
-                                    <div class="d-flex flex-column mb-0 text-center">
-                                        {% for error in update_form.confirm_password.errors %}
-                                        <div class="alert text-danger">
+
+                            {% endfor %}
+
+                        </div>
+                        {% endif %}
+
+                    </div>
+                    
+                    <!-- ===================================== -->
+                    <!-- Contact -->
+                    <!-- ===================================== -->
+
+                    <div class="row g-4 mb-4">
+
+                        <div class="col-12 text-center">
+
+                            {{ update_form.contact.label(
+                                class="mb-0 form-label fw-semibold fs-5"
+                            ) }}
+
+                            <small class="d-block text-info-emphasis">
+                                Enter only if you want to update your contact number.
+                            </small>
+
+                        </div>
+
+                        <!-- Current -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label text-danger fw-semibold">
+                                Current
+                            </label>
+
+                            <p class="mb-0 form-control">
+                                {{ (current_user|attr(current_user.role ~ '_profile')).contact }}
+                            </p>
+
+                        </div>
+
+                        <!-- New -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label text-success fw-semibold">
+                                New
+                            </label>
+
+                            {{ update_form.contact(
+                                class="form-control",
+                                placeholder="Enter New Contact Number"
+                            ) }}
+
+                        </div>
+
+                        {% if update_form.contact.errors %}
+                        <div class="col-12">
+
+                            {% for error in update_form.contact.errors %}
+
+                                <div class="py-2 mb-2 alert alert-danger">
+                                    {{ error }}
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+                        {% endif %}
+
+                    </div>
+
+                    <!-- ===================================== -->
+                    <!-- Date of Birth -->
+                    <!-- ===================================== -->
+
+                    <div class="row g-4 mb-4">
+
+                        <div class="col-12 text-center">
+
+                            {{ update_form.dob.label(
+                                class="mb-0 form-label fw-semibold fs-5"
+                            ) }}
+
+                            <small class="d-block text-info-emphasis">
+                                Enter only if you want to update your date of birth.
+                            </small>
+
+                        </div>
+
+                        <!-- Current -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label text-danger fw-semibold">
+                                Current
+                            </label>
+
+                            <p class="mb-0 form-control">
+                                {{ (current_user|attr(current_user.role ~ '_profile')).dob }}
+                            </p>
+
+                        </div>
+
+                        <!-- New -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label text-success fw-semibold">
+                                New
+                            </label>
+
+                            {{ update_form.dob(class="form-control") }}
+
+                        </div>
+
+                        {% if update_form.dob.errors %}
+                        <div class="col-12">
+
+                            {% for error in update_form.dob.errors %}
+
+                                <div class="py-2 mb-2 alert alert-danger">
+                                    {{ error }}
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+                        {% endif %}
+
+                    </div>
+
+                    <!-- ===================================== -->
+                    <!-- Bio -->
+                    <!-- ===================================== -->
+
+                    <div class="row g-4 mb-4">
+
+                        <div class="col-12 text-center">
+
+                            {{ update_form.bio.label(
+                                class="mb-0 form-label fw-semibold fs-5"
+                            ) }}
+
+                            <small class="d-block text-info-emphasis">
+                                Enter only if you want to update your bio.
+                            </small>
+
+                        </div>
+
+                        <!-- Current -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label text-danger fw-semibold">
+                                Current
+                            </label>
+
+                            <textarea
+                                class="form-control"
+                                rows="6"
+                                readonly>{{ (current_user|attr(current_user.role ~ '_profile')).bio }}</textarea>
+
+                        </div>
+
+                        <!-- New -->
+
+                        <div class="col-md-6">
+
+                            <label class="form-label text-success fw-semibold">
+                                New
+                            </label>
+
+                            {{ update_form.bio(
+                                class="form-control",
+                                rows="6",
+                                placeholder="Enter New Bio"
+                            ) }}
+
+                        </div>
+
+                        {% if update_form.bio.errors %}
+                        <div class="col-12">
+
+                            {% for error in update_form.bio.errors %}
+
+                                <div class="py-2 mb-2 alert alert-danger">
+                                    {{ error }}
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+                        {% endif %}
+
+                    </div>
+                    <!-- ===================================== -->
+                    <!-- Password -->
+                    <!-- ===================================== -->
+
+                    <div class="row g-4 mb-4">
+
+                        <div class="col-12 text-center">
+
+                            <h5 class="mb-0 fw-semibold">
+                                Change Password
+                            </h5>
+
+                            <small class="d-block text-info-emphasis">
+                                Leave both fields blank if you don't want to change your password.
+                            </small>
+
+                        </div>
+
+                        <!-- New Password -->
+
+                        <div class="col-md-6">
+
+                            {{ update_form.password.label(
+                                class="form-label fw-semibold"
+                            ) }}
+
+                            {{ update_form.password(
+                                class="form-control",
+                                placeholder="Enter New Password"
+                            ) }}
+
+                            {% if update_form.password.errors %}
+
+                                <div class="mt-2">
+
+                                    {% for error in update_form.password.errors %}
+                                        <div class="alert alert-danger py-2 mb-2">
                                             {{ error }}
                                         </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="d-flex flex-column mb-0 text-center">
-                                    {% for error in update_form.password.errors %}
-                                    <div class="alert text-danger">
-                                        {{ error }}
-                                    </div>
                                     {% endfor %}
+
                                 </div>
-                            </div>
+
+                            {% endif %}
+
                         </div>
-                        <div class="row gx-4">
-                            <div class="col-12">
-                                
-                            </div>
+
+                        <!-- Confirm Password -->
+
+                        <div class="col-md-6">
+
+                            {{ update_form.confirm_password.label(
+                                class="form-label fw-semibold"
+                            ) }}
+
+                            {{ update_form.confirm_password(
+                                class="form-control",
+                                placeholder="Confirm New Password"
+                            ) }}
+
+                            {% if update_form.confirm_password.errors %}
+
+                                <div class="mt-2">
+
+                                    {% for error in update_form.confirm_password.errors %}
+                                        <div class="alert alert-danger py-2 mb-2">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+
+                            {% endif %}
+
                         </div>
+
                     </div>
+
                 </div>
+
+                <!-- ================= Footer ================= -->
+
                 <div class="card-footer">
-                    <div class="d-flex flex-column mb-0 text-center">
-                        {{ update_form.submit(class='btn btn-outline-danger fs-5 fw-bold') }}
+
+                    <div class="d-flex justify-content-center">
+
+                        {{ update_form.submit(
+                            class="btn btn-outline-danger btn-lg fw-bold px-5"
+                        ) }}
+
                     </div>
+
                 </div>
+
             </form>
+
         </div>
+
     </div>
+
 </section>
 
-                
-
 {% endblock %}
+
+
+
+
 

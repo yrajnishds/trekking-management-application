@@ -79,7 +79,8 @@ def update_trek(code):
     form.trek_name.choices = [(trek.trek_name, trek.trek_name)]
 
     return render_template('staff/update_trek_details.html',
-                           form = form)
+                           form = form,
+                           trek = trek)
 
 
 
