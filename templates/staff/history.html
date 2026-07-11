@@ -1,7 +1,84 @@
 {% extends "base.html" %}
-
 {% block content %}
-
-<h1> {{ current_user.first_name|capitalize }} {{ page|capitalize }} Page</h1>
-
+<div class="container py-3">
+    <!-- ====== Booking Statistics ======= -->
+    <div class="mb-4 card shadow-sm border-0">
+        <div class="card-header bg-dark text-white">
+            <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
+                <div>
+                    <h3 class="mb-0">
+                        Booking Statistics
+                    </h3>
+                </div>
+                <button class="btn btn-warning fw-semibold" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#bookingStats" aria-expanded="false" aria-controls="bookingStats">
+                    View Statistics
+                </button>
+            </div>
+        </div>
+        <div class="collapse" id="bookingStats">
+            <div class="card-body">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+                    <!-- Total -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-primary text-white">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Total Bookings
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ total }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Completed -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-primary text-white">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Completed
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ completed }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Cancelled -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-secondary text-white">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Cancelled
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ cancelled }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Rejected -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-danger text-white">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Rejected
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ rejected }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ====== Booking Table ======= -->
+    {% include "staff/history_booking_table.html" %}
+</div>
+<div>
+    {% include 'staff/history_trek_table.html' %}
+</div>
 {% endblock %}
