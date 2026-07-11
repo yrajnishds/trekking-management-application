@@ -107,6 +107,24 @@ def staff():
                            unblacklisted = unblacklisted)
 
 
+@admin_bp.route('admin/<int:id>')
+@login_required
+@role_required('admin')
+def view_admin(id):
+    staff_details = User.query.filter_by(id = id).first()
+    trek_details = Trek.query.filter_by(staff_id = id).all()
+    return render_template(
+        'admin/view_admin.html',
+        id = staff_details.id,
+        first_name = staff_details.first_name,
+        last_name = staff_details.last_name,
+        email = staff_details.email,
+        created_at = staff_details.created_at,
+        contact = staff_details.admin_profile.contact,
+        dob = staff_details.admin_profile.dob,
+        bio = staff_details.admin_profile.bio,
+        trek_details = trek_details
+    )
 @admin_bp.route('staff/<int:id>')
 @login_required
 @role_required('admin')
