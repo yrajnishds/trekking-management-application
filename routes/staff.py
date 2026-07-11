@@ -45,7 +45,7 @@ def trek():
     user_id = current_user.id
     treks = Trek.query.filter_by(staff_id = user_id).all()
     return render_template('staff/trek.html',
-                           page = 'Assigned Treks',
+                           page = 'trek',
                            treks = treks,
                            trek_action_form = trek_action_form)
 
@@ -287,7 +287,7 @@ def history():
 @role_required('staff')
 def profile():
     update_form = ProfileUpdateForm()
-    return render_template('staff/profile.html',page = 'Profile',
+    return render_template('staff/profile.html',page = 'profile',
                            update_form = update_form)
 
 @staff_bp.route('/profile/update', methods = ['GET', 'POST'])

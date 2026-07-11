@@ -24,9 +24,10 @@ def dashboard():
     admin_id = current_user.id
     admin_data = User.query.filter_by(id = admin_id).first()
     return render_template('admin/dashboard.html',
-                           page = f'dashboard', first_name = admin_data.first_name,
+                           page = 'dashboard', first_name = admin_data.first_name,
                            email = admin_data.email,
-                           role = admin_data.role)
+                           role = admin_data.role,
+                           form = TrekAddForm())
 
 
 @admin_bp.route('/trekker')
@@ -47,7 +48,7 @@ def trekker():
     unblacklisted = total - blacklisted
 
     return render_template('admin/trekker.html',
-                           page = 'trekkers',
+                           page = 'trekker',
                            role_type = 'trekker',
                            users = trekkers, form = form,
                            total = total,
@@ -95,7 +96,7 @@ def staff():
     unblacklisted = total - blacklisted
 
     return render_template('admin/staff.html',
-                           page = 'staffs',
+                           page = 'staff',
                            users = staffs, form = form,
                            role_type = 'staff',
                            total = total,
@@ -288,7 +289,7 @@ def trek():
     trek_action_form.trek_action.choices = [('', '---Choose Status---')] +  [('pending', 'Pending'), ('approved', 'Approved'), ('open', 'Open'), ('closed', 'Closed'), ('completed', 'Completed'), ('cancelled', 'Cancelled')]
 
     return render_template('admin/trek.html',
-                           page = 'Treks',
+                           page = 'trek',
                            treks = treks,
                            form = form,
                            total_treks = total_treks,
@@ -502,7 +503,7 @@ def admin_booking_action(id, trek_id, action, status):
 @role_required('admin')
 def profile():
     update_form = ProfileUpdateForm()
-    return render_template('admin/profile.html',page = 'Profile',
+    return render_template('admin/profile.html',page = 'profile',
                            update_form = update_form)
 
 @admin_bp.route('/profile/update', methods = ['GET', 'POST'])
@@ -565,6 +566,7 @@ def search():
     results = admin_search(search)
     return render_template(
         'admin/search.html',
+        page = 'search',
         search = search,
         results = results,
         assign_staff_form = assign_staff_form,

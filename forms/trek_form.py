@@ -3,6 +3,7 @@ from wtforms import StringField, RadioField, TextAreaField
 from wtforms import IntegerField, DateField, SubmitField
 from wtforms import SelectField
 from wtforms.validators import DataRequired, NumberRange, Length
+from wtforms.validators import ReadOnly
 from wtforms.validators import Optional
 from datetime import date, timedelta
 
@@ -76,7 +77,7 @@ class TrekBookForm(FlaskForm):
     )
     date = DateField(
         'Date', default=date.today(),
-        validators=[DataRequired(message='Select the Booking date.')]
+        validators=[ReadOnly()]
     )
 
 
