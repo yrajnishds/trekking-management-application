@@ -21,13 +21,48 @@ def admin():
 @login_required
 @role_required('admin')
 def dashboard():
-    admin_id = current_user.id
-    admin_data = User.query.filter_by(id = admin_id).first()
-    return render_template('admin/dashboard.html',
-                           page = 'dashboard', first_name = admin_data.first_name,
-                           email = admin_data.email,
-                           role = admin_data.role,
-                           form = TrekAddForm())
+
+    return render_template(
+        'admin/dashboard.html',
+        page = 'dashboard',
+        add_trek_form = TrekAddForm(),
+
+
+        # ======= Treks ========
+        total_trek = Trek.query.count(),
+        completed_trek = Trek.query.filter(Trek.trek_status == 'completed').count(),
+        pending_trek = Trek.query.filter(Trek.trek_status == 'pending').count(),
+        approved_trek = Trek.query.filter(Trek.trek_status == 'approved').count(),
+        open_trek = Trek.query.filter(Trek.trek_status == 'open').count(),
+        closed_trek = Trek.query.filter(Trek.trek_status == 'closed').count(),
+        ongoing_trek = Trek.query.filter(Trek.trek_status == 'ongoing').count(),
+        cancelled_trek = Trek.query.filter(Trek.trek_status == 'cancelled').count(),
+
+
+        # ========= Booking ==========
+        total_booking = Booking.query.count(),
+        pending_booking = Booking.query.filter(Booking.status == 'pending').count(),
+        approved_booking = Booking.query.filter(Booking.status == 'approved').count(),
+        completed_booking = Booking.query.filter(Booking.status == 'completed').count(),
+        requested_booking = Booking.query.filter(Booking.status == 'requested').count(),
+        cancelled_booking = Booking.query.filter(Booking.status == 'cancelled').count(),
+        rejected_booking = Booking.query.filter(Booking.status == 'rejected').count(),
+
+        # ========= Staff =========
+        total_staff = User.query.filter(User.role == 'staff').count(),
+        inactive_staff = User.query.filter(User.role == 'staff', User.is_active == False).count(),
+        pending_staff = User.query.filter(User.role == 'staff', User.is_approved == False).count(),
+        blacklisted_staff = User.query.filter(User.role == 'staff', User.is_blocked == True).count(),
+        
+
+        # ========== Trekker ========
+        total_trekker = User.query.filter(User.role == 'trekker').count(),
+        inactive_trekker = User.query.filter(User.role == 'trekker', User.is_active == False).count(),
+        pending_trekker = User.query.filter(User.role == 'trekker', User.is_approved == False).count(),
+        blacklisted_trekker = User.query.filter(User.role == 'trekker', User.is_blocked == True).count(),
+        
+    )
+
 
 
 @admin_bp.route('/trekker')
@@ -36,8 +71,8 @@ def dashboard():
 def trekker():
     trekkers = User.query.filter_by(role = 'trekker').all()
     trekkers_data = User.query.filter_by(role = 'trekker').all()
-    form = UsersAddForm()
-    form.role.choices = [('trekker', 'Trekker')]
+    add_user_form = UsersAddForm()
+    add_user_form.role.choices = [('trekker', 'Trekker')]
 
     total = User.query.filter_by(role = 'trekker').count()
     approved = User.query.filter_by(role = 'trekker', is_approved = True).count()
@@ -50,7 +85,8 @@ def trekker():
     return render_template('admin/trekker.html',
                            page = 'trekker',
                            role_type = 'trekker',
-                           users = trekkers, form = form,
+                           users = trekkers,
+                           add_user_form = add_user_form,
                            total = total,
                            approved = approved,
                            pending = pending,
@@ -85,8 +121,8 @@ def view_trekker(id):
 @role_required('admin')
 def staff():
     staffs = User.query.filter_by(role = 'staff').all()
-    form = UsersAddForm()
-    form.role.choices = [('staff', 'Staff')]
+    add_user_form = UsersAddForm()
+    add_user_form.role.choices = [('staff', 'Staff')]
     total = User.query.filter_by(role = 'staff').count()
     approved = User.query.filter_by(role = 'staff', is_approved = True).count()
     pending = total - approved
@@ -97,7 +133,8 @@ def staff():
 
     return render_template('admin/staff.html',
                            page = 'staff',
-                           users = staffs, form = form,
+                           users = staffs,
+                           add_user_form = add_user_form,
                            role_type = 'staff',
                            total = total,
                            approved = approved,
@@ -152,9 +189,9 @@ def view_staff(id):
 def add_user(role_type):
     
     
-    form = UsersAddForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(email = form.email.data).first()
+    add_user_form = UsersAddForm()
+    if add_user_form.validate_on_submit():
+        user = User.query.filter_by(email = add_user_form.email.data).first()
         if user:
             
             flash(f'{user.role.capitalize()} With this email already exits', 'error')
@@ -162,16 +199,16 @@ def add_user(role_type):
             return redirect(url_for(f'admin.{role_type}'))
             
         else:
-            name = form.name.data.split()
+            name = add_user_form.name.data.split()
             if len(name) != 1:
                 first_name = name[0].lower()
                 last_name = " ".join(name[1:]).lower()
             else:
                 first_name = name[0].lower()
                 last_name = None
-            email = form.email.data
-            password = form.password.data
-            role = form.role.data
+            email = add_user_form.email.data
+            password = add_user_form.password.data
+            role = add_user_form.role.data
             if role == 'trekker':
                 is_approved = True
             else:
@@ -269,7 +306,6 @@ def admin_action(role_type, id, action):
 @role_required('admin')
 def trek():
 
-    form = TrekAddForm()
     treks = Trek.query.all()
     total_treks = len(treks)
     approved = Trek.query.filter_by(trek_status = 'approved').count()
@@ -291,7 +327,7 @@ def trek():
     return render_template('admin/trek.html',
                            page = 'trek',
                            treks = treks,
-                           form = form,
+                           add_trek_form = TrekAddForm(),
                            total_treks = total_treks,
                            approved = approved,
                            pending = pending,
@@ -334,31 +370,32 @@ def view_trek(id):
 @login_required
 @role_required('admin')
 def add_trek():
-    form = TrekAddForm()
-    if form.validate_on_submit():
-        trek = Trek.query.filter_by(trek_code = form.trek_code.data).first()
+    add_trek_form = TrekAddForm()
+
+    if add_trek_form.validate_on_submit():
+        trek = Trek.query.filter_by(trek_code = add_trek_form.trek_code.data).first()
         if trek:
-            flash(f'Trek with code "{form.trek_code.data}" Already exists..', 'error')
+            flash(f'Trek with code "{add_trek_form.trek_code.data}" Already exists..', 'danger')
             flash(f'Trek Name is {trek.trek_name}.', 'info')
             return redirect(url_for('admin.trek'))
         else:
             new_trek = Trek(
-                trek_code = form.trek_code.data.strip().lower(),
-                trek_name = form.trek_name.data.strip().lower(),
-                location = form.location.data.strip().lower(),
-                difficulty = form.difficulty.data.strip().lower(),
-                duration = form.duration.data,
-                slots = form.no_of_slots.data,
-                trek_status = form.trek_status.data.strip().lower(),
-                start_date = form.start_date.data,
-                end_date = form.end_date.data,
-                price = form.price.data,
-                description = form.description.data.strip().lower()
+                trek_code = add_trek_form.trek_code.data.strip().lower(),
+                trek_name = add_trek_form.trek_name.data.strip().lower(),
+                location = add_trek_form.location.data.strip().lower(),
+                difficulty = add_trek_form.difficulty.data.strip().lower(),
+                duration = add_trek_form.duration.data,
+                slots = add_trek_form.no_of_slots.data,
+                trek_status = add_trek_form.trek_status.data.strip().lower(),
+                start_date = add_trek_form.start_date.data,
+                end_date = add_trek_form.end_date.data,
+                price = add_trek_form.price.data,
+                description = add_trek_form.description.data.strip().lower()
             )
             db.session.add(new_trek)
             db.session.commit()
-            flash(f'Trek with Code: {form.trek_code.data} Created Successfully', 'success')
-            flash(f'Trek Name: {form.trek_name.data}', 'info')
+            flash(f'Trek with Code: {add_trek_form.trek_code.data} Created Successfully', 'success')
+            flash(f'Trek Name: {add_trek_form.trek_name.data}', 'info')
             return redirect(url_for('admin.trek'))
 
 @admin_bp.route('/trek/<string:code>/<string:action>', methods = ['GET', 'POST'])

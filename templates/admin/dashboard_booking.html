@@ -1,0 +1,122 @@
+<div class="container py-3">
+    <!-- ============== Booking Statistics  ============== -->
+    <div class="mb-4 card shadow-sm border-0">
+        <div class="card-header bg-dark text-white">
+            <div class="text-center">
+                <h2 class="mb-0 pb-3">
+                    Bookings
+                </h2>
+            </div>
+            <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
+                <div>
+                    <h3 class="mb-0">
+                        Booking Statistics
+                    </h3>
+                </div>
+                <a href="{{ url_for('admin.history') }}" class="btn btn-outline-warning fw-semibold" type="button">
+                    View booking History
+                </a>
+                <a href="{{ url_for('admin.booking') }}" class="btn btn-warning fw-semibold" type="button">
+                    Manage Bookings
+                </a>
+            </div>
+        </div>
+        <div>
+            <div class="card-body">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+                    <!-- Total -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-primary text-white">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Total Bookings
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ total_booking }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Pending -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-warning text-dark">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Pending
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ pending_booking }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Approved -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-success text-white">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Approved
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ approved_booking }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Cancellation Requests -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-info text-dark">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Cancellation Requests
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ requested_booking }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Completed -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-primary text-white">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Completed
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ completed_booking }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Cancelled -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-danger text-dark">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Cancelled
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ cancelled_booking }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Rejected -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-danger text-dark">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Rejected
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ rejected_booking }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-
 {% block content %}
-
-<h1> {{ current_user.first_name|capitalize }} {{ page|capitalize }} Page</h1>
-
+{% include 'admin/dashboard_booking.html' %}
+{% include 'admin/dashboard_staff.html' %}
+{% include 'admin/dashboard_trek.html' %}
+{% include 'admin/dashboard_trekker.html' %}
 {% endblock %}

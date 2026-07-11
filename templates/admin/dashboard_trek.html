@@ -1,0 +1,137 @@
+<div class="container py-3">
+    <!-- ============== Trek Statistics  ============== -->
+    <div class="mb-4 card shadow-sm border-0">
+        <div class="card-header bg-dark text-white">
+            <div class="text-center">
+                <h2 class="mb-0">
+                    Treks
+                </h2>
+            </div>
+            <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
+
+                {% include 'admin/add_trek.html' %}
+                <div>
+                    <h3 class="mb-0">
+                        Trek Statistics
+                    </h3>
+                </div>
+                <a href="{{ url_for('admin.history') }}" class="btn btn-outline-warning fw-semibold" type="button">
+                    View Trek History
+                </a>
+                <a href="{{ url_for('admin.trek') }}" class="btn btn-warning fw-semibold" type="button">
+                    Manage Treks
+                </a>
+            </div>
+        </div>
+        <div>
+            <div class="card-body">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+                    <!-- Total -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-primary text-white">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Total Treks
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ total_trek }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Pending -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-warning text-dark">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Pending
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ pending_trek }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Approved -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-success text-white">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Approved
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ approved_trek }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Open -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-primary-subtle text-dark">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Open
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ open_trek }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Closed -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-secondary-subtle text-dark">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Closed
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ closed_trek }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Ongoing -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-primary-subtle text-dark">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Ongoing
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ ongoing_trek }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Completed -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-primary text-white">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Completed
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ completed_trek }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Cancelled -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-danger text-dark">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Cancelled
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ cancelled_trek }}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
