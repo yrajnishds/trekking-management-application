@@ -250,7 +250,11 @@ class Trek(db.Model):
         db.Text,
         nullable=False
     )
-
+    created_at = db.Column(
+        db.Date,
+        nullable=False,
+        default=date.today
+    )
     staff_id = db.Column(
         db.Integer,
         db.ForeignKey("staffs.user_id")
