@@ -1,5 +1,5 @@
 from models import db
-from models.model import User
+from models.model import User, AdminProfile
 
 
 def create_admin_user():
@@ -10,6 +10,7 @@ def create_admin_user():
                      role='admin', is_approved = True,
                      is_active = True,
                      first_name = 'admin')
+        admin.admin_profile = AdminProfile()
         db.session.add(admin)
         db.session.commit()
         print("Admin user created.")

@@ -7,7 +7,7 @@ from routes.decorators import role_required
 from models import db
 from forms.user_form import UsersAddForm, ProfileUpdateForm
 from forms.trek_form import TrekAddForm, AssignStaffForm, TrekActionForm
-from forms.user_form import TrekkerRegisterForm
+from sqlalchemy import desc, asc
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -96,12 +96,12 @@ def trekker():
                            unblacklisted = unblacklisted)
 
 
-@admin_bp.route('trekker/<int:id>')
+@admin_bp.route('trekker/<int:trekker_id>')
 @login_required
 @role_required('admin')
-def view_trekker(id):
-    trekker_details = User.query.filter_by(id = id).first()
-    booking_details = Booking.query.filter_by(trekker_id = id).all()
+def view_trekker(trekker_id):
+    trekker_details = User.query.filter_by(id = trekker_id).first()
+    booking_details = Booking.query.filter_by(trekker_id = trekker_id).all()
     return render_template(
         'admin/view_trekker.html',
         id = trekker_details.id,
@@ -145,12 +145,12 @@ def staff():
                            unblacklisted = unblacklisted)
 
 
-@admin_bp.route('admin/<int:id>')
+@admin_bp.route('admin/<int:admin_id>')
 @login_required
 @role_required('admin')
-def view_admin(id):
-    staff_details = User.query.filter_by(id = id).first()
-    trek_details = Trek.query.filter_by(staff_id = id).all()
+def view_admin(admin_id):
+    staff_details = User.query.filter_by(id = admin_id).first()
+    # trek_details = Trek.query.filter_by(staff_id = id).all()
     return render_template(
         'admin/view_admin.html',
         id = staff_details.id,
@@ -161,14 +161,14 @@ def view_admin(id):
         contact = staff_details.admin_profile.contact,
         dob = staff_details.admin_profile.dob,
         bio = staff_details.admin_profile.bio,
-        trek_details = trek_details
+        # trek_details = trek_details
     )
-@admin_bp.route('staff/<int:id>')
+@admin_bp.route('staff/<int:staff_id>')
 @login_required
 @role_required('admin')
-def view_staff(id):
-    staff_details = User.query.filter_by(id = id).first()
-    trek_details = Trek.query.filter_by(staff_id = id).all()
+def view_staff(staff_id):
+    staff_details = User.query.filter_by(id = staff_id).first()
+    trek_details = Trek.query.filter_by(staff_id = staff_id).all()
     return render_template(
         'admin/view_staff.html',
         id = staff_details.id,
@@ -306,7 +306,7 @@ def admin_action(role_type, id, action):
 @role_required('admin')
 def trek():
 
-    treks = Trek.query.all()
+    treks = Trek.query.order_by(Trek.id.desc()).all()
     total_treks = len(treks)
     approved = Trek.query.filter_by(trek_status = 'approved').count()
     pending = Trek.query.filter_by(trek_status = 'pending').count()
@@ -314,6 +314,19 @@ def trek():
     closed = Trek.query.filter_by(trek_status = 'closed').count()
     completed = Trek.query.filter_by(trek_status = 'completed').count()
 
+
+    difficulty = request.args.get("difficulty")
+    status = request.args.get("status")
+    orderby = request.args.get("orderby", "created_at")
+    order = request.args.get("order", "asc")
+
+#     from filter import admin_trek_filter
+
+#     treks = admin_trek_filter(
+#     difficulty=request.args.get("difficulty"),
+#     status=request.args.get("status"),
+#     orderby=request.args.get("orderby"),
+# )
 
     assign_staff_form = AssignStaffForm()
 
@@ -338,16 +351,21 @@ def trek():
                            trek_action_form = trek_action_form
                            )
 
-
-
-@admin_bp.route('/trek/<int:id>')
+@admin_bp.route('/trek/<int:trek_id>')
 @login_required
 @role_required('admin')
-def view_trek(id):
-    trek_details = Trek.query.filter_by(id = id).first()
+def view_trek(trek_id):
+    trek_details = Trek.query.filter_by(id = trek_id).first()
+    
+    assign_staff_form = AssignStaffForm()
+
+    staffs = User.query.filter_by(role = 'staff', is_approved = True, is_active = True, is_blocked = False).all()
+    # if staffs:
+    assign_staff_form.assigned_staff.choices = [('', '---Choose Staff---')] + [(staff.id, staff.email) for staff in staffs]
     
     return render_template(
         'admin/view_trek.html',
+        assign_staff_form = assign_staff_form,
         id = trek_details.id,
         trek_code = trek_details.trek_code,
         trek_name = trek_details.trek_name,
@@ -413,11 +431,16 @@ def admin_trek_action(code, action):
         if action == 'assign_staff' or action == 'change_staff':
             trek.staff_id = staff_id
             staffs.id = staff_id
-            
-
             db.session.commit()
             flash(f'staff {staffs.id} is assigned for {trek.trek_code} successfully', 'success')
             return redirect(url_for('admin.trek'))
+    if action == 'remove_staff':
+        trek = Trek.query.filter_by(trek_code = code).first()
+        trek.staff_id = None
+        db.session.commit()
+        flash('Assigned Staff Removed', 'info')
+        return redirect(url_for('admin.trek'))
+
         
 
 

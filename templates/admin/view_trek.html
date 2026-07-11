@@ -130,11 +130,36 @@
             <!-- ================= Footer ================= -->
             <div class="card-footer bg-light">
                 <div class="d-flex flex-wrap gap-3 justify-content-between">
-                    <a href="{{ url_for('admin.view_staff', id=staff_id) }}"
-                        class="btn btn-outline-primary fw-semibold">
-                        View Staff Details
-                    </a>
-                    <a href="{{ url_for('admin.view_booking', trek_id=id) }}"
+                    {% if staff_id %}
+                    <div>
+                        <a href="{{ url_for('admin.view_staff', staff_id=staff_id) }}" class="btn btn-outline-primary fw-semibold">
+                            View Staff Details
+                        </a>
+                        <a href="{{ url_for('admin.admin_trek_action', code = trek_code, action = 'remove_staff') }}"
+                            class="btn btn-secondary fw-semibold">
+                            Remove
+                        </a>
+                    </div>
+                    {% else %}
+                    <form action="{{ url_for(
+                                'admin.admin_trek_action',
+                                code=trek_code,
+                                action='assign_staff'
+                                ) }}"
+                                method="POST"
+                                class="d-flex flex-wrap gap-2 justify-content-center align-items-center">
+                        {{ assign_staff_form.hidden_tag() }}
+                        {{ assign_staff_form.assigned_staff(
+                            class="form-select form-select-sm w-auto"
+                        ) }}
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-sm fw-semibold">
+                            Assign
+                        </button>
+                    </form>
+                    {% endif %}
+                        <a href="{{ url_for('admin.view_booking', trek_id=id) }}"
                         class="btn btn-outline-success fw-semibold">
                         View All Bookings
                     </a>

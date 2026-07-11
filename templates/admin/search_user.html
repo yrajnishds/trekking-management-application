@@ -75,8 +75,13 @@
                         </td>
                         <!-- Profile -->
                         <td>
-                            {% if user.role in ["staff", "admin"] %}
-                            <a href="{{ url_for('admin.view_staff', id=user.id) }}"
+                            {% if user.role == 'staff' %}
+                            <a href="{{ url_for('admin.view_staff', staff_id=user.id) }}"
+                                class="btn btn-outline-primary btn-sm">
+                                View
+                            </a>
+                            {% elif user.role == 'admin' %}
+                            <a href="{{ url_for('admin.profile') }}"
                                 class="btn btn-outline-primary btn-sm">
                                 View
                             </a>

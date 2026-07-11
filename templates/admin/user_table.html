@@ -94,17 +94,17 @@
                             </td>
                             <td>
                                 {% if user.role == 'admin' %}
-                                <a href="{{ url_for('admin.view_admin', id = user.id ) }}"
+                                <a href="{{ url_for('admin.profile') }}"
                                     class="btn btn-sm btn-outline-info fw-bold text-danger-emphasis">
                                     View
                                 </a>
                                 {% elif user.role == 'staff' %}
-                                <a href="{{ url_for('admin.view_staff', id = user.id ) }}"
+                                <a href="{{ url_for('admin.view_staff', staff_id = user.id ) }}"
                                     class="btn btn-sm btn-outline-info fw-bold text-danger-emphasis">
                                     View
                                 </a>
                                 {% else %}
-                                <a href="{{ url_for('admin.view_trekker', id = user.id ) }}"
+                                <a href="{{ url_for('admin.view_trekker', trekker_id = user.id ) }}"
                                     class="btn btn-sm btn-outline-info fw-bold text-danger-emphasis">
                                     View
                                 </a>
