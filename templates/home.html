@@ -1,16 +1,63 @@
-{% extends "auth/auth_base.html" %}
-
-
-
+{% extends "base.html" %}
 {% block content %}
-
-<h1>Welcome</h1><br>
-
-<p><a href="{{ url_for('auth.login') }}">Login</a></p><br>
-<p><a href="{{ url_for('auth.register', role_type = 'trekker') }}">Register New Trekker</a></p><br>
-<p><a href="{{ url_for('auth.register', role_type = 'staff') }}">Register New Staff</a></p><br>
-
-<br>
-<strong>{{ current_user.first_name }}</strong>
-
+<section class="py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow border-0">
+                <!-- ================= Header ================= -->
+                <div class="card-header bg-primary text-white text-center">
+                    <h1 class="mb-2 fw-bold display-5">
+                        Trek Management System
+                    </h1>
+                    <p class="mb-0 text-white-50">
+                        Plan, Manage and Explore Amazing Treks
+                    </p>
+                </div>
+                <!-- ================= Body ================= -->
+                <div class="p-5 card-body text-center">
+                    {% if current_user.is_authenticated %}
+                    <h3 class="mb-3">
+                        Welcome,
+                        <span class="text-primary">
+                            {{ current_user.first_name|title }}
+                        </span>
+                    </h3>
+                    <p class="mb-4 text-secondary">
+                        You are already logged in.
+                    </p>
+                    <a href="{{ url_for(current_user.role ~ '.dashboard') }}" class="px-5 btn btn-success btn-lg">
+                        Go to Dashboard
+                    </a>
+                    {% else %}
+                    <h3 class="mb-3">
+                        Welcome!
+                    </h3>
+                    <p class="mb-5 text-secondary">
+                        Login to your account or create a new account to
+                        start exploring and managing treks.
+                    </p>
+                    <div class="d-grid col-md-8 gap-3 mx-auto">
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg">
+                            Login
+                        </a>
+                        <a href="{{ url_for('auth.register', role_type='trekker') }}" class="btn btn-success btn-lg">
+                            Register as Trekker
+                        </a>
+                        <a href="{{ url_for('auth.register', role_type='staff') }}" class="btn btn-warning btn-lg">
+                            Register as Staff
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+                <!-- ================= Footer ================= -->
+                <div class="card-footer text-center bg-light">
+                    <small class="text-secondary">
+                        Manage treks, bookings, staff, and adventure experiences
+                        from one place.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

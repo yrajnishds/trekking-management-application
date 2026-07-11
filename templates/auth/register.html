@@ -1,75 +1,134 @@
-{% extends "auth/auth_base.html" %}
-
+{% extends "base.html" %}
 {% block content %}
-
-<div>
-    <h2>New {{ role_type|capitalize }} - Register</h2><br>
-    <div>
-        <form action="{{ url_for('auth.register', role_type = role_type) }}" method="POST">
-            {{ form.hidden_tag() }}
-
-            <div>
-                <p>{{ form.name.label }}</p>
-                <p>{{ form.name }}</p>
-                {% for error in form.name.errors %}
-                <p><span style="color: red;">[{{ error }}]</span></p>
-                {% endfor %}
-            </div><br>
-            <div>
-                <p>{{ form.email.label }}</p>
-                <p>{{ form.email }}</p>
-                {% for error in form.email.errors %}
-                <p><span style="color: red;">[{{ error }}]</span></p>
-                {% endfor %}
-            </div><br>
-            <div>
-                <p>{{ form.role.label }}</p>
-                <p>{{ form.role }}</p>
-                {% for error in form.role.errors %}
-                <p><span style="color: red;">[{{ error }}]</span></p>
-                {% endfor %}
-            </div><br>
-            <div>
-                <p>{{ form.password.label }}</p>
-                <p>{{ form.password}}</p>
-                {% for error in form.password.errors %}
-                <p><span style="color: red;">[{{ error }}]</span></p>
-                {% endfor %}
-            </div><br>
-            <div>
-                <p>{{ form.confirm_password.label }}</p>
-                <p>{{ form.confirm_password}}</p>
-                {% for error in form.confirm_password.errors %}
-                <p><span style="color: red;">[{{ error }}]</span></p>
-                {% endfor %}
-            </div><br>
-            <div>
-                <p>{{ form.submit }}</p>
+<section class="d-flex min-vh-100 align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-7 col-xl-6">
+                <div class="card shadow border-0">
+                    <!-- ================= Header ================= -->
+                    <div class="card-header bg-success text-white text-center">
+                        <h2 class="mb-1">
+                            Register as {{ role_type|capitalize }}
+                        </h2>
+                        <small class="text-white-50">
+                            Create your account to join the Trek Management System.
+                        </small>
+                    </div>
+                    <!-- ================= Body ================= -->
+                    <div class="p-4 card-body">
+                        <form action="{{ url_for('auth.register', role_type=role_type) }}" method="POST">
+                            {{ form.hidden_tag() }}
+                            <div class="row g-4">
+                                <!-- Name -->
+                                <div class="col-12">
+                                    {{ form.name.label(class="form-label fw-semibold") }}
+                                    {{ form.name(
+                                    class="form-control",
+                                    placeholder="Enter Full Name"
+                                    ) }}
+                                    {% if form.name.errors %}
+                                    {% for error in form.name.errors %}
+                                    <div class="mt-1 text-danger small">
+                                        {{ error }}
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <!-- Email -->
+                                <div class="col-12">
+                                    {{ form.email.label(class="form-label fw-semibold") }}
+                                    {{ form.email(
+                                    class="form-control",
+                                    placeholder="Enter Email Address"
+                                    ) }}
+                                    {% if form.email.errors %}
+                                    {% for error in form.email.errors %}
+                                    <div class="mt-1 text-danger small">
+                                        {{ error }}
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <!-- Role -->
+                                <div class="col-12">
+                                    {{ form.role.label(class="form-label fw-semibold") }}
+                                    {{ form.role(class="form-select") }}
+                                    {% if form.role.errors %}
+                                    {% for error in form.role.errors %}
+                                    <div class="mt-1 text-danger small">
+                                        {{ error }}
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <!-- Password -->
+                                <div class="col-12 col-md-6">
+                                    {{ form.password.label(class="form-label fw-semibold") }}
+                                    {{ form.password(
+                                    class="form-control",
+                                    placeholder="Enter Password"
+                                    ) }}
+                                    {% if form.password.errors %}
+                                    {% for error in form.password.errors %}
+                                    <div class="mt-1 text-danger small">
+                                        {{ error }}
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <!-- Confirm Password -->
+                                <div class="col-12 col-md-6">
+                                    {{ form.confirm_password.label(class="form-label fw-semibold") }}
+                                    {{ form.confirm_password(
+                                    class="form-control",
+                                    placeholder="Confirm Password"
+                                    ) }}
+                                    {% if form.confirm_password.errors %}
+                                    {% for error in form.confirm_password.errors %}
+                                    <div class="mt-1 text-danger small">
+                                        {{ error }}
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <!-- Submit -->
+                            <div class="d-grid mt-4">
+                                {{ form.submit(
+                                class="btn btn-success btn-lg fw-bold"
+                                ) }}
+                            </div>
+                        </form>
+                    </div>
+                    <!-- ================= Footer ================= -->
+                    <div class="card-footer text-center bg-light">
+                        <p class="mb-2">
+                            Already have an account?
+                            <a href="{{ url_for('auth.login') }}" class="fw-semibold text-decoration-none">
+                                Login
+                            </a>
+                        </p>
+                        <hr>
+                        {% if role_type == "staff" %}
+                        {% set other = "trekker" %}
+                        {% else %}
+                        {% set other = "staff" %}
+                        {% endif %}
+                        <p class="mb-0">
+                            Register as {{ other|capitalize }}?
+                            <a href="{{ url_for('auth.register', role_type=other) }}"
+                                class="fw-semibold text-decoration-none">
+                                {% if other == "trekker" %}
+                                Create Trekker Account
+                                {% else %}
+                                Register Staff
+                                {% endif %}
+                            </a>
+                        </p>
+                    </div>
+                </div>
             </div>
-        </form>
-    </div><br>
-    <div>
-        <p>
-            Already Have An Account? <a href="{{ url_for('auth.login') }}">Login</a>
-        </p><br>
-        <p>
-            {% if role_type == 'staff' %}
-            {% set other = 'trekker' %}
-            {% else %}
-            {% set other = 'staff' %}
-            {% endif %}
-            New {{ other }}? <a href="{{ url_for('auth.register', role_type = other) }}">
-                {% if other == 'trekker' %}
-                    Create Account
-                {% else %}
-                    Register
-                {% endif %}
-                
-            </a>
-        </p>
+        </div>
     </div>
-</div>
-<br>
-
-
+</section>
 {% endblock %}

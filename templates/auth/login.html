@@ -1,40 +1,86 @@
-{% extends "auth/auth_base.html" %}
-
+{% extends "base.html" %}
 {% block content %}
-
-<div>
-    <h2>Log In</h2><br>
-    <div>
-        <form action="{{ url_for('auth.login') }}" method="POST">
-            {{ form.hidden_tag() }}
-
-            <div>
-                <p>{{ form.email.label }}</p>
-                <p>{{ form.email }}</p>
-                {% for error in form.email.errors %}
-                <p><span style="color: red">[{{ error }}]</span></p>
-                {% endfor %}
-            </div><br>
-            <div>
-                <p>{{ form.password.label }}</p>
-                <p>{{ form.password}}</p>
-                {% for error in form.password.errors %}
-                <p><span style="color: red;">[{{ error }}]</span></p>
-                {% endfor %}
-            </div><br>
-            <div>
-                <p>{{ form.submit }}</p>
+<section class="d-flex min-vh-100 align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow border-0">
+                    <!-- ================= Header ================= -->
+                    <div class="card-header bg-primary text-white text-center">
+                        <h2 class="mb-1">
+                            Welcome Back
+                        </h2>
+                        <small class="text-white-50">
+                            Sign in to continue to Trek Management System.
+                        </small>
+                    </div>
+                    <!-- ================= Body ================= -->
+                    <div class="p-4 card-body">
+                        <form action="{{ url_for('auth.login') }}" method="POST">
+                            {{ form.hidden_tag() }}
+                            <!-- Email -->
+                            <div class="mb-4">
+                                {{ form.email.label(
+                                class="form-label fw-semibold"
+                                ) }}
+                                {{ form.email(
+                                class="form-control",
+                                placeholder="Enter your email address"
+                                ) }}
+                                {% if form.email.errors %}
+                                {% for error in form.email.errors %}
+                                <div class="mt-1 text-danger small">
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <!-- Password -->
+                            <div class="mb-4">
+                                {{ form.password.label(
+                                class="form-label fw-semibold"
+                                ) }}
+                                {{ form.password(
+                                class="form-control",
+                                placeholder="Enter your password"
+                                ) }}
+                                {% if form.password.errors %}
+                                {% for error in form.password.errors %}
+                                <div class="mt-1 text-danger small">
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <!-- Submit -->
+                            <div class="d-grid">
+                                {{ form.submit(
+                                class="btn btn-primary btn-lg fw-bold"
+                                ) }}
+                            </div>
+                        </form>
+                    </div>
+                    <!-- ================= Footer ================= -->
+                    <div class="card-footer text-center bg-light">
+                        <p class="mb-2">
+                            New Trekker?
+                            <a href="{{ url_for('auth.register', role_type='trekker') }}"
+                                class="fw-semibold text-decoration-none">
+                                Create Account
+                            </a>
+                        </p>
+                        <hr>
+                        <p class="mb-0">
+                            New Staff?
+                            <a href="{{ url_for('auth.register', role_type='staff') }}"
+                                class="fw-semibold text-decoration-none">
+                                Register Here
+                            </a>
+                        </p>
+                    </div>
+                </div>
             </div>
-        </form>
-    </div><br>
-    <div>
-
-        <p>
-            New Trekker? <a href="{{ url_for('auth.register', role_type = 'trekker') }}">Create Account</a>
-        </p><br>
-        <p>New Staff? <a href="{{ url_for('auth.register', role_type = 'staff') }}">Register Staff</a></p>
+        </div>
     </div>
-</div>
-<br>
-
+</section>
 {% endblock %}
