@@ -1,9 +1,45 @@
-{% extends "auth/auth_base.html" %}
-
+{% extends "base.html" %}
 {% block content %}
-
-<h1>500 Error Page</h1>
-
-<h1><a href="{{ url_for('home.home') }}">Return Home Page</a></h1>
-
+<section class="d-flex py-5 align-items-center justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card shadow border-0">
+            <!-- ================= Header ================= -->
+            <div class="card-header bg-dark text-white text-center">
+                <h1 class="mb-2 fw-bold display-3">
+                    500
+                </h1>
+                <h3 class="mb-0">
+                    Internal Server Error
+                </h3>
+            </div>
+            <!-- ================= Body ================= -->
+            <div class="p-5 card-body text-center">
+                <p class="lead">
+                    Something went wrong on our side.
+                </p>
+                <p class="mb-4 text-muted">
+                    We couldn't complete your request due to an unexpected
+                    server error. Please try again in a few moments.
+                </p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    {% if current_user.is_authenticated %}
+                    <a href="{{ url_for(current_user.role ~ '.dashboard') }}" class="btn btn-success">
+                        Dashboard
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('home.home') }}" class="btn btn-primary">
+                        Home
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- ================= Footer ================= -->
+            <div class="card-footer text-center bg-light">
+                <small class="text-muted">
+                    Error Code: 500 • Internal Server Error
+                </small>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
