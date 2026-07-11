@@ -1,123 +1,166 @@
 {% extends 'base.html' %}
 {% block content %}
-
-<section class="my-3">
-    <div class="container border border-primary p-3">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-secondary-subtle">
-                <div class="d-flex justify-content-between gap-3">
-                    <h3 class="mb-0">Staff Details</h3>
-                    <code class="fs-3 fw-semibold mb-0">Staff Id: {{ id }}</code>
-                    <a href="{{ url_for('admin.staff') }}" class="btn btn-info text-dark fs-5 fw-semibold">Back</a>
+<section class="my-4">
+    <div class="container">
+        <!-- ================= Staff Details ================= -->
+        <div class="mb-4 card shadow border-0">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 class="mb-0">
+                            Staff Details
+                        </h3>
+                        <small class="text-white-50">
+                            View complete information about the selected staff member.
+                        </small>
+                    </div>
+                    <div class="text-end">
+                        <div class="fw-bold">
+                            Staff ID : {{ id }}
+                        </div>
+                        <a href="{{ url_for('admin.staff') }}" class="mt-2 btn btn-warning btn-sm fw-semibold">
+                            Back
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="card-body table-responsive">
-                <table class="table-borderless">
-                    <tr>
-                        <td class="fs-5 w-25 p-2">First Name</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 w-75 p-2">{{ first_name|title }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 p-2">Last Name</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 p-2">{{ last_name|title }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 p-2">Email</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 p-2">{{ email }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 p-2">Contact</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 p-2">{{ contact }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 p-2">Date of Birth</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 p-2">{{ dob }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 p-2">Created Date</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 p-2">{{ created_at }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 align-top p-2">Bio</td>
-                        <td>:</td>
-                        <td class="fs-5 text-wrap p-2">{{ bio }}</td>
-                    </tr>
-                </table>
+            <div class="card-body">
+                <h5 class="pb-2 mb-4 border-bottom">
+                    Personal Information
+                </h5>
+                <div class="table-responsive">
+                    <table class="mb-0 table table-borderless align-middle">
+                        <tbody>
+                            <tr>
+                                <th class="w-25 text-primary">
+                                    First Name
+                                </th>
+                                <td>{{ first_name|title }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-primary">
+                                    Last Name
+                                </th>
+                                <td>{{ last_name|title }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-primary">
+                                    Email
+                                </th>
+                                <td>{{ email }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-primary">
+                                    Contact
+                                </th>
+                                <td>{{ contact }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-primary">
+                                    Date of Birth
+                                </th>
+                                <td>{{ dob }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-primary">
+                                    Created On
+                                </th>
+                                <td>{{ created_at }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h5 class="mt-5 pb-2 mb-4 border-bottom">
+                    Bio
+                </h5>
+                <div class="p-3 border rounded bg-light">
+                    {{ bio }}
+                </div>
+            </div>
+        </div>
+        <!-- ================= Assigned Treks ================= -->
+        <div class="card shadow border-0">
+            <div class="card-header bg-success text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 class="mb-0">
+                            Assigned Treks
+                        </h3>
+                        <small class="text-white-50">
+                            Treks currently assigned to this staff member.
+                        </small>
+                    </div>
+                    <span class="badge bg-light text-dark fs-6">
+                        {{ trek_details|length }} Trek(s)
+                    </span>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if trek_details %}
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for trek in trek_details %}
+                            <tr>
+                                <td>{{ trek.id }}</td>
+                                <td>
+                                    <code>{{ trek.trek_code }}</code>
+                                </td>
+                                <td>{{ trek.trek_name }}</td>
+                                <td>
+                                    {% if trek.trek_status == 'completed' %}
+                                    <span class="badge bg-success">
+                                        Completed
+                                    </span>
+                                    {% elif trek.trek_status == 'approved' %}
+                                    <span class="badge bg-primary">
+                                        Approved
+                                    </span>
+                                    {% elif trek.trek_status == 'pending' %}
+                                    <span class="badge bg-warning text-dark">
+                                        Pending
+                                    </span>
+                                    {% elif trek.trek_status == 'open' %}
+                                    <span class="badge bg-info text-dark">
+                                        Open
+                                    </span>
+                                    {% elif trek.trek_status == 'closed' %}
+                                    <span class="badge bg-secondary">
+                                        Closed
+                                    </span>
+                                    {% else %}
+                                    <span class="badge bg-danger">
+                                        Cancelled
+                                    </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('admin.view_trek', id=trek.id) }}"
+                                        class="btn btn-outline-primary btn-sm fw-semibold">
+                                        View Trek
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="mb-0 alert alert-info text-center">
+                    No treks have been assigned to this staff member.
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
 </section>
-
-<section class="my-3">
-    <div class="container border border-secondary p-3">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-secondary-subtle">
-                <div class="d-flex justify-content-between gap-3">
-                    <h3 class="mb-0">Assigned Trek Details</h3>
-                </div>
-            </div>
-            <div class="card-body table-responsive">
-                <table class="table table-borderless table-striped text-center">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>
-                                Id
-                            </th>
-                            <th>
-                                Code
-                            </th>
-                            <th>
-                                Name
-                            </th>
-                            <th>
-                                Trek Status
-                            </th>
-                            <th>
-                                Details
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for trek in trek_details %}
-                        <tr>
-                            <td>
-                                {{ trek.id }}                                
-                            </td>
-                            <td>
-                                {{ trek.trek_code }}                                
-                            </td>
-                            <td>
-                                {{ trek.trek_name }}                                
-                            </td>
-                            <td>
-                                {% if trek.trek_status == 'completed' %} <span class="badge bg-success fs-6">Completed</span>
-                                {% elif trek.trek_status == 'approved' %} <span class="badge bg-primary fs-6">Approved</span>
-                                {% elif trek.trek_status == 'pending' %} <span class="badge bg-warning fs-6">Pending</span>
-                                {% elif trek.trek_status == 'open' %} <span class="badge bg-info fs-6">Open</span>
-                                {% elif trek.trek_status == 'closed' %} <span class="badge bg-dark-subtle fs-6">Closed</span>
-                                {% else %} <span class="badge bg-danger fs-6">Cancelled</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                <a href="{{ url_for('admin.view_trek', id = trek.id) }}"
-                                    class="btn btn-sm btn-outline-info fw-bold text-danger-emphasis">View</a>
-                            </td>
-
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                    
-                </table>
-            </div>
-        </div>
-    </div>
-</section>
-
-
 {% endblock %}

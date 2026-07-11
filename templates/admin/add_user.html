@@ -1,75 +1,109 @@
-<div class="container p-4 border border-info">
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-dark-subtle">
-            <div class="d-flex justify-content-between gap-3">
-                <h3 class="mb-0">Add New {{ role_type|capitalize }}</h3>
-                <button class="btn btn-warning btn-sm fs-6 fw-bold" type="button" data-bs-toggle="collapse"
+<div class="container my-4">
+    <div class="card shadow border-0">
+        <!-- ================= Header ================= -->
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h3 class="mb-0">
+                        Add New {{ role_type|capitalize }}
+                    </h3>
+                    <small class="text-white-50">
+                        Fill in the details below to create a new {{ role_type }} account.
+                    </small>
+                </div>
+                <button class="btn btn-warning fw-bold" type="button" data-bs-toggle="collapse"
                     data-bs-target="#addUser" aria-expanded="false" aria-controls="addUser">
-                    Click Here
+                    Create {{ role_type|capitalize }}
                 </button>
             </div>
-            
         </div>
+        <!-- ================= Form ================= -->
         <div class="collapse" id="addUser">
-            <div class="card-body">
-                <form action="{{ url_for('admin.add_user', role_type = role_type) }}" method="POST">
-                    {{ form.hidden_tag() }}
-                
-                    <div class="row g-3 mb-3">
+            <form action="{{ url_for('admin.add_user', role_type=role_type) }}" method="POST">
+                {{ form.hidden_tag() }}
+                <div class="card-body">
+                    <!-- ================= User Information ================= -->
+                    <h4 class="pb-2 mb-4 border-bottom">
+                        User Information
+                    </h4>
+                    <div class="row g-4">
+                        <!-- Name -->
                         <div class="col-12 col-md-6">
-                            <div class="mb-3">
-                                {{ form.name.label(class='form-label') }}
-                                {{ form.name(class='form-control', placeholder='Enter Name') }}
-                                {% for error in form.name.errors %}
-                                <div class="text-danger small">
-                                    {{ error }}
-                                </div>
-                                {% endfor %}
+                            {{ form.name.label(class="form-label fw-semibold") }}
+                            {{ form.name(
+                            class="form-control",
+                            placeholder="Enter Full Name"
+                            ) }}
+                            {% if form.name.errors %}
+                            {% for error in form.name.errors %}
+                            <div class="mt-1 text-danger small">
+                                {{ error }}
                             </div>
+                            {% endfor %}
+                            {% endif %}
                         </div>
+                        <!-- Email -->
                         <div class="col-12 col-md-6">
-                            <div class="mb-3">
-                                {{ form.email.label(class='form-label') }}
-                                {{ form.email(class='form-control', placeholder='Enter Email') }}
-                                {% for error in form.email.errors %}
-                                <div class="text-danger small">
-                                    {{ error }}
-                                </div>
-                                {% endfor %}
+                            {{ form.email.label(class="form-label fw-semibold") }}
+                            {{ form.email(
+                            class="form-control",
+                            placeholder="Enter Email Address"
+                            ) }}
+                            {% if form.email.errors %}
+                            {% for error in form.email.errors %}
+                            <div class="mt-1 text-danger small">
+                                {{ error }}
                             </div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <div class="mb-3">
-                                {{ form.role.label(class='form-label') }}
-                                {{ form.role(class='form-select') }}
-                                {% for error in form.role.errors %}
-                                <div class="text-danger small">
-                                    {{ error }}
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <div class="mb-3">
-                                {{ form.password.label(class='form-label') }}
-                                {{ form.password(class='form-control', placeholder='Enter Password') }}
-                                {% for error in form.password.errors %}
-                                <div class="text-danger small">
-                                    {{ error }}
-                                </div>
-                                {% endfor %}
-                            </div>
+                            {% endfor %}
+                            {% endif %}
                         </div>
                     </div>
-                    <div class="row justify-content-center">
-                        <div class="col-auto">
-                            <div class="mb-3">
-                                {{ form.submit(class='btn btn-outline-primary px-5') }}
+                    <!-- ================= Account Details ================= -->
+                    <h4 class="mt-5 pb-2 mb-4 border-bottom">
+                        Account Details
+                    </h4>
+                    <div class="row g-4">
+                        <!-- Role -->
+                        <div class="col-12 col-md-6">
+                            {{ form.role.label(class="form-label fw-semibold") }}
+                            {{ form.role(class="form-select") }}
+                            {% if form.role.errors %}
+                            {% for error in form.role.errors %}
+                            <div class="mt-1 text-danger small">
+                                {{ error }}
                             </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                        <!-- Password -->
+                        <div class="col-12 col-md-6">
+                            {{ form.password.label(class="form-label fw-semibold") }}
+                            {{ form.password(
+                            class="form-control",
+                            placeholder="Enter Password"
+                            ) }}
+                            {% if form.password.errors %}
+                            {% for error in form.password.errors %}
+                            <div class="mt-1 text-danger small">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
                         </div>
                     </div>
-                </form>
-            </div>
+                </div>
+                <!-- ================= Footer ================= -->
+                <div class="card-footer bg-light">
+                    <div class="d-flex gap-3 justify-content-center">
+                        {{ form.submit(
+                        class="px-5 btn btn-success btn-lg fw-bold"
+                        ) }}
+                        <button type="reset" class="px-5 btn btn-outline-secondary btn-lg fw-bold">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

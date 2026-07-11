@@ -1,112 +1,109 @@
 {% extends "base.html" %}
-
 {% block content %}
-
-<section class="d-flex justify-content-between gap-3">
-    <div>
-        <section class="my-3">
-            <div class="container p-4 border border-danger">
-                <div class="card shadow-sm border-0">
-                    <div class="card-header bg-primary-subtle text-dark">
-                        <div class="d-flex justify-content-between gap-3">
-                            <h3 class="mb-0">Booking Stats</h3>
-                            <button class="btn btn-warning btn-sm fs-6 fw-bold" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#viewStats" aria-expanded="false" aria-controls="viewStats">
-                                View
-                            </button>
+<div class="container py-3">
+    <!-- ============== Trek Statistics  ============== -->
+    <div class="mb-4 card shadow-sm border-0">
+        <div class="card-header bg-dark text-white">
+            <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
+                <div>
+                    <h3 class="mb-0">
+                        Trek Statistics
+                    </h3>
+                </div>
+                <button class="btn btn-warning fw-semibold" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#trekStats" aria-expanded="false" aria-controls="trekStats">
+                    View Statistics
+                </button>
+            </div>
+        </div>
+        <div class="collapse" id="trekStats">
+            <div class="card-body">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+                    <!-- Total -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-primary text-white">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Total Treks
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ total }}
+                                </h2>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-body collapse" id="viewStats">
-                        <div class="row g-4">
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <div class="card h-100 shadow-sm border-0 bg-primary text-white">
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title">
-                                            Total Treks
-                                        </h4>
-                                        <p class="display-5 fw-bold mb-0">
-                                            {{ total_treks }}
-                                        </p>
-                                    </div>
-                                </div>
+                    <!-- Pending -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-warning text-dark">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Pending
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ pending }}
+                                </h2>
                             </div>
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <div class="card h-100 shadow-sm border-0 bg-success text-white">
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title">
-                                            Approved Treks
-                                        </h4>
-                                        <p class="display-5 fw-bold mb-0">
-                                            {{ approved }}
-                                        </p>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+                    <!-- Approved -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-success text-white">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Approved
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ approved }}
+                                </h2>
                             </div>
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <div class="card h-100 shadow-sm border-0 bg-warning text-dark">
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title">
-                                            Pending Treks
-                                        </h4>
-                                        <p class="display-5 fw-bold mb-0">
-                                            {{ pending }}
-                                        </p>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+                    <!-- Open -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-primary-subtle text-dark">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Open
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ open }}
+                                </h2>
                             </div>
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <div class="card h-100 shadow-sm border-0 bg-info text-danger-emphasis">
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title">
-                                            Open Treks
-                                        </h4>
-                                        <p class="display-5 fw-bold mb-0">
-                                            {{ open }}
-                                        </p>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+                    <!-- Closed -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-secondary-subtle text-dark">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Closed
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ closed }}
+                                </h2>
                             </div>
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <div class="card h-100 shadow-sm border-0 bg-success text-white">
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title">
-                                            Comleted Treks
-                                        </h4>
-                                        <p class="display-5 fw-bold mb-0">
-                                            {{ completed }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <div class="card h-100 shadow-sm border-0 bg-danger-subtle text-dark">
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title">
-                                            Closed Treks
-                                        </h4>
-                                        <p class="display-5 fw-bold mb-0">
-                                            {{ closed }}
-                                        </p>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+                    <!-- Ongoing -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm bg-primary-subtle text-dark">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    Ongoing
+                                </h5>
+                                <h2 class="mb-0 fw-bold display-5">
+                                    {{ ongoing }}
+                                </h2>
                             </div>
                         </div>
                     </div>
                 </div>
-        </section>
+            </div>
+        </div>
     </div>
-    <div>
-        <section class="my-3">
-        
-            {% include 'admin/add_trek.html' %}
-        </section>
-    </div>
-</section>
-
-
-
-<section class="my-3">
-    {% include 'admin/trek_table.html' %}
-</section>
-
+    <!-- ============== Create Trek ============== -->
+    {% include "admin/add_trek.html" %}
+    <!-- ============== Trek Table ============== -->
+    {% include "admin/trek_table.html" %}
+</div>
 {% endblock %}

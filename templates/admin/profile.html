@@ -1,97 +1,82 @@
 {% extends "base.html" %}
-
 {% block content %}
-
 <section class="container py-4">
-
     <div class="card shadow-sm border-0">
-
         <div class="card-header bg-dark text-white">
             <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center">
                 <div>
                     <h3 class="mb-1">My Profile</h3>
                     <p class="mb-0 text-light">View your account information.</p>
                 </div>
-
                 <a href="{{ url_for('admin.update_profile') }}" class="btn btn-warning fw-semibold">
                     Edit Profile
                 </a>
             </div>
         </div>
-
         <div class="card-body">
-
             <div class="mb-4 card border">
+                <!-- ============ Account Information ============  -->
                 <div class="card-header bg-secondary-subtle">
                     <h5 class="mb-0 fw-bold">Account Information</h5>
                 </div>
-
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-md-3 fw-semibold">User ID</div>
                         <div class="col-md-9">{{ current_user.id }}</div>
                     </div>
-
                     <div class="row mb-3">
                         <div class="col-md-3 fw-semibold">Role</div>
                         <div class="col-md-9">
                             <span class="badge bg-primary fs-6">{{ current_user.role|title }}</span>
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col-md-3 fw-semibold">Created On</div>
                         <div class="col-md-9">{{ current_user.created_at }}</div>
                     </div>
                 </div>
             </div>
-
+            <!-- ============ Personal Information ============  -->
             <div class="mb-4 card border">
                 <div class="card-header bg-warning-subtle">
                     <h5 class="mb-0 fw-bold">Personal Information</h5>
                 </div>
-
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-md-3 fw-semibold">First Name</div>
                         <div class="col-md-9">{{ current_user.first_name|title }}</div>
                     </div>
-
                     <div class="row mb-3">
                         <div class="col-md-3 fw-semibold">Last Name</div>
                         <div class="col-md-9">{{ current_user.last_name|title }}</div>
                     </div>
-
                     <div class="row">
                         <div class="col-md-3 fw-semibold">Email</div>
                         <div class="col-md-9">{{ current_user.email }}</div>
                     </div>
                 </div>
             </div>
-
+            <!-- ============ Conatact Information ============  -->
             <div class="mb-4 card border">
                 <div class="card-header bg-info-subtle">
                     <h5 class="mb-0 fw-bold">Contact Information</h5>
                 </div>
-
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-md-3 fw-semibold">Contact</div>
                         <div class="col-md-9">{{ current_user.admin_profile.contact }}</div>
                     </div>
-
                     <div class="row">
                         <div class="col-md-3 fw-semibold">Date of Birth</div>
                         <div class="col-md-9">{{ current_user.admin_profile.dob }}</div>
                     </div>
                 </div>
             </div>
-
+            <!-- ============ About Information ============  -->
             <div class="card border">
                 <div class="card-header bg-success-subtle">
                     <h5 class="mb-0 fw-bold">Bio</h5>
                 </div>
-
                 <div class="card-body">
                     {% if current_user.admin_profile.bio %}
                     <p class="mb-0">{{ current_user.admin_profile.bio }}</p>
@@ -100,11 +85,7 @@
                     {% endif %}
                 </div>
             </div>
-
         </div>
-
     </div>
-
 </section>
-
 {% endblock %}

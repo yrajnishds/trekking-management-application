@@ -1,97 +1,146 @@
 {% extends 'base.html' %}
 {% block content %}
-
-<section class="my-3">
-    <div class="container border border-primary p-3">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-secondary-subtle">
-                <div class="d-flex justify-content-between gap-3">
-                    <h3 class="mb-0">Trek Detail</h3>
-                    <code class="fs-3 fw-semibold mb-0">Trek Id: {{ id }}</code>
-                    <a href="{{ url_for('admin.trek') }}" class="btn btn-info text-dark fs-5 fw-semibold">Back</a>
+<section class="my-4">
+    <div class="container">
+        <div class="card shadow border-0">
+            <!-- ================= Header ================= -->
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 class="mb-0">
+                            Trek Details
+                        </h3>
+                        <small class="text-white-50">
+                            View complete information about the selected trek.
+                        </small>
+                    </div>
+                    <div class="text-end">
+                        <div class="fw-bold">
+                            Trek ID : {{ id }}
+                        </div>
+                        <a href="{{ url_for('admin.trek') }}" class="mt-2 btn btn-warning btn-sm fw-semibold">
+                            Back
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="card-body table-responsive">
-                <table class="table-borderless">
-                    <tr>
-                        <td class="fs-5 w-25 p-2"><code>Staff Id</code></td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 w-75 p-2"><code>{{ staff_id }}</code></td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 w-25 p-2"><code>Trek Code</code></td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 w-75 p-2"><code>{{ trek_code }}</code></td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 w-25 p-2">Trek Name</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 w-75 p-2">{{ trek_name|title }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 w-25 p-2">Total Slots</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 w-75 p-2">{{ slots }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 w-25 p-2">Booked Slots</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 w-75 p-2">{{ booked_slots }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 w-25 p-2">Available Slots</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 w-75 p-2">{{ slots - booked_slots }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 w-25 p-2">Location</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 w-75 p-2">{{ location }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 w-25 p-2">Trek Status</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 w-75 p-2">{{ trek_status|title }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 w-25 p-2">Difficulty</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 w-75 p-2">{{ difficulty|title }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 w-25 p-2">Start Date</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 w-75 p-2">{{ start_date }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 w-25 p-2">End Date</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 w-75 p-2">{{ end_date }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 w-25 p-2">Price</td>
-                        <td class="fs-5 p-2">:</td>
-                        <td class="fs-5 w-75 p-2">{{ price }}</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-5 align-top p-2">Description</td>
-                        <td>:</td>
-                        <td class="fs-5 text-wrap p-2">{{ description|title }}</td>
-                    </tr>
-                </table>
+            <!-- ================= Body ================= -->
+            <div class="card-body">
+                <h5 class="pb-2 mb-4 border-bottom">
+                    Trek Information
+                </h5>
+                <div class="table-responsive">
+                    <table class="mb-0 table table-borderless align-middle">
+                        <tbody>
+                            <tr>
+                                <th class="w-25 text-primary">Staff ID</th>
+                                <td>{{ staff_id }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-primary">Trek Code</th>
+                                <td>
+                                    <code>{{ trek_code }}</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-primary">Trek Name</th>
+                                <td>{{ trek_name|title }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-primary">Location</th>
+                                <td>{{ location }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-primary">Difficulty</th>
+                                <td>
+                                    <span class="badge bg-warning text-dark">
+                                        {{ difficulty|title }}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-primary">
+                                    Trek Status
+                                </th>
+                                <td>
+                                    <span class="badge bg-success">
+                                        {{ trek_status|title }}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-primary">Duration</th>
+                                <td>{{ duration }} Days</td>
+                            </tr>
+                            <tr>
+                                <th class="text-primary">Start Date</th>
+                                <td>{{ start_date }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-primary">End Date</th>
+                                <td>{{ end_date }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-primary">Price</th>
+                                <td>₹ {{ price }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- ================= Slot Information ================= -->
+                <h5 class="mt-5 pb-2 mb-4 border-bottom">
+                    Slot Information
+                </h5>
+                <div class="table-responsive">
+                    <table class="table table-borderless align-middle">
+                        <tbody>
+                            <tr>
+                                <th class="w-25 text-primary">
+                                    Total Slots
+                                </th>
+                                <td>{{ slots }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-primary">
+                                    Booked Slots
+                                </th>
+                                <td>{{ booked_slots }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-primary">
+                                    Available Slots
+                                </th>
+                                <td>
+                                    <span class="badge bg-info fs-6">
+                                        {{ slots - booked_slots }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- ================= Description ================= -->
+                <h5 class="mt-5 pb-2 mb-4 border-bottom">
+                    Description
+                </h5>
+                <div class="p-3 border rounded bg-light">
+                    {{ description }}
+                </div>
             </div>
-            <div class="card-footer bg-primary-subtle">
-                <div class="d-flex justify-content-between gap-3">
-                    <a href="{{ url_for('admin.view_staff', id = staff_id) }}" class="btn btn-sm btn-outline-info fw-bold text-primary">View
-                        Staff Details
+            <!-- ================= Footer ================= -->
+            <div class="card-footer bg-light">
+                <div class="d-flex flex-wrap gap-3 justify-content-between">
+                    <a href="{{ url_for('admin.view_staff', id=staff_id) }}"
+                        class="btn btn-outline-primary fw-semibold">
+                        View Staff Details
                     </a>
-                    <a href="{{ url_for('admin.view_booking', trek_id = id) }}" class="btn btn-sm btn-outline-danger fw-bold text-primary">View
-                        All Bookings
+                    <a href="{{ url_for('admin.view_booking', trek_id=id) }}"
+                        class="btn btn-outline-success fw-semibold">
+                        View All Bookings
                     </a>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
 {% endblock %}

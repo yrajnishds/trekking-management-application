@@ -1,59 +1,37 @@
-<div class="container p-3 border border-black">
-    <div class="card boarder-0 shadow-sm">
-        <div class="card-header bg-warning">
-            <h3 class="mb-0">
-                Treks
-            </h3>
-        </div>
-        <div class="card-body table-responsive">
-            <table class="table table-bordered table-striped text-center">
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-warning">
+        <h4 class="mb-0 fw-bold">
+            Manage Treks
+        </h4>
+    </div>
+    <div class="p-0 card-body">
+        <div class="table-responsive">
+            <table class="mb-0 table table-bordered table-striped table-hover align-middle text-center">
                 <thead class="table-dark">
                     <tr>
-                        <th colspan="9" class="text-info">
-                            Treks Details
-                        </th>
-                        <th colspan="2" class="text-info">
-                            Actions
-                        </th>
-                    </tr>
-                    <tr>
+                        <th>ID</th>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Staff</th>
+                        <th>Difficulty</th>
+                        <th>Duration</th>
+                        <th>Status</th>
+                        <th>Slots</th>
+                        <th>Details</th>
                         <th>
-                            Id
-                        </th>
-                        <th>
-                            Code
-                        </th>
-                        <th>
-                            Name
-                        </th>
-                        <th>
-                            Sid
-                        </th>
-                        <th>
-                            Difficulty
-                        </th>
-                        <th>
-                            Duration
-                        </th>
-                        <th>
-                            Trek Status
-                        </th>
-                        <th>
-                            Slots
-                        </th>
-                        <th>
-                            Details
-                        </th>
-                        <th>
-                            <div class="d-flex flex-column">
-                                <p class="fs-6 m-0">Assign Staff</p>
-                                <code class="m-0">Choose Staff</code>
+                            <div class="small">
+                                Assign Staff
+                                <div class="fw-normal text-info">
+                                    Select Staff
+                                </div>
                             </div>
                         </th>
                         <th>
-                            <div class="d-flex flex-column">
-                                <p class="fs-6 m-0">Activation</p>
-                                <code class="m-0">Choose Status</code>
+                            <div class="small">
+                                Trek Status
+                                <div class="fw-normal text-info">
+                                    Update Status
+                                </div>
                             </div>
                         </th>
                     </tr>
@@ -61,83 +39,120 @@
                 <tbody>
                     {% for trek in results.treks %}
                     <tr>
-                        <td>
+                        <td class="fw-semibold">
                             {{ trek.id }}
                         </td>
-                        <td>
+                        <td class="text-nowrap">
                             {{ trek.trek_code }}
                         </td>
-                        <td>
+                        <td class="text-start">
                             {{ trek.trek_name }}
                         </td>
                         <td>
+                            {% if trek.staff_id %}
                             {{ trek.staff_id }}
+                            {% else %}
+                            <span class="text-muted">
+                                —
+                            </span>
+                            {% endif %}
                         </td>
                         <td>
-                            {% if trek.difficulty == 'hard' %} <span class="badge bg-danger fs-6">Hard</span>
-                            {% elif trek.difficulty == 'moderate' %} <span
-                                class="badge bg-warning text-dark fs-6">Moderate</span>
-                            {% else %} <span class="badge bg-info text-dark fs-6">Easy</span>
+                            {% if trek.difficulty == "hard" %}
+                            <span class="badge bg-danger">
+                                Hard
+                            </span>
+                            {% elif trek.difficulty == "moderate" %}
+                            <span class="badge bg-warning text-dark">
+                                Moderate
+                            </span>
+                            {% else %}
+                            <span class="badge bg-success">
+                                Easy
+                            </span>
                             {% endif %}
                         </td>
                         <td>
                             {{ trek.duration }}
                         </td>
                         <td>
-                            {% if trek.trek_status == 'completed' %} <span
-                                class="badge bg-success fs-6">Completed</span>
-                            {% elif trek.trek_status == 'approved' %} <span
-                                class="badge bg-primary fs-6">Approved</span>
-                            {% elif trek.trek_status == 'pending' %} <span class="badge bg-warning fs-6">Pending</span>
-                            {% elif trek.trek_status == 'open' %} <span class="badge bg-info fs-6">Open</span>
-                            {% elif trek.trek_status == 'closed' %} <span
-                                class="badge bg-dark-subtle fs-6">Closed</span>
-                            {% else %} <span class="badge bg-danger fs-6">Cancelled</span>
+                            {% if trek.trek_status == "completed" %}
+                            <span class="badge bg-success">
+                                Completed
+                            </span>
+                            {% elif trek.trek_status == "approved" %}
+                            <span class="badge bg-primary">
+                                Approved
+                            </span>
+                            {% elif trek.trek_status == "pending" %}
+                            <span class="badge bg-warning text-dark">
+                                Pending
+                            </span>
+                            {% elif trek.trek_status == "open" %}
+                            <span class="badge bg-info text-dark">
+                                Open
+                            </span>
+                            {% elif trek.trek_status == "closed" %}
+                            <span class="badge bg-secondary">
+                                Closed
+                            </span>
+                            {% else %}
+                            <span class="badge bg-danger">
+                                Cancelled
+                            </span>
                             {% endif %}
                         </td>
                         <td>
                             {{ trek.slots }}
                         </td>
                         <td>
-                            <a href="{{ url_for('admin.view_trek', id = trek.id) }}"
-                                class="btn btn-sm btn-outline-info fw-bold text-danger-emphasis">View</a>
+                            <a href="{{ url_for('admin.view_trek', id=trek.id) }}"
+                                class="btn btn-outline-primary btn-sm">
+                                View
+                            </a>
                         </td>
+                        <!-- Assign Staff -->
                         <td>
                             {% if not trek.staff_id %}
-                            <form
-                                action="{{ url_for('admin.admin_trek_action', code = trek.trek_code , action = 'assign_staff') }}"
-                                method="post" class="d-flex justify-content-md-center gap-1">
+                            <form action="{{ url_for('admin.admin_trek_action',
+                                    code=trek.trek_code,
+                                    action='assign_staff') }}" method="POST"
+                                class="d-flex flex-wrap gap-2 justify-content-center align-items-center">
                                 {{ assign_staff_form.hidden_tag() }}
-                                <div>
-                                    {{ assign_staff_form.assigned_staff(class='form-select-sm') }}
-                                </div>
-                                <button class="btn btn-primary btn-sm fw-semibold">Assign</button>
-
+                                {{ assign_staff_form.assigned_staff(
+                                class="form-select form-select-sm w-auto"
+                                ) }}
+                                <button type="submit" class="btn btn-primary btn-sm">
+                                    Assign
+                                </button>
                             </form>
                             {% else %}
-                            <form
-                                action="{{ url_for('admin.admin_trek_action', code = trek.trek_code, action = 'change_staff') }}"
-                                method="post" class="d-flex justify-content-md-center gap-1">
+                            <form action="{{ url_for('admin.admin_trek_action',
+                                    code=trek.trek_code,
+                                    action='change_staff') }}" method="POST"
+                                class="d-flex flex-wrap gap-2 justify-content-center align-items-center">
                                 {{ assign_staff_form.hidden_tag() }}
-
-                                <div>
-                                    {{ assign_staff_form.assigned_staff(class='form-select-sm') }}
-                                </div>
-                                <button class="btn btn-secondary btn-sm fw-semibold">Change</button>
+                                {{ assign_staff_form.assigned_staff(
+                                class="form-select form-select-sm w-auto"
+                                ) }}
+                                <button type="submit" class="btn btn-secondary btn-sm">
+                                    Change
+                                </button>
                             </form>
                             {% endif %}
                         </td>
+                        <!-- Trek Status -->
                         <td>
-
-                            <form action="{{ url_for('admin.admin_trek_action_status', code = trek.trek_code) }}"
-                                method="post" class="d-flex justify-content-md-center gap-1">
+                            <form action="{{ url_for('admin.admin_trek_action_status',
+                                    code=trek.trek_code) }}" method="POST"
+                                class="d-flex flex-wrap gap-2 justify-content-center align-items-center">
                                 {{ trek_action_form.hidden_tag() }}
-                                <div>
-                                    <button class="btn btn-sm btn-warning fw-semibold text-dark">Update</button>
-                                </div>
-                                <div>
-                                    {{ trek_action_form.trek_action(class='form-select-sm') }}
-                                </div>
+                                {{ trek_action_form.trek_action(
+                                class="form-select form-select-sm w-auto"
+                                ) }}
+                                <button type="submit" class="btn btn-warning btn-sm">
+                                    Update
+                                </button>
                             </form>
                         </td>
                     </tr>

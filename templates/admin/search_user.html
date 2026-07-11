@@ -1,145 +1,166 @@
-<div class="container p-3 border border-primary">
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-danger-subtle">
-            <h3 class="mb-0"> Trekkers/Staffs </h3>
-        </div>
-        <div class="card-body table-responsive">
-            <table class="table table-bordered table-striped text-center">
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-danger-subtle">
+        <h4 class="mb-0 fw-bold">
+            Manage Trekkers / Staff
+        </h4>
+    </div>
+    <div class="p-0 card-body">
+        <div class="table-responsive">
+            <table class="mb-0 table table-bordered table-striped table-hover align-middle text-center">
                 <thead class="table-dark">
                     <tr>
-                        <th colspan="7" class=" text-info">
-                            Trekkers/Staffs Details
-                        </th>
-                        <th colspan="4" class="text-info">
-                            Actions
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>
-                            Id
-                        </th>
-                        <th>
-                            First Name
-                        </th>
-                        <th>
-                            Last Name
-                        </th>
-                        <th>
-                            Email
-                        </th>
-                        <th>
-                            Approval Status
-                        </th>
-                        <th>
-                            Active Status
-                        </th>
-                        <th>
-                            Block Status
-                        </th>
-                        <th>
-                            Profile
-                        </th>
-                        <th>
-                            Approval
-                        </th>
-                        <th>
-                            Activation
-                        </th>
-                        <th>
-                            Restriction
-                        </th>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Approval</th>
+                        <th>Activation</th>
+                        <th>Restriction</th>
+                        <th>Profile</th>
+                        <th>Approve</th>
+                        <th>Activate</th>
+                        <th>Restrict</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for user in results.users %}
                     <tr>
-                        <td>
+                        <td class="fw-semibold">
                             {{ user.id }}
                         </td>
-                        <td>
+                        <td class="text-start">
                             {{ user.first_name|title }}
                         </td>
-                        <td>
-                            {% if user.last_name %}
-                            {{ user.last_name|title }}
-                            {% endif %}
+                        <td class="text-start">
+                            {{ user.last_name|default('-', true)|title }}
                         </td>
-                        <td>
+                        <td class="text-start text-nowrap">
                             {{ user.email }}
                         </td>
+                        <!-- Approval -->
                         <td>
-                            {% if user.is_approved %} <span class="badge bg-success text-white fs-6">Approved</span>
-                            {% else %} <span class="badge bg-warning text-dark fs-6">Pending</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if user.is_active %} <span class="badge bg-success text-white fs-6">Active</span>
-                            {% else %} <span class="badge bg-warning text-dark fs-6">Inactive</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if user.is_blocked %} <span class="badge bg-danger text-dark fs-6">Blacklisted</span>
-                            {% else %} <span class="badge bg-danger-subtle text-dark fs-6">Not Blacklisted</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if user.role == 'staff' or user.role == 'admin' %}
-                            <a href="{{ url_for('admin.view_staff', id = user.id ) }}"
-                                class="btn btn-sm btn-outline-info fw-bold text-danger-emphasis">
-                                View
-                            </a>
+                            {% if user.is_approved %}
+                            <span class="badge bg-success">
+                                Approved
+                            </span>
                             {% else %}
-                            <a href="{{ url_for('admin.view_trekker', id = user.id ) }}"
-                                class="btn btn-sm btn-outline-info fw-bold text-danger-emphasis">
-                                View
-                            </a>
-                            {% endif %}
-                        
-                        </td>
-                        <td>
-
-                            {% if not user.is_approved %}
-                            <form
-                                action="{{ url_for('admin.admin_action',role_type = role_type, id = user.id, action = 'approved') }}"
-                                method="post">
-                                <button class="btn btn-success btn-sm fw-bold">Approve</button>
-                            </form>
+                            <span class="badge bg-warning text-dark">
+                                Pending
+                            </span>
                             {% endif %}
                         </td>
+                        <!-- Active -->
                         <td>
                             {% if user.is_active %}
-                            <form
-                                action="{{ url_for('admin.admin_action',role_type = role_type, id = user.id, action = 'deactivate') }}"
-                                method="post">
-                                <button class="btn btn-warning btn-sm fw-bold">Deactivate</button>
+                            <span class="badge bg-success">
+                                Active
+                            </span>
+                            {% else %}
+                            <span class="badge bg-secondary">
+                                Inactive
+                            </span>
+                            {% endif %}
+                        </td>
+                        <!-- Block -->
+                        <td>
+                            {% if user.is_blocked %}
+                            <span class="badge bg-danger">
+                                Blacklisted
+                            </span>
+                            {% else %}
+                            <span class="badge bg-info text-dark">
+                                Not Blacklisted
+                            </span>
+                            {% endif %}
+                        </td>
+                        <!-- Profile -->
+                        <td>
+                            {% if user.role in ["staff", "admin"] %}
+                            <a href="{{ url_for('admin.view_staff', id=user.id) }}"
+                                class="btn btn-outline-primary btn-sm">
+                                View
+                            </a>
+                            {% else %}
+                            <a href="{{ url_for('admin.view_trekker', id=user.id) }}"
+                                class="btn btn-outline-primary btn-sm">
+                                View
+                            </a>
+                            {% endif %}
+                        </td>
+                        <!-- Approval Action -->
+                        <td>
+                            {% if not user.is_approved %}
+                            <form action="{{ url_for(
+                                    'admin.admin_action',
+                                    role_type=role_type,
+                                    id=user.id,
+                                    action='approved'
+                                ) }}" method="POST">
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    Approve
+                                </button>
                             </form>
                             {% else %}
-                            <form
-                                action="{{ url_for('admin.admin_action',role_type = role_type, id = user.id, action = 'activate') }}"
-                                method="post">
-                                <button class="btn btn-success btn-sm fw-bold">Activate</button>
+                            <span class="text-muted small">
+                                —
+                            </span>
+                            {% endif %}
+                        </td>
+                        <!-- Activation -->
+                        <td>
+                            {% if user.is_active %}
+                            <form action="{{ url_for(
+                                    'admin.admin_action',
+                                    role_type=role_type,
+                                    id=user.id,
+                                    action='deactivate'
+                                ) }}" method="POST">
+                                <button type="submit" class="btn btn-warning btn-sm">
+                                    Deactivate
+                                </button>
+                            </form>
+                            {% else %}
+                            <form action="{{ url_for(
+                                    'admin.admin_action',
+                                    role_type=role_type,
+                                    id=user.id,
+                                    action='activate'
+                                ) }}" method="POST">
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    Activate
+                                </button>
                             </form>
                             {% endif %}
                         </td>
+                        <!-- Restriction -->
                         <td>
                             {% if user.is_blocked %}
-                            <form
-                                action="{{ url_for('admin.admin_action',role_type = role_type, id = user.id, action = 'unblock') }}"
-                                method="post">
-                                <button class="btn btn-outline-warning btn-sm fw-bold text-dark">Unblacklist</button>
+                            <form action="{{ url_for(
+                                    'admin.admin_action',
+                                    role_type=role_type,
+                                    id=user.id,
+                                    action='unblock'
+                                ) }}" method="POST">
+                                <button type="submit" class="btn btn-outline-warning btn-sm">
+                                    Unblock
+                                </button>
                             </form>
                             {% else %}
-                            <form
-                                action="{{ url_for('admin.admin_action',role_type = role_type, id = user.id, action = 'block') }}"
-                                method="post">
-                                <button class="btn btn-danger btn-sm fw-bold">Blacklist</button>
+                            <form action="{{ url_for(
+                                    'admin.admin_action',
+                                    role_type=role_type,
+                                    id=user.id,
+                                    action='block'
+                                ) }}" method="POST">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    Blacklist
+                                </button>
                             </form>
                             {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
-
             </table>
         </div>
     </div>
