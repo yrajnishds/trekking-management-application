@@ -1,63 +1,58 @@
-<nav class="navbar navbar-expand-lg bg-white shadow-sm border-bottom">
-    <div class="container-fluid">
-
-        <a class="navbar-brand fw-bold" href="{{ url_for('trekker.trekker') }}">
-            Trek Management
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container-lg">
+        <!-- ================= Brand ================= -->
+        <a class="navbar-brand fw-bold" href="{{ url_for('trekker.dashboard') }}">
+            Trek Management System
         </a>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-
+        <!-- ================= Mobile Toggle ================= -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#trekkerNavbar"
+            aria-controls="trekkerNavbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-
         </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-
-            <ul class="navbar-nav me-auto">
-
+        <!-- ================= Navigation ================= -->
+        <div class="collapse navbar-collapse" id="trekkerNavbar">
+            <ul class="mb-2 mb-lg-0 navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('trekker.dashboard') }}">
+                    <a class="nav-link fw-semibold {% if page == 'dashboard' %}active{% endif %}"
+                        href="{{ url_for('trekker.dashboard') }}">
                         Dashboard
                     </a>
                 </li>
-
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('trekker.trek') }}">
+                    <a class="nav-link fw-semibold {% if page == 'trek' %}active{% endif %}"
+                        href="{{ url_for('trekker.trek') }}">
                         Treks
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('trekker.booking') }}">
+                    <a class="nav-link fw-semibold {% if page == 'booking' %}active{% endif %}"
+                        href="{{ url_for('trekker.booking') }}">
                         Bookings
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('trekker.history') }}">
+                    <a class="nav-link fw-semibold {% if page == 'history' %}active{% endif %}"
+                        href="{{ url_for('trekker.history') }}">
                         History
                     </a>
                 </li>
-
             </ul>
-
-            <form action="{{ url_for('trekker.search') }}" class="d-flex me-3">
-
-                <input type="text" name="search" class="form-control me-2" placeholder="Search treks...">
-
-                <button class=" btn btn-outline-primary">
+            <!-- ================= Search ================= -->
+            <form action="{{ url_for('trekker.search') }}" method="GET" class="d-flex my-3 my-lg-0 me-lg-3">
+                <input type="search" name="search" class="form-control" placeholder="Search..." autocomplete="off">
+                <button type="submit" class="ms-2 btn btn-light">
                     Search
                 </button>
-
             </form>
-
-            <a href="{{ url_for('trekker.profile') }}" class="btn btn-outline-secondary me-2">
-                Profile
-            </a>
-
-            <a href="{{ url_for('auth.logout') }}" class="btn btn-danger">
-                Logout
-            </a>
-
+            <!-- ================= Actions ================= -->
+            <div class="d-flex gap-2">
+                <a href="{{ url_for('trekker.profile') }}" class="btn btn-outline-light">
+                    Profile
+                </a>
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-danger">
+                    Logout
+                </a>
+            </div>
         </div>
-
     </div>
 </nav>

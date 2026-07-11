@@ -1,121 +1,166 @@
-<div class="container p-3 border border-black">
-    <div class="card boarder-0 shadow-sm">
-        <div class="card-header bg-warning">
-            <h3 class="mb-0">
+<div class="container py-3">
+    <div class="card shadow-sm border-0">
+        <div class="d-flex card-header justify-content-between align-items-center bg-warning-subtle">
+            <h4 class="mb-0 fw-bold">
                 Treks
-            </h3>
+            </h4>
+            <div class="d-flex gap-2 align-items-center">
+                <a href="{{ url_for('trekker.trek') }}" class="btn btn-secondary btn-sm">
+                    Clear Filters
+                </a>
+                <button class="btn btn-outline-warning btn-sm" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#trekFilters">
+                    Filters
+                </button>
+            </div>
         </div>
-        <div class="card-body table-responsive">
-            <table class="table table-bordered table-striped text-center">
-                <thead class="table-dark">
-                    <tr>
-                        <th colspan="9" class="text-info">
-                            Treks Details
-                        </th>
-                        <th colspan="1" class="text-info">
-                            Actions
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>
-                            Id
-                        </th>
-                        <th>
-                            Code
-                        </th>
-                        <th>
-                            Name
-                        </th>
-                        <th>
-                            Sid
-                        </th>
-                        <th>
-                            Difficulty
-                        </th>
-                        <th>
-                            Duration
-                        </th>
-                        <th>
-                            Trek Status
-                        </th>
-                        <th>
-                            Slots
-                        </th>
-                        <th>
-                            Details
-                        </th>
-                        <th>
-                            Book Slots
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for trek in treks %}
-                    <tr>
-                        <td>
-                            {{ trek.id }}
-                        </td>
-                        <td>
-                            {{ trek.trek_code }}
-                        </td>
-                        <td>
-                            {{ trek.trek_name }}
-                        </td>
-                        <td>
-                            {{ trek.staff_id }}
-                        </td>
-                        <td>
-                            {% if trek.difficulty == 'hard' %} <span class="badge bg-danger fs-6">Hard</span>
-                            {% elif trek.difficulty == 'moderate' %} <span
-                                class="badge bg-warning text-dark fs-6">Moderate</span>
-                            {% else %} <span class="badge bg-info text-dark fs-6">Easy</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {{ trek.duration }}
-                        </td>
-                        <td>
-                            {% if trek.trek_status == 'completed' %} <span
-                                class="badge bg-success fs-6">Completed</span>
-                            {% elif trek.trek_status == 'approved' %} <span
-                                class="badge bg-primary fs-6">Approved</span>
-                            {% elif trek.trek_status == 'pending' %} <span
-                                class="badge bg-warning fs-6">Pending</span>
-                            {% elif trek.trek_status == 'open' %} <span class="badge bg-info fs-6">Open</span>
-                            {% elif trek.trek_status == 'closed' %} <span
-                                class="badge bg-dark-subtle fs-6 text-dark">Closed</span>
-                            {% else %} <span class="badge bg-danger fs-6">Cancelled</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {{ trek.slots }}
-                        </td>
-                        <td>
-                            <a href="#" class="btn btn-sm btn-outline-info fw-bold text-danger-emphasis">View</a>
-                        </td>
-                        <td>
-                            {% if (trek.trek_status == 'open') and (trek.booked_slots < trek.slots) %} <form
-                                action="{{ url_for('trekker.trekker_booking_action') }}" method="POST">
-                                <input type="number" , name="trekker_id" , value="{{ current_user.id }}" hidden>
-                                <input type="number" , name="trek_id" , value="{{ trek.id }}" hidden>
-                                <button type="submit" class="btn btn-sm fw-semibold btn-outline-primary">Book Now</button>
-                                </form>
-                                {% elif (trek.trek_status == 'open') and (trek.booked_slots >= trek.slots) %}
-                                <span class="badge bg-primary fs-6 fw-bold">Slot Full</span>
-                                {% elif trek.trek_status == 'completed' %}
-                                <span class="badge bg-success fs-6 fw-bold">Ended</span>
-                                {% elif trek.trek_status == 'closed' %}
-                                <span class="badge bg-dark-subtle text-dark fs-6 fw-bold">Booking Closed</span>
-                                {% elif trek.trek_status == 'cancelled' %}
-                                <span class="badge bg-danger fs-6 fw-bold">Cancelled</span>
-                                {% elif trek.trek_status == 'pending' or trek.trek_status == 'approved' %}
-                                <span class="badge bg-info fs-6 fw-bold">Coming Soon</span>
+        <div class="collapse" id="trekFilters">
+            <div class="card-body bg-light border-bottom">
+                <form method="GET">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <!-- Search -->
+                        </div>
+                        <div class="col-md-3">
+                            <!-- Difficulty -->
+                        </div>
+                        <div class="col-md-3">
+                            <!-- Status -->
+                        </div>
+                        <div class="col-md-2">
+                            <!-- Sort -->
+                        </div>
+                    </div>
+                    <div class="d-flex mt-3 gap-2 justify-content-end">
+                        <button class="btn btn-warning">
+                            Apply
+                        </button>
+                        <a href="{{ url_for('trekker.trek') }}" class="btn btn-secondary">
+                            Reset
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="p-0 card-body">
+            <div class="table-responsive">
+                <table class="mb-0 table table-bordered table-striped table-hover align-middle text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Staff</th>
+                            <th>Difficulty</th>
+                            <th>Duration</th>
+                            <th>Status</th>
+                            <th>Slots</th>
+                            <th>View</th>
+                            <th>Booking</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for trek in treks %}
+                        <tr>
+                            <td>{{ trek.id }}</td>
+                            <td class="fw-semibold text-nowrap">
+                                {{ trek.trek_code }}
+                            </td>
+                            <td class="text-start">
+                                {{ trek.trek_name }}
+                            </td>
+                            <td>
+                                {{ trek.staff_id or "—" }}
+                            </td>
+                            <td>
+                                {% if trek.difficulty == "hard" %}
+                                <span class="badge bg-danger">
+                                    Hard
+                                </span>
+                                {% elif trek.difficulty == "moderate" %}
+                                <span class="badge bg-warning text-dark">
+                                    Moderate
+                                </span>
+                                {% else %}
+                                <span class="badge bg-success">
+                                    Easy
+                                </span>
                                 {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                            </td>
+                            <td>
+                                {{ trek.duration }}
+                            </td>
+                            <td>
+                                {% if trek.trek_status == "completed" %}
+                                <span class="badge bg-success">
+                                    Completed
+                                </span>
+                                {% elif trek.trek_status == "approved" %}
+                                <span class="badge bg-primary">
+                                    Approved
+                                </span>
+                                {% elif trek.trek_status == "pending" %}
+                                <span class="badge bg-warning text-dark">
+                                    Pending
+                                </span>
+                                {% elif trek.trek_status == "open" %}
+                                <span class="badge bg-info text-dark">
+                                    Open
+                                </span>
+                                {% elif trek.trek_status == "closed" %}
+                                <span class="badge bg-secondary">
+                                    Closed
+                                </span>
+                                {% else %}
+                                <span class="badge bg-danger">
+                                    Cancelled
+                                </span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ trek.booked_slots }} / {{ trek.slots }}
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-outline-primary btn-sm">
+                                    View
+                                </a>
+                            </td>
+                            <td>
+                                {% if trek.trek_status == "open" and trek.booked_slots < trek.slots %} <form
+                                    action="{{ url_for('trekker.trekker_booking_action') }}" method="POST">
+                                    <input type="hidden" name="trekker_id" value="{{ current_user.id }}">
+                                    <input type="hidden" name="trek_id" value="{{ trek.id }}">
+                                    <button type="submit" class="btn btn-primary btn-sm fw-semibold">
+                                        Book Now
+                                    </button>
+                                    </form>
+                                    {% elif trek.trek_status == "open" and trek.booked_slots >= trek.slots %}
+                                    <span class="badge bg-secondary">
+                                        Slot Full
+                                    </span>
+                                    {% elif trek.trek_status == "completed" %}
+                                    <span class="badge bg-success">
+                                        Ended
+                                    </span>
+                                    {% elif trek.trek_status == "closed" %}
+                                    <span class="badge bg-secondary">
+                                        Booking Closed
+                                    </span>
+                                    {% elif trek.trek_status == "cancelled" %}
+                                    <span class="badge bg-danger">
+                                        Cancelled
+                                    </span>
+                                    {% else %}
+                                    <span class="badge bg-info text-dark">
+                                        Coming Soon
+                                    </span>
+                                    {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

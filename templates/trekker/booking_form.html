@@ -1,48 +1,87 @@
-<div class="container p-3 border border-primary">
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-primary-subtle">
-            <div class="d-flex justify-content-between gap-3">
-                <h3 class="mb-0">Book Available Treks</h3>
-                <button type="button" class="btn btn-info btn-sm fw-bold fs-6"
-                    data-bs-toggle="collapse" data-bs-target="#bookTrek" aria-expanded="false" aria-controls="bookTerk">
-                    Click Here
+<div class="container my-4">
+    <div class="card shadow border-0">
+        <!-- ================= Header ================= -->
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h3 class="mb-0">
+                        Book a Trek
+                    </h3>
+                    <small class="text-white-50">
+                        Select a trekker, booking date, and an available trek.
+                    </small>
+                </div>
+                <button type="button" class="btn btn-warning fw-bold" data-bs-toggle="collapse"
+                    data-bs-target="#bookTrek" aria-expanded="false" aria-controls="bookTrek">
+                    Book Trek
                 </button>
             </div>
         </div>
+        <!-- ================= Form ================= -->
         <div class="collapse" id="bookTrek">
-            <div class="card-body">
-                <form action="{{ url_for('trekker.trekker_booking_action') }}" method="POST">
-                    {{ form.hidden_tag() }}
-
-                    <div class="row g-3 mb-3">
+            <form action="{{ url_for('trekker.trekker_booking_action') }}" method="POST">
+                {{ form.hidden_tag() }}
+                <div class="card-body">
+                    <!-- ================= Booking Details ================= -->
+                    <h4 class="pb-2 mb-4 border-bottom">
+                        Booking Details
+                    </h4>
+                    <div class="row g-4">
+                        <!-- Trekker -->
                         <div class="col-12 col-md-6">
-                            <div class="mb-3">
-                                {{ form.trekker_id.label(class='form-label') }}
-                                {{ form.trekker_id(class='form-select') }}
+                            {{ form.trekker_id.label(class="form-label fw-semibold") }}
+                            {{ form.trekker_id(class="form-select") }}
+                            {% if form.trekker_id.errors %}
+                            {% for error in form.trekker_id.errors %}
+                            <div class="mt-1 text-danger small">
+                                {{ error }}
                             </div>
+                            {% endfor %}
+                            {% endif %}
                         </div>
+                        <!-- Booking Date -->
                         <div class="col-12 col-md-6">
-                            <div class="mb-3">
-                                {{ form.date.label(class='form-label') }}
-                                {{ form.date(class='form-select') }}
+                            {{ form.date.label(class="form-label fw-semibold") }}
+                            {{ form.date(class="form-select") }}
+                            {% if form.date.errors %}
+                            {% for error in form.date.errors %}
+                            <div class="mt-1 text-danger small">
+                                {{ error }}
                             </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="mb-3">
-                                {{ form.trek_id.label(class='form-label') }}
-                                {{ form.trek_id(class='form-select') }}
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="col-auto text-center mb-0">
-                                <button type="submit" class="btn btn-success px-3 fw-bold fs-5">Book</button>
-                            </div>
+                            {% endfor %}
+                            {% endif %}
                         </div>
                     </div>
-                    
-
-                </form>
-            </div>
+                    <!-- ================= Trek Selection ================= -->
+                    <h4 class="mt-5 pb-2 mb-4 border-bottom">
+                        Trek Selection
+                    </h4>
+                    <div class="row g-4">
+                        <div class="col-12">
+                            {{ form.trek_id.label(class="form-label fw-semibold") }}
+                            {{ form.trek_id(class="form-select") }}
+                            {% if form.trek_id.errors %}
+                            {% for error in form.trek_id.errors %}
+                            <div class="mt-1 text-danger small">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <!-- ================= Footer ================= -->
+                <div class="card-footer bg-light">
+                    <div class="d-flex gap-3 justify-content-center">
+                        <button type="submit" class="px-5 btn btn-success btn-lg fw-bold">
+                            Book Trek
+                        </button>
+                        <button type="reset" class="px-5 btn btn-outline-secondary btn-lg fw-bold">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
