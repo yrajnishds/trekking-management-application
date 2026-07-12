@@ -87,5 +87,48 @@ def booking_sort(query, sort='booking_date', orderby='desc'):
         else:
             query = query.order_by(Booking.id.asc(), Booking.id.desc())
             return query
+
+
+def user_filter(query, is_approved=None, is_active=None, is_blocked=None):
+    if is_active == 'yes':
+        query = query.filter(User.is_active == True)
+    elif is_active == 'no':
+        query = query.filter(User.is_active == False)
+    
+    if is_blocked == 'yes':
+        query = query.filter(User.is_blocked == True)
+    elif is_blocked == 'no':
+        query = query.filter(User.is_blocked == False)
+    
+    if is_approved == 'yes':
+        query = query.filter(User.is_approved== True)
+    elif is_approved == 'no':
+        query = query.filter(User.is_approved == False)
+    
+    return query
+
+def user_sort(query, sort='created_at', orderby='asc'):
+    if sort == 'created_at':
+        if orderby == 'desc':
+            query = query.order_by(User.created_at.desc(), User.id.desc())
+            return query
+        else:
+            query = query.order_by(User.created_at.asc(), User.id.desc())
+            return query
+    if sort == 'email':
+        if orderby == 'desc':
+            query = query.order_by(User.email.desc(), User.id.desc())
+            return query
+        else:
+            query = query.order_by(User.email.asc(), User.id.desc())
+            return query
+    if sort == 'first_name':
+        if orderby == 'desc':
+            query = query.order_by(User.first_name.desc(), User.last_name.desc(), User.id.desc())
+            return query
+        else:
+            query = query.order_by(User.first_name.asc(),User.last_name.asc(), User.id.desc())
+            return query
+    return query
         
 

@@ -18,17 +18,49 @@
             <div class="card-body bg-light border-bottom">
                 <form method="GET">
                     <div class="row g-3">
+                        <!-- Approval Status -->
                         <div class="col-md-4">
-                            <!-- Search -->
+                            <label class="form-label">Approval Status</label>
+                            <select class="form-select" name="is_approved">
+                                <option value="">All</option>
+                                <option value="no">Pending</option>
+                                <option value="yes">Approved</option>
+                            </select>
                         </div>
-                        <div class="col-md-3">
-                            <!-- Approval -->
+                        <!-- Blocked Status -->
+                        <div class="col-md-4">
+                            <label class="form-label">Blocked Status</label>
+                            <select class="form-select" name="is_blocked">
+                                <option value="">All</option>
+                                <option value="no">Unblacklisited</option>
+                                <option value="yes">Blacklisted</option>
+                            </select>
                         </div>
-                        <div class="col-md-3">
-                            <!-- Active -->
+                        <!-- Active Status -->
+                        <div class="col-md-4">
+                            <label class="form-label">Active Status</label>
+                            <select class="form-select" name="is_active">
+                                <option value="">All</option>
+                                <option value="yes">Active</option>
+                                <option value="no">Inactive</option>
+                            </select>
                         </div>
-                        <div class="col-md-2">
-                            <!-- Sort -->
+                        <!-- Sort By -->
+                        <div class="col-md-4">
+                            <label class="form-label">Sort By</label>
+                            <select class="form-select" name="sort">
+                                <option value="created_at">Created At</option>
+                                <option value="email">Email</option>
+                                <option value="first_name">Name</option>
+                            </select>
+                        </div>
+                        <!-- Order -->
+                        <div class="col-md-4">
+                            <label class="form-label">Order</label>
+                            <select class="form-select" name="orderby">
+                                <option value="asc">Ascending</option>
+                                <option value="desc">Descending</option>
+                            </select>
                         </div>
                     </div>
                     <div class="d-flex mt-3 gap-2 justify-content-end">

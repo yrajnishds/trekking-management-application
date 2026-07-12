@@ -69,7 +69,7 @@ def dashboard():
 @login_required
 @role_required('admin')
 def trekker():
-    trekkers = User.query.filter_by(role = 'trekker').all()
+    # trekkers = User.query.filter_by(role = 'trekker').all()
     trekkers_data = User.query.filter_by(role = 'trekker').all()
     add_user_form = UsersAddForm()
     add_user_form.role.choices = [('trekker', 'Trekker')]
@@ -82,6 +82,18 @@ def trekker():
     blacklisted = User.query.filter_by(role = 'trekker', is_blocked = True).count()
     unblacklisted = total - blacklisted
 
+    query = User.query.filter_by(role = 'trekker')
+    if request.method == 'GET':
+        is_approved = request.args.get('is_approved', '')
+        is_active = request.args.get('is_active', '')
+        is_blocked = request.args.get('is_blocked', '')
+        sort = request.args.get('sort', 'created_at')
+        orderby = request.args.get('orderby', 'desc')
+    # ==== Import filter ======
+    from filter import user_filter, user_sort
+    query = user_filter(query, is_approved=is_approved, is_active=is_active, is_blocked=is_blocked)
+    query = user_sort(query, sort, orderby)
+    trekkers = query.all()
     return render_template('admin/trekker.html',
                            page = 'trekker',
                            role_type = 'trekker',
@@ -120,7 +132,7 @@ def view_trekker(trekker_id):
 @login_required
 @role_required('admin')
 def staff():
-    staffs = User.query.filter_by(role = 'staff').all()
+    # staffs = User.query.filter_by(role = 'staff').all()
     add_user_form = UsersAddForm()
     add_user_form.role.choices = [('staff', 'Staff')]
     total = User.query.filter_by(role = 'staff').count()
@@ -131,6 +143,19 @@ def staff():
     blacklisted = User.query.filter_by(role = 'staff', is_blocked = True).count()
     unblacklisted = total - blacklisted
 
+
+    query = User.query.filter_by(role = 'staff')
+    if request.method == 'GET':
+        is_approved = request.args.get('is_approved', '')
+        is_active = request.args.get('is_active', '')
+        is_blocked = request.args.get('is_blocked', '')
+        sort = request.args.get('sort', 'created_at')
+        orderby = request.args.get('orderby', 'desc')
+    # ==== Import filter ======
+    from filter import user_filter, user_sort
+    query = user_filter(query, is_approved=is_approved, is_active=is_active, is_blocked=is_blocked)
+    query = user_sort(query, sort, orderby)
+    staffs = query.all()
     return render_template('admin/staff.html',
                            page = 'staff',
                            users = staffs,
@@ -306,27 +331,24 @@ def admin_action(role_type, id, action):
 @role_required('admin')
 def trek():
 
-    treks = Trek.query.order_by(Trek.id.desc()).all()
-    total_treks = len(treks)
+    total_treks = Trek.query.count()
     approved = Trek.query.filter_by(trek_status = 'approved').count()
     pending = Trek.query.filter_by(trek_status = 'pending').count()
     open = Trek.query.filter_by(trek_status = 'open').count()
     closed = Trek.query.filter_by(trek_status = 'closed').count()
     completed = Trek.query.filter_by(trek_status = 'completed').count()
 
-
-    difficulty = request.args.get("difficulty")
-    status = request.args.get("status")
-    orderby = request.args.get("orderby", "created_at")
-    order = request.args.get("order", "asc")
-
-#     from filter import admin_trek_filter
-
-#     treks = admin_trek_filter(
-#     difficulty=request.args.get("difficulty"),
-#     status=request.args.get("status"),
-#     orderby=request.args.get("orderby"),
-# )
+    query = Trek.query
+    if request.method == "GET":
+        difficulty = request.args.get("difficulty")
+        status = request.args.get("status")
+        sort = request.args.get("sort", "created_at")
+        orderby = request.args.get("orderby", "desc")
+    #         # === Import filter function
+        from filter import trek_filter, trek_sort
+        query = trek_filter(query, difficulty, status)
+        query = trek_sort(query, sort, orderby)
+    treks = query.all()
 
     assign_staff_form = AssignStaffForm()
 
@@ -467,13 +489,25 @@ def admin_trek_action_status(code):
 @login_required
 @role_required('admin')
 def booking():
-    bookings = Booking.query.all()
     total = Booking.query.count()
     pending = Booking.query.filter_by(status = 'pending').count()
     approved = Booking.query.filter_by(status = 'approved').count()
     rejected = Booking.query.filter_by(status = 'rejected').count()
     cancelled = Booking.query.filter_by(status = 'cancelled').count()
     requested = Booking.query.filter_by(status = 'requested').count()
+    
+    query = Booking.query
+    if request.method == "GET":
+        status = request.args.get("status")
+        sort = request.args.get("sort", "booking_date")
+        orderby = request.args.get("orderby", "desc")
+    #         # === Import filter function
+        from filter import booking_filter, booking_sort
+        query = booking_filter(query, status)
+        query = booking_sort(query, sort, orderby)
+    bookings = query.all()
+
+    bookings = query.all()
     return render_template('admin/booking.html',page = 'booking',
                            bookings = bookings,
                            total = total,
