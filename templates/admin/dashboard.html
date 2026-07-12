@@ -1,7 +1,61 @@
 {% extends "base.html" %}
 {% block content %}
-{% include 'admin/dashboard_booking.html' %}
-{% include 'admin/dashboard_staff.html' %}
-{% include 'admin/dashboard_trek.html' %}
-{% include 'admin/dashboard_trekker.html' %}
+{% from 'macros/stats.html' import statsDashboard %}
+
+<div class="row g-3">
+    <!-- ======= Booking Statistics ========== -->
+    <div>
+        {{ statsDashboard(
+        title='booking',
+        role='admin',
+        bgcolor='bg-success-subtle',
+        textcolor='text-dark',
+        btn_color='btn-light',
+        btn_text_color='text-primary',
+        items=booking_data
+        ) }}
+    </div>
+    
+    
+    <!-- ======= trek Statistics ========== -->
+    <div>
+        {{ statsDashboard(
+        title='trek',
+        role='admin',
+        bgcolor='bg-warning-subtle',
+        textcolor='text-dark',
+        btn_color='btn-light',
+        btn_text_color='text-primary',
+        items=trek_data
+        ) }}
+    </div>
+    
+    
+    <!-- ======= Staff Statistics ========== -->
+    <div>
+        {{ statsDashboard(
+        title='staff',
+        role='admin',
+        bgcolor='bg-info-subtle',
+        textcolor='text-dark',
+        btn_color='btn-light',
+        btn_text_color='text-primary',
+        items=staff_data
+        ) }}
+    </div>
+    
+    <!-- ======= Trekker Statistics ========== -->
+    <div>
+        {{ statsDashboard(
+        title='trekker',
+        role='admin',
+        bgcolor='bg-primary-subtle',
+        textcolor='text-dark',
+        btn_color='btn-light',
+        btn_text_color='text-primary',
+        items=trekker_data
+        ) }}
+    </div>
+</div>
+
 {% endblock %}

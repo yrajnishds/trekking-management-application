@@ -1,4 +1,24 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block content %}
-<h1> {{ current_user.first_name|capitalize }} {{ page|capitalize }} Page</h1>
+{% from 'macros/stats.html' import statsCollapse %}
+
+{{ statsCollapse(
+    title='Booking', 
+    type='Statistics', 
+    bgcolor='bg-dark', 
+    textcolor='text-white', 
+    btn_color='btn-warning', 
+    btn_text_color='text-dark', 
+    items=booking_data
+) }}
+{{ statsCollapse(
+    title='Trek', 
+    type='Statistics', 
+    bgcolor='bg-dark-subtle', 
+    textcolor='text-dark', 
+    btn_color='btn-warning', 
+    btn_text_color='text-dark', 
+    items=trek_data
+) }}
+
 {% endblock %}
