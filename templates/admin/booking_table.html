@@ -82,10 +82,14 @@
                                 {{ booking.id }}
                             </td>
                             <td>
-                                {{ booking.trek_id }}
+                                <a href="{{ url_for('admin.view_trek', trek_id = booking.trek_id) }}" class="btn btn-outline-secondary text-dark fw-bold">
+                                    {{ booking.trek_id }}
+                                </a>
                             </td>
                             <td>
-                                {{ booking.trekker_id }}
+                                <a href="{{ url_for('admin.view_trekker', trekker_id = booking.trekker_id) }}" class="btn btn-outline-info text-dark fw-bold">
+                                    {{ booking.trek_id }}
+                                </a>
                             </td>
                             <td class="text-nowrap">
                                 {{ booking.booking_date }}
