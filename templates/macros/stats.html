@@ -1,0 +1,79 @@
+{% macro statsCollapse(title, type, bgcolor, textcolor, btn_color, btn_text_color, items) %}
+<div class="container">
+    <!-- ==============  Statistics  ============== -->
+    <div class="mb-4 card shadow-sm border-0">
+        <div class="card-header {{ bgcolor }} {{ textcolor }}">
+            <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
+                <div>
+                    <h3 class="mb-0">
+                        {{ title|title }} {{ type|title }}
+                    </h3>
+                </div>
+                <!-- Cleaned up button classes and attributes here -->
+                <button class="btn fw-semibold {{ btn_color }} {{ btn_text_color }}" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#{{ title }}{{ type }}" aria-expanded="false"
+                    aria-controls="{{ title }}{{ type }}">
+                    View {{ type|title }}
+                </button>
+            </div>
+        </div>
+        <div class="collapse" id="{{ title }}{{ type }}">
+            <div class="card-body">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+                    {% for item in items %}
+                    <div class="col">
+                        <!-- Nested card macro called dynamically below -->
+                        {{ statsCard(item.title, item.value, item.bgcolor, item.textcolor) }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+<!-- ========= Stats Dashboard ========= -->
+{% macro statsDashboard(title, role, bgcolor, textcolor, btn_color, btn_text_color, items) %}
+<div class="container">
+    <!-- ==============  Statistics  ============== -->
+    <div class="mb-4 card shadow-sm border-0">
+        <div class="card-header {{ bgcolor }} {{ textcolor }}">
+            <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
+                <div>
+                    <h3 class="mb-0">
+                        {{ title|title }} Statistics
+                    </h3>
+                </div>
+                <!-- Cleaned up button classes and attributes here -->
+                <a href="{{ url_for(role ~ '.' ~ title) }}" class="btn fw-semibold {{ btn_color }} {{ btn_text_color }}">
+                    Manage {{ title|title }}
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+                {% for item in items %}
+                <div class="col">
+                    <!-- Nested card macro called dynamically below -->
+                    {{ statsCard(item.title, item.value, item.bgcolor, item.textcolor) }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro statsCard(title, value, bgcolor, textcolor) %}
+<div class="card h-100 border-0 shadow-sm {{ bgcolor }} {{ textcolor }}">
+    <div class="card-body text-center">
+        <h5 class="mb-2 card-title">
+            {{ title|title }}
+        </h5>
+        <h2 class="mb-0 fw-bold display-6">
+            {{ value }}
+        </h2>
+    </div>
+</div>
+{% endmacro %}
