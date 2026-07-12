@@ -1,3 +1,5 @@
+{% import 'macros/forms.html' as fm %}
+
 <div class="container my-4">
     <div class="card shadow border-0">
         <!-- ================= Header ================= -->
@@ -28,46 +30,16 @@
                     </h4>
                     <div class="row g-4">
                         <!-- Trekker -->
-                        <div class="col-12 col-md-6">
-                            {{ form.trekker_id.label(class="form-label fw-semibold") }}
-                            {{ form.trekker_id(class="form-select") }}
-                            {% if form.trekker_id.errors %}
-                            {% for error in form.trekker_id.errors %}
-                            <div class="mt-1 text-danger small">
-                                {{ error }}
-                            </div>
-                            {% endfor %}
-                            {% endif %}
-                        </div>
+                        {{ fm.render_field(form.trekker_id) }}
                         <!-- Booking Date -->
-                        <div class="col-12 col-md-6">
-                            {{ form.date.label(class="form-label fw-semibold") }}
-                            {{ form.date(class="form-select") }}
-                            {% if form.date.errors %}
-                            {% for error in form.date.errors %}
-                            <div class="mt-1 text-danger small">
-                                {{ error }}
-                            </div>
-                            {% endfor %}
-                            {% endif %}
-                        </div>
+                        {{ fm.render_field(form.date) }}
                     </div>
                     <!-- ================= Trek Selection ================= -->
                     <h4 class="mt-5 pb-2 mb-4 border-bottom">
                         Trek Selection
                     </h4>
                     <div class="row g-4">
-                        <div class="col-12">
-                            {{ form.trek_id.label(class="form-label fw-semibold") }}
-                            {{ form.trek_id(class="form-select") }}
-                            {% if form.trek_id.errors %}
-                            {% for error in form.trek_id.errors %}
-                            <div class="mt-1 text-danger small">
-                                {{ error }}
-                            </div>
-                            {% endfor %}
-                            {% endif %}
-                        </div>
+                        {{ fm.render_field(form.trek_id, size='full') }}
                     </div>
                 </div>
                 <!-- ================= Footer ================= -->

@@ -1,3 +1,4 @@
+{% import 'macros/helper.html' as hm %}
 <div class="container py-3">
     <div class="card shadow-sm border-0">
         <div class="d-flex card-header justify-content-between align-items-center bg-warning-subtle">
@@ -81,8 +82,8 @@
                             <th>Difficulty</th>
                             <th>Duration</th>
                             <th>Status</th>
-                            <th>Slots</th>
                             <th>View</th>
+                            <th>Edit</th>
                             <th>Assign Staff</th>
                             <th>Update Status</th>
                         </tr>
@@ -103,57 +104,24 @@
                                 {{ trek.staff_id or "—" }}
                             </td>
                             <td>
-                                {% if trek.difficulty == "hard" %}
-                                <span class="badge bg-danger">
-                                    Hard
-                                </span>
-                                {% elif trek.difficulty == "moderate" %}
-                                <span class="badge bg-warning text-dark">
-                                    Moderate
-                                </span>
-                                {% else %}
-                                <span class="badge bg-success">
-                                    Easy
-                                </span>
-                                {% endif %}
+                                {{ hm.trek_difficulty_badge(trek.difficulty) }}
                             </td>
                             <td>
                                 {{ trek.duration }}
                             </td>
                             <td>
-                                {% if trek.trek_status == "completed" %}
-                                <span class="badge bg-success">
-                                    Completed
-                                </span>
-                                {% elif trek.trek_status == "approved" %}
-                                <span class="badge bg-primary">
-                                    Approved
-                                </span>
-                                {% elif trek.trek_status == "pending" %}
-                                <span class="badge bg-warning text-dark">
-                                    Pending
-                                </span>
-                                {% elif trek.trek_status == "open" %}
-                                <span class="badge bg-info text-dark">
-                                    Open
-                                </span>
-                                {% elif trek.trek_status == "closed" %}
-                                <span class="badge bg-secondary">
-                                    Closed
-                                </span>
-                                {% else %}
-                                <span class="badge bg-danger">
-                                    Cancelled
-                                </span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {{ trek.slots }}
+                                {{ hm.trek_badge(trek.trek_status) }}
                             </td>
                             <td>
                                 <a href="{{ url_for('admin.view_trek', trek_id=trek.id) }}"
                                     class="btn btn-outline-primary btn-sm">
                                     View
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('admin.edit_trek', trek_id=trek.id) }}"
+                                    class="btn btn-outline-info btn-sm">
+                                    Edit
                                 </a>
                             </td>
                             <td>

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import 'macros/forms.html' as fm %}
 {% block content %}
 <section class="container py-4">
     <div class="card shadow-sm border-0">
@@ -23,41 +24,9 @@
                         <h5 class="mb-0 fw-bold">Personal Information</h5>
                     </div>
                     <div class="card-body">
-                        <div class="row pb-2 mb-4 fw-bold border-bottom">
-                            <div class="col-md-3">Field</div>
-                            <div class="col-md-4 text-danger">Current Value</div>
-                            <div class="col-md-5 text-success">New Value</div>
-                        </div>
-                        <div class="row mb-4 align-items-center">
-                            <div class="col-md-3">
-                                {{ update_form.first_name.label(class="mb-0 form-label fw-semibold") }}
-                            </div>
-                            <div class="col-md-4">
-                                <input class="form-control bg-light" value="{{ current_user.first_name|title }}"
-                                    readonly>
-                            </div>
-                            <div class="col-md-5">
-                                {{ update_form.first_name(class="form-control", placeholder="Leave blank to keep current first name") }}
-                                {% for error in update_form.first_name.errors %}
-                                <div class="mt-1 text-danger small">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="row align-items-center">
-                            <div class="col-md-3">
-                                {{ update_form.last_name.label(class="mb-0 form-label fw-semibold") }}
-                            </div>
-                            <div class="col-md-4">
-                                <input class="form-control bg-light" value="{{ current_user.last_name|title }}"
-                                    readonly>
-                            </div>
-                            <div class="col-md-5">
-                                {{ update_form.last_name(class="form-control", placeholder="Leave blank to keep current last name") }}
-                                {% for error in update_form.last_name.errors %}
-                                <div class="mt-1 text-danger small">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        </div>
+                        {{ fm.update_heading() }}
+                        {{ fm.render_update(update_form.first_name, current_user.first_name|title, "Leave blank to keep current first name") }}
+                        {{ fm.render_update(update_form.last_name, current_user.last_name|title, "Leave blank to keep current last name") }}
                     </div>
                 </div>
                 <div class="mb-4 card border">
@@ -65,38 +34,9 @@
                         <h5 class="mb-0 fw-bold">Contact Information</h5>
                     </div>
                     <div class="card-body">
-                        <div class="row pb-2 mb-4 fw-bold border-bottom">
-                            <div class="col-md-3">Field</div>
-                            <div class="col-md-4 text-danger">Current Value</div>
-                            <div class="col-md-5 text-success">New Value</div>
-                        </div>
-                        <div class="row mb-4 align-items-center">
-                            <div class="col-md-3">{{ update_form.contact.label(class="mb-0 form-label fw-semibold") }}
-                            </div>
-                            <div class="col-md-4">
-                                <input class="form-control bg-light" value="{{ current_user.staff_profile.contact }}"
-                                    readonly>
-                            </div>
-                            <div class="col-md-5">
-                                {{ update_form.contact(class="form-control", placeholder="Leave blank to keep current contact") }}
-                                {% for error in update_form.contact.errors %}
-                                <div class="mt-1 text-danger small">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="row align-items-center">
-                            <div class="col-md-3">{{ update_form.dob.label(class="mb-0 form-label fw-semibold") }}</div>
-                            <div class="col-md-4">
-                                <input class="form-control bg-light" value="{{ current_user.staff_profile.dob }}"
-                                    readonly>
-                            </div>
-                            <div class="col-md-5">
-                                {{ update_form.dob(class="form-control") }}
-                                {% for error in update_form.dob.errors %}
-                                <div class="mt-1 text-danger small">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        </div>
+                        {{ fm.update_heading() }}
+                        {{ fm.render_update(update_form.contact, current_user.staff_profile.contact, "Leave blank to keep current contact") }}
+                        {{ fm.render_update(update_form.dob, current_user.staff_profile.dob) }}
                     </div>
                 </div>
                 <div class="mb-4 card border">
@@ -104,20 +44,8 @@
                         <h5 class="mb-0 fw-bold">Bio</h5>
                     </div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-6 mb-4 mb-lg-0">
-                                <label class="form-label fw-semibold text-danger">Current Bio</label>
-                                <textarea class="form-control bg-light" rows="8"
-                                    readonly>{{ current_user.staff_profile.bio }}</textarea>
-                            </div>
-                            <div class="col-lg-6">
-                                {{ update_form.bio.label(class="form-label fw-semibold text-success") }}
-                                {{ update_form.bio(class="form-control", rows="8", placeholder="Leave blank to keep current bio") }}
-                                {% for error in update_form.bio.errors %}
-                                <div class="mt-1 text-danger small">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        </div>
+                        {{ fm.update_heading() }}
+                        {{ fm.render_update(update_form.bio, current_user.staff_profile.bio|title, "Leave blank to keep current bio") }}
                     </div>
                 </div>
                 <div class="mb-4 card border">
@@ -125,21 +53,9 @@
                         <h5 class="mb-0 fw-bold">Security</h5>
                     </div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                {{ update_form.password.label(class="form-label fw-semibold") }}
-                                {{ update_form.password(class="form-control", placeholder="Leave blank to keep current password") }}
-                                {% for error in update_form.password.errors %}
-                                <div class="mt-1 text-danger small">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                            <div class="col-md-6">
-                                {{ update_form.confirm_password.label(class="form-label fw-semibold") }}
-                                {{ update_form.confirm_password(class="form-control", placeholder="Confirm new password") }}
-                                {% for error in update_form.confirm_password.errors %}
-                                <div class="mt-1 text-danger small">{{ error }}</div>
-                                {% endfor %}
-                            </div>
+                        <div class="row g-4">
+                            {{ fm.render_field(update_form.password, "Leave blank to keep current password") }}
+                            {{ fm.render_field(update_form.confirm_password, "Confirm new password password") }}
                         </div>
                     </div>
                 </div>

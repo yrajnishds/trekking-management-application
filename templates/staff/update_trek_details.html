@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import 'macros/forms.html' as fm %}
 {% block content %}
 <section class="container py-4">
     <div class="card shadow-sm border-0">
@@ -31,77 +32,13 @@
                     </div>
                     <div class="card-body">
                         <!-- Column Heading -->
-                        <div class="row pb-2 mb-4 fw-bold border-bottom">
-                            <div class="col-md-3">
-                                Field
-                            </div>
-                            <div class="col-md-4 text-danger">
-                                Current Value
-                            </div>
-                            <div class="col-md-5 text-success">
-                                New Value
-                            </div>
-                        </div>
+                        {{ fm.update_heading() }}
                         <!-- Trek Code -->
-                        <div class="row mb-4 align-items-center">
-                            <div class="col-md-3">
-                                {{ form.trek_code.label(class="mb-0 form-label fw-semibold") }}
-                            </div>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control bg-light" value="{{ trek.trek_code }}" readonly>
-                            </div>
-                            <div class="col-md-5">
-                                {{ form.trek_code(
-                                class="form-control",
-                                placeholder="Leave blank to keep current code"
-                                ) }}
-                                {% for error in form.trek_code.errors %}
-                                <div class="mt-1 text-danger small">
-                                    {{ error }}
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
+                        {{ fm.render_update(form.trek_code, trek.trek_code, "Leave blank to keep current code") }}
                         <!-- Trek Name -->
-                        <div class="row mb-4 align-items-center">
-                            <div class="col-md-3">
-                                {{ form.trek_name.label(class="mb-0 form-label fw-semibold") }}
-                            </div>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control bg-light" value="{{ trek.trek_name }}" readonly>
-                            </div>
-                            <div class="col-md-5">
-                                {{ form.trek_name(
-                                class="form-control",
-                                placeholder="Leave blank to keep current name"
-                                ) }}
-                                {% for error in form.trek_name.errors %}
-                                <div class="mt-1 text-danger small">
-                                    {{ error }}
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
+                        {{ fm.render_update(form.trek_name, trek.trek_name, "Leave blank to keep current name") }}
                         <!-- Location -->
-                        <div class="row align-items-center">
-                            <div class="col-md-3">
-                                {{ form.location.label(class="mb-0 form-label fw-semibold") }}
-                            </div>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control bg-light" value="{{ trek.location }}" readonly>
-                            </div>
-                            <div class="col-md-5">
-                                {{ form.location(
-                                class="form-control",
-                                placeholder="Leave blank to keep current location"
-                                ) }}
-                                {% for error in form.location.errors %}
-                                <div class="mt-1 text-danger small">
-                                    {{ error }}
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
+                        {{ fm.render_update(form.location, trek.location, "Leave blank to keep current location") }}
                     </div>
                 </div>
                 <!-- ============ Trek Configuration ============ -->
@@ -113,86 +50,13 @@
                     </div>
                     <div class="card-body">
                         <!-- Column Heading -->
-                        <div class="row pb-2 mb-4 fw-bold border-bottom">
-                            <div class="col-md-3">
-                                Field
-                            </div>
-                            <div class="col-md-4 text-danger">
-                                Current Value
-                            </div>
-                            <div class="col-md-5 text-success">
-                                New Value
-                            </div>
-                        </div>
+                        {{ fm.update_heading() }}
                         <!-- Difficulty -->
-                        <div class="row mb-4 align-items-center">
-                            <div class="col-md-3">
-                                {{ form.difficulty.label(class="mb-0 form-label fw-semibold") }}
-                            </div>
-                            <div class="col-md-4">
-                                {% if trek.difficulty == "hard" %}
-                                <span class="badge bg-danger fs-6">
-                                    Hard
-                                </span>
-                                {% elif trek.difficulty == "moderate" %}
-                                <span class="badge bg-warning text-dark fs-6">
-                                    Moderate
-                                </span>
-                                {% else %}
-                                <span class="badge bg-success fs-6">
-                                    Easy
-                                </span>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-5">
-                                {{ form.difficulty(class="form-select") }}
-                                {% for error in form.difficulty.errors %}
-                                <div class="mt-1 text-danger small">
-                                    {{ error }}
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
+                        {{ fm.render_update(form.difficulty, trek.difficulty, field_type='radio', badge_class='bg-primary') }}
                         <!-- Duration -->
-                        <div class="row mb-4 align-items-center">
-                            <div class="col-md-3">
-                                {{ form.duration.label(class="mb-0 form-label fw-semibold") }}
-                            </div>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control bg-light" value="{{ trek.duration }}" readonly>
-                            </div>
-                            <div class="col-md-5">
-                                {{ form.duration(
-                                class="form-control",
-                                placeholder="Example: 5 Days"
-                                ) }}
-                                {% for error in form.duration.errors %}
-                                <div class="mt-1 text-danger small">
-                                    {{ error }}
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
+                        {{ fm.render_update(form.duration, trek.duration, "Leave blank to keep current duration") }}
                         <!-- Number of Slots -->
-                        <div class="row align-items-center">
-                            <div class="col-md-3">
-                                {{ form.no_of_slots.label(class="mb-0 form-label fw-semibold") }}
-                            </div>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control bg-light" value="{{ trek.slots }}" readonly>
-                            </div>
-                            <div class="col-md-5">
-                                {{ form.no_of_slots(
-                                class="form-control",
-                                placeholder="Enter number of slots"
-                                ) }}
-                                {% for error in form.no_of_slots.errors %}
-                                <div class="mt-1 text-danger small">
-                                    {{ error }}
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
+                        {{ fm.render_update(form.no_of_slots, trek.slots, "Enter number of slots") }}
                     </div>
                 </div>
                 <!-- ============Trek Schedule ============ -->
@@ -204,51 +68,11 @@
                     </div>
                     <div class="card-body">
                         <!-- Column Heading -->
-                        <div class="row pb-2 mb-4 fw-bold border-bottom">
-                            <div class="col-md-3">
-                                Field
-                            </div>
-                            <div class="col-md-4 text-danger">
-                                Current Value
-                            </div>
-                            <div class="col-md-5 text-success">
-                                New Value
-                            </div>
-                        </div>
+                        {{ fm.update_heading() }}
                         <!-- Start Date -->
-                        <div class="row mb-4 align-items-center">
-                            <div class="col-md-3">
-                                {{ form.start_date.label(class="mb-0 form-label fw-semibold") }}
-                            </div>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control bg-light" value="{{ trek.start_date }}" readonly>
-                            </div>
-                            <div class="col-md-5">
-                                {{ form.start_date(class="form-control") }}
-                                {% for error in form.start_date.errors %}
-                                <div class="mt-1 text-danger small">
-                                    {{ error }}
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
+                        {{ fm.render_update(form.start_date, trek.start_date) }}
                         <!-- End Date -->
-                        <div class="row align-items-center">
-                            <div class="col-md-3">
-                                {{ form.end_date.label(class="mb-0 form-label fw-semibold") }}
-                            </div>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control bg-light" value="{{ trek.end_date }}" readonly>
-                            </div>
-                            <div class="col-md-5">
-                                {{ form.end_date(class="form-control") }}
-                                {% for error in form.end_date.errors %}
-                                <div class="mt-1 text-danger small">
-                                    {{ error }}
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
+                        {{ fm.render_update(form.end_date, trek.end_date) }}
                     </div>
                 </div>
                 <!-- ============ Pricing ============ -->
@@ -260,37 +84,9 @@
                     </div>
                     <div class="card-body">
                         <!-- Column Heading -->
-                        <div class="row pb-2 mb-4 fw-bold border-bottom">
-                            <div class="col-md-3">
-                                Field
-                            </div>
-                            <div class="col-md-4 text-danger">
-                                Current Value
-                            </div>
-                            <div class="col-md-5 text-success">
-                                New Value
-                            </div>
-                        </div>
+                        {{ fm.update_heading() }}
                         <!-- Price -->
-                        <div class="row align-items-center">
-                            <div class="col-md-3">
-                                {{ form.price.label(class="mb-0 form-label fw-semibold") }}
-                            </div>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control bg-light" value="₹ {{ trek.price }}" readonly>
-                            </div>
-                            <div class="col-md-5">
-                                {{ form.price(
-                                class="form-control",
-                                placeholder="Enter new price"
-                                ) }}
-                                {% for error in form.price.errors %}
-                                <div class="mt-1 text-danger small">
-                                    {{ error }}
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
+                        {{ fm.render_update(form.price, trek.price, 'Enter New Price') }}
                     </div>
                 </div><!-- ============ Description ============ -->
                 <div class="mb-4 card border">
@@ -301,28 +97,9 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <!-- Current Description -->
-                            <div class="col-lg-6 mb-4 mb-lg-0">
-                                <label class="form-label fw-semibold text-danger">
-                                    Current Description
-                                </label>
-                                <textarea class="form-control bg-light" rows="10"
-                                    readonly>{{ trek.description }}</textarea>
-                            </div>
-                            <!-- New Description -->
-                            <div class="col-lg-6">
-                                {{ form.description.label(class="form-label fw-semibold text-success") }}
-                                {{ form.description(
-                                class="form-control",
-                                rows="10",
-                                placeholder="Enter new description"
-                                ) }}
-                                {% for error in form.description.errors %}
-                                <div class="mt-2 text-danger small">
-                                    {{ error }}
-                                </div>
-                                {% endfor %}
-                            </div>
+                            <!-- Column Heading -->
+                            {{ fm.update_heading() }}
+                            {{ fm.render_update(form.description, trek.description, 'Leave blank to keep current description', field_type='textarea') }}
                         </div>
                     </div>
                 </div>

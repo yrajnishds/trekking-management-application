@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import 'macros/forms.html' as fm %}
 {% block content %}
 <section class="d-flex min-vh-100 align-items-center">
     <div class="container">
@@ -20,77 +21,15 @@
                             {{ form.hidden_tag() }}
                             <div class="row g-4">
                                 <!-- Name -->
-                                <div class="col-12">
-                                    {{ form.name.label(class="form-label fw-semibold") }}
-                                    {{ form.name(
-                                    class="form-control",
-                                    placeholder="Enter Full Name"
-                                    ) }}
-                                    {% if form.name.errors %}
-                                    {% for error in form.name.errors %}
-                                    <div class="mt-1 text-danger small">
-                                        {{ error }}
-                                    </div>
-                                    {% endfor %}
-                                    {% endif %}
-                                </div>
+                                {{ fm.render_field(form.name, 'Enter full name', size='full') }}
                                 <!-- Email -->
-                                <div class="col-12">
-                                    {{ form.email.label(class="form-label fw-semibold") }}
-                                    {{ form.email(
-                                    class="form-control",
-                                    placeholder="Enter Email Address"
-                                    ) }}
-                                    {% if form.email.errors %}
-                                    {% for error in form.email.errors %}
-                                    <div class="mt-1 text-danger small">
-                                        {{ error }}
-                                    </div>
-                                    {% endfor %}
-                                    {% endif %}
-                                </div>
+                                {{ fm.render_field(form.email, 'Enter email', size='full') }}
                                 <!-- Role -->
-                                <div class="col-12">
-                                    {{ form.role.label(class="form-label fw-semibold") }}
-                                    {{ form.role(class="form-select") }}
-                                    {% if form.role.errors %}
-                                    {% for error in form.role.errors %}
-                                    <div class="mt-1 text-danger small">
-                                        {{ error }}
-                                    </div>
-                                    {% endfor %}
-                                    {% endif %}
-                                </div>
+                                {{ fm.render_option(form.role, size='full') }}
                                 <!-- Password -->
-                                <div class="col-12 col-md-6">
-                                    {{ form.password.label(class="form-label fw-semibold") }}
-                                    {{ form.password(
-                                    class="form-control",
-                                    placeholder="Enter Password"
-                                    ) }}
-                                    {% if form.password.errors %}
-                                    {% for error in form.password.errors %}
-                                    <div class="mt-1 text-danger small">
-                                        {{ error }}
-                                    </div>
-                                    {% endfor %}
-                                    {% endif %}
-                                </div>
+                                {{ fm.render_field(form.password, 'Enter password', size='full') }}
                                 <!-- Confirm Password -->
-                                <div class="col-12 col-md-6">
-                                    {{ form.confirm_password.label(class="form-label fw-semibold") }}
-                                    {{ form.confirm_password(
-                                    class="form-control",
-                                    placeholder="Confirm Password"
-                                    ) }}
-                                    {% if form.confirm_password.errors %}
-                                    {% for error in form.confirm_password.errors %}
-                                    <div class="mt-1 text-danger small">
-                                        {{ error }}
-                                    </div>
-                                    {% endfor %}
-                                    {% endif %}
-                                </div>
+                                {{ fm.render_field(form.confirm_password, 'Enter confirm password', size='full') }}
                             </div>
                             <!-- Submit -->
                             <div class="d-grid mt-4">

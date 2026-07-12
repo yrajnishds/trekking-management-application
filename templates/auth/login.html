@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import 'macros/forms.html' as fm %}
 {% block content %}
 <section class="d-flex min-vh-100 align-items-center">
     <div class="container">
@@ -17,46 +18,18 @@
                     <!-- ================= Body ================= -->
                     <div class="p-4 card-body">
                         <form action="{{ url_for('auth.login') }}" method="POST">
-                            {{ form.hidden_tag() }}
-                            <!-- Email -->
-                            <div class="mb-4">
-                                {{ form.email.label(
-                                class="form-label fw-semibold"
-                                ) }}
-                                {{ form.email(
-                                class="form-control",
-                                placeholder="Enter your email address"
-                                ) }}
-                                {% if form.email.errors %}
-                                {% for error in form.email.errors %}
-                                <div class="mt-1 text-danger small">
-                                    {{ error }}
+                            <div class="row g-4">
+                                {{ form.hidden_tag() }}
+                                <!-- Email -->
+                                {{ fm.render_field(form.email, 'Enter email', size='full') }}
+                                <!-- Password -->
+                                {{ fm.render_field(form.password, 'Enter password', size='full') }}
+                                <!-- Submit -->
+                                <div class="d-grid">
+                                    {{ form.submit(
+                                    class="btn btn-primary btn-lg fw-bold"
+                                    ) }}
                                 </div>
-                                {% endfor %}
-                                {% endif %}
-                            </div>
-                            <!-- Password -->
-                            <div class="mb-4">
-                                {{ form.password.label(
-                                class="form-label fw-semibold"
-                                ) }}
-                                {{ form.password(
-                                class="form-control",
-                                placeholder="Enter your password"
-                                ) }}
-                                {% if form.password.errors %}
-                                {% for error in form.password.errors %}
-                                <div class="mt-1 text-danger small">
-                                    {{ error }}
-                                </div>
-                                {% endfor %}
-                                {% endif %}
-                            </div>
-                            <!-- Submit -->
-                            <div class="d-grid">
-                                {{ form.submit(
-                                class="btn btn-primary btn-lg fw-bold"
-                                ) }}
                             </div>
                         </form>
                     </div>

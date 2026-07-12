@@ -1,0 +1,107 @@
+{% macro render_errors(field) %}
+    {% for error in field.errors %}
+        <div class="mt-1 text-danger small">
+            {{ error }}
+        </div>
+    {% endfor %}
+{% endmacro %}
+
+{% macro render_field(field, placeholder="", rows=none, size='half') %}
+<div class="{% if size=='full' %} col-12 {% else %} {% if not rows %}col-md-6{% endif %}{% endif %}">
+    {{ field.label(class="form-label fw-semibold") }}
+<!-- ====== Rows ===== -->
+    {% if rows %}
+    {{ field(class="form-control" , placeholder=placeholder, rows=rows) }}
+    {% else %}
+    {{ field(class="form-control" , placeholder=placeholder) }}
+    {% endif %}
+<!-- ==== Error ===== -->
+    {% if field.errors %}
+    {{ render_errors(field) }}
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro render_option(field, size='half') %}
+<div class="{% if size == 'full' %} col-12 {% else %} col-12 col-md-6 {% endif %}">
+    {{ field.label(class="form-label fw-semibold") }}
+    {% if field.type == 'SelectField' %}
+    {{ field(class='form-select') }}
+    {% else %}
+    <div class="d-flex flex-wrap gap-3 mt-2">
+        {% for option in field %}
+        <div class="form-check">
+            {{ option(class="form-check-input") }}
+            {{ option.label(class="form-check-label") }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if field.errors %}
+    {{ render_errors(field) }}
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro update_heading() %}
+<div class="row pb-2 mb-4 fw-bold border-bottom">
+    <div class="col-md-3">Field</div>
+    <div class="col-md-4 text-danger">Current Value</div>
+    <div class="col-md-5 text-success">New Value</div>
+</div>
+{% endmacro %}
+
+{% macro render_update(field, current_value, placeholder="", field_type="input", badge_class=None) %}
+<div class="row mb-4 align-items-center">
+    <div class="col-md-3">
+        {{ field.label(class="form-label fw-semibold mb-0") }}
+    </div>
+    <!-- Current Value -->
+    <div class="col-md-4">
+        {% if badge_class %}
+        <span class="badge {{ badge_class }} fs-6">
+            {{ current_value|title }}
+        </span>
+        {% else %}
+        <input class="form-control bg-light" value="{{ current_value }}" readonly>
+        {% endif %}
+    </div>
+    <!-- New Value -->
+    <div class="col-md-5">
+        {% if field_type == "radio" %}
+        <div class="d-flex flex-wrap gap-3">
+            {% for option in field %}
+            <div class="form-check">
+                {{ option(class="form-check-input") }}
+                {{ option.label(class="form-check-label") }}
+            </div>
+            {% endfor %}
+        </div>
+        {% elif field_type == "select" %}
+        {{ field(class="form-select") }}
+        {% elif field_type == "textarea" %}
+        {{ field(class="form-control", rows=4, placeholder=placeholder) }}
+        {% else %}
+        {{ field(class="form-control", placeholder=placeholder) }}
+        {% endif %}
+        {{ render_errors(field) }}
+    </div>
+</div>
+{% endmacro %}
+
+
+{% macro difficulty_badge(value) %}
+{% if value == "hard" %}
+    <span class="badge bg-danger fs-6">
+        Hard
+    </span>
+    {% elif value == "moderate" %}
+    <span class="badge bg-warning text-dark fs-6">
+        Moderate
+    </span>
+    {% else %}
+    <span class="badge bg-success fs-6">
+        Easy
+    </span>
+    {% endif %}
+{% endmacro %}

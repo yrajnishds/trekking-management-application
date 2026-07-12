@@ -34,9 +34,12 @@
                     <!-- ===== Trek Details ===== -->
                     <h4 class="mt-5 pb-2 mb-4 border-bottom">Trek Details</h4>
                     <div class="row g-4">
-                        {{ forms.render_radio_field(add_trek_form.difficulty) }}
-                        {{ forms.render_radio_field(add_trek_form.trek_status) }}
+                        {{ forms.render_option(add_trek_form.difficulty) }}
+                        {{ forms.render_option(add_trek_form.trek_status) }}
                         {{ forms.render_field(add_trek_form.duration, placeholder="Enter Duration") }}
+                        {{ forms.render_field(add_trek_form.no_of_slots, placeholder="Enter Number of Slots") }}
+                        {{ forms.render_field(add_trek_form.start_date, placeholder="") }}
+                        {{ forms.render_field(add_trek_form.end_date, placeholder="") }}
                     </div>
                 </div>
 

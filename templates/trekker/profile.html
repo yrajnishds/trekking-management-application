@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% from 'macros/helper.html' import user_profile_data %}
+
 {% block content %}
 <section class="container py-4">
     <div class="card shadow-sm border-0">
@@ -15,60 +17,38 @@
         </div>
         <div class="card-body">
             <div class="mb-4 card border">
+                <!-- ============ Account Information ============  -->
                 <div class="card-header bg-secondary-subtle">
                     <h5 class="mb-0 fw-bold">Account Information</h5>
                 </div>
                 <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-3 fw-semibold">User ID</div>
-                        <div class="col-md-9">{{ current_user.id }}</div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-3 fw-semibold">Role</div>
-                        <div class="col-md-9">
-                            <span class="badge bg-primary fs-6">{{ current_user.role|title }}</span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3 fw-semibold">Created On</div>
-                        <div class="col-md-9">{{ current_user.created_at }}</div>
-                    </div>
+                    {{ user_profile_data('User Id', current_user.id) }}
+                    {{ user_profile_data('Role', current_user.role, badge='yes') }}
+                    {{ user_profile_data('Created On', current_user.created_at) }}
                 </div>
             </div>
+            <!-- ============ Personal Information ============  -->
             <div class="mb-4 card border">
                 <div class="card-header bg-warning-subtle">
                     <h5 class="mb-0 fw-bold">Personal Information</h5>
                 </div>
                 <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-3 fw-semibold">First Name</div>
-                        <div class="col-md-9">{{ current_user.first_name|title }}</div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-3 fw-semibold">Last Name</div>
-                        <div class="col-md-9">{{ current_user.last_name|title }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3 fw-semibold">Email</div>
-                        <div class="col-md-9">{{ current_user.email }}</div>
-                    </div>
+                    {{ user_profile_data('First Name', current_user.first_name|title) }}
+                    {{ user_profile_data('Last Name', current_user.last_name|title) }}
+                    {{ user_profile_data('Email', current_user.email) }}
                 </div>
             </div>
+            <!-- ============ Conatact Information ============  -->
             <div class="mb-4 card border">
                 <div class="card-header bg-info-subtle">
                     <h5 class="mb-0 fw-bold">Contact Information</h5>
                 </div>
                 <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-3 fw-semibold">Contact</div>
-                        <div class="col-md-9">{{ current_user.trekker_profile.contact }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3 fw-semibold">Date of Birth</div>
-                        <div class="col-md-9">{{ current_user.trekker_profile.dob }}</div>
-                    </div>
+                    {{ user_profile_data('Contact', current_user.trekker_profile.contact) }}
+                    {{ user_profile_data('Date of Birth', current_user.trekker_profile.dob) }}
                 </div>
             </div>
+            <!-- ============ About Information ============  -->
             <div class="card border">
                 <div class="card-header bg-success-subtle">
                     <h5 class="mb-0 fw-bold">Bio</h5>

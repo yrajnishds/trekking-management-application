@@ -1,3 +1,4 @@
+{% import 'macros/forms.html' as fm %}
 <div class="container my-4">
     <div class="card shadow border-0">
         <!-- ================= Header ================= -->
@@ -28,35 +29,9 @@
                     </h4>
                     <div class="row g-4">
                         <!-- Name -->
-                        <div class="col-12 col-md-6">
-                            {{ add_user_form.name.label(class="form-label fw-semibold") }}
-                            {{ add_user_form.name(
-                            class="form-control",
-                            placeholder="Enter Full Name"
-                            ) }}
-                            {% if add_user_form.name.errors %}
-                            {% for error in add_user_form.name.errors %}
-                            <div class="mt-1 text-danger small">
-                                {{ error }}
-                            </div>
-                            {% endfor %}
-                            {% endif %}
-                        </div>
+                        {{ fm.render_field(add_user_form.name, 'Enter full name') }}
                         <!-- Email -->
-                        <div class="col-12 col-md-6">
-                            {{ add_user_form.email.label(class="form-label fw-semibold") }}
-                            {{ add_user_form.email(
-                            class="form-control",
-                            placeholder="Enter Email Address"
-                            ) }}
-                            {% if add_user_form.email.errors %}
-                            {% for error in add_user_form.email.errors %}
-                            <div class="mt-1 text-danger small">
-                                {{ error }}
-                            </div>
-                            {% endfor %}
-                            {% endif %}
-                        </div>
+                        {{ fm.render_field(add_user_form.email, 'Enter email address') }}
                     </div>
                     <!-- ================= Account Details ================= -->
                     <h4 class="mt-5 pb-2 mb-4 border-bottom">
@@ -64,32 +39,9 @@
                     </h4>
                     <div class="row g-4">
                         <!-- Role -->
-                        <div class="col-12 col-md-6">
-                            {{ add_user_form.role.label(class="form-label fw-semibold") }}
-                            {{ add_user_form.role(class="form-select") }}
-                            {% if add_user_form.role.errors %}
-                            {% for error in add_user_form.role.errors %}
-                            <div class="mt-1 text-danger small">
-                                {{ error }}
-                            </div>
-                            {% endfor %}
-                            {% endif %}
-                        </div>
+                        {{ fm.render_field(add_user_form.role) }}
                         <!-- Password -->
-                        <div class="col-12 col-md-6">
-                            {{ add_user_form.password.label(class="form-label fw-semibold") }}
-                            {{ add_user_form.password(
-                            class="form-control",
-                            placeholder="Enter Password"
-                            ) }}
-                            {% if add_user_form.password.errors %}
-                            {% for error in add_user_form.password.errors %}
-                            <div class="mt-1 text-danger small">
-                                {{ error }}
-                            </div>
-                            {% endfor %}
-                            {% endif %}
-                        </div>
+                        {{ fm.render_field(add_user_form.password, 'Enter password') }}
                     </div>
                 </div>
                 <!-- ================= Footer ================= -->
