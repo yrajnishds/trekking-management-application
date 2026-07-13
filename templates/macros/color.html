@@ -1,0 +1,18 @@
+{% macro stats_color(name) %}
+{% set colors = {
+    "total":               "bg-primary text-white",
+    "active":              "bg-info text-dark",
+    "pending":             "bg-warning text-dark",
+    "approved":            "bg-success text-white",
+    "inactive":            "bg-danger text-white",
+    "blacklisted":         "bg-danger-subtle text-dark",
+    "requested":           "bg-warning-subtle text-dark",
+    "completed":           "bg-success text-white",
+    "cancelled":           "bg-danger-subtle text-dark",
+    "rejected":            "bg-danger text-white",
+    "open":                "bg-warning-subtle text-dark",
+    "ongoing":             "bg-success-subtle text-dark",
+    "closed":              "bg-danger-subtle text-dark"
+} %}
+{{ colors.get(name, "bg-secondary text-white") }}
+{% endmacro %}

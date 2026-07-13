@@ -1,4 +1,22 @@
-{% macro user_profile_data(field, value, badge=none) %}
+{% macro show_details(field, value, badge=none, code=none) %}
+<div class="row mb-3">
+    <div class="col-md-3 fw-semibold text-primary">{{ field|title }}</div>
+    {% if badge %}
+    <div class="col-md-9">
+        <span class="badge bg-primary fs-6">{{ value|title }}</span>
+    </div>
+    {% elif code %}
+    <div class="col-md-9">
+        <code>{{ value }}</code>
+    </div>
+    {% else %}
+    <div class="col-md-9">{{ value }}</div>
+    {% endif %}
+</div>
+{% endmacro %}
+
+
+{% macro trek_details(field, value, badge=none, code=none) %}
 <div class="row mb-3">
     <div class="col-md-3 fw-semibold">{{ field|title }}</div>
     {% if badge %}
@@ -34,7 +52,8 @@
     "cancelled":"danger",
     "ongoing":"info text-dark",
     "completed":"primary",
-    "open":"secondary"
+    "open":"secondary",
+    'coming soon':"success"
 } %}
 <span class="badge bg-{{ colors.get(status,' dark') }}">
     {{ status|title }}
@@ -48,7 +67,7 @@
     "moderate":"warning text-dark",
     "hard":"danger"
 } %}
-<span class="badge bg-{{ colors.get(status,' dark') }}">
+<span class="badge bg-{{ colors.get(status,'dark') }}">
     {{ status|title }}
 </span>
 {% endmacro %}
