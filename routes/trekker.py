@@ -155,8 +155,8 @@ def booking():
         trek_status = 'open').filter(Trek.booked_slots < Trek.slots)
     form.trekker_id.choices = [(current_user.id, current_user.first_name)]
     form.trek_id.choices = [('', '---Choose Treks---')] + [(trek.id, (trek.trek_code, trek.trek_name, trek.location.title())) for trek in treks]
-    trek = Trek.query.all()
-
+    
+    
     # ========== Booking ========
     booking_total = Booking.query.filter(
         Booking.trekker_id == current_user.id,
@@ -192,6 +192,7 @@ def booking():
         Booking.status != 'cancelled',
     )
     bookings = query.all()
+    
     return render_template('trekker/booking.html',
                            page = 'booking',
                            bookings = bookings,
@@ -268,13 +269,49 @@ def booking_action(id, action, status):
 @login_required
 @role_required('trekker')
 def history():
-    trekker_id = current_user.id
-    trekker_data = User.query.filter_by(id = trekker_id).first()
 
-    return render_template('trekker/history.html',
-                           page = "history", first_name = trekker_data.first_name,
-                           email = trekker_data.email,
-                           role = trekker_data.role)
+    # ================= Booking =====================
+    booking_total = Booking.query.filter(
+        Booking.trekker_id == current_user.id,
+        Booking.status != 'pending',
+        Booking.status != 'approved',
+        Booking.status != 'requested',
+    ).count()
+    
+    booking_rejected = Booking.query.filter(Booking.trekker_id == current_user.id, Booking.status == 'rejected').count()
+    booking_completed = Booking.query.filter(Booking.trekker_id == current_user.id, Booking.status == 'completed').count()
+    booking_cancelled = Booking.query.filter(Booking.trekker_id == current_user.id, Booking.status == 'cancelled').count()
+
+    booking_data = [
+        {"title": "Total Booking", "value": booking_total, "color": "total"},
+        {"title": "Completed", "value": booking_completed, "color": "completed"},
+        {"title": "Cancelled", "value": booking_cancelled, "color": "cancelled"},
+        {"title": "Rejected", "value": booking_rejected, "color": "rejected"}
+    ]
+
+    query = Booking.query
+    if request.method == "GET":
+        status = request.args.get("status")
+        sort = request.args.get("sort", "booking_date")
+        orderby = request.args.get("orderby", "desc")
+    #         # === Import filter function
+        from filter import booking_filter, booking_sort
+        query = booking_filter(query, status)
+        query = booking_sort(query, sort, orderby)
+    query = query.filter(
+        Booking.trekker_id == current_user.id,
+        Booking.status != 'pending',
+        Booking.status != 'approved',
+        Booking.status != 'requested',
+    )
+    bookings = query.all()
+
+    return render_template(
+        'trekker/history.html',
+        page = 'history',
+        booking_data = booking_data,
+        bookings = bookings
+    )
 
 
 @trekker_bp.route('/profile')

@@ -1,4 +1,23 @@
 {% extends "base.html" %}
+{% from 'macros/stats.html' import statsCollapse %}
 {% block content %}
-<h1> {{ current_user.first_name|capitalize }} {{ page|capitalize }} Page</h1>
+<div class="container py-3">
+
+    <!-- ======= Booking Statistics ========== -->
+    <div>
+        {{ statsCollapse(
+        title='booking',
+        type='Statistics',
+        bgcolor='bg-warning-subtle',
+        textcolor='text-dark',
+        btn_color='btn-light',
+        btn_text_color='text-primary',
+        items=booking_data
+        ) }}
+    </div>
+    <div>
+        <!-- ============== Booking Table ============== -->
+        {% include "trekker/history_booking_table.html" %}
+    </div>
+</div>
 {% endblock %}
