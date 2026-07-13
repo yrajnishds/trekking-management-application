@@ -1,3 +1,4 @@
+{% import 'macros/helper.html' as hm %}
 <div class="card shadow-sm border-0">
     <div class="card-header bg-secondary-subtle">
         <div class="d-flex justify-content-between align-items-center">
@@ -42,31 +43,7 @@
                             ₹ {{ booking.amount_paid }}
                         </td>
                         <td>
-                            {% if booking.status == "approved" %}
-                            <span class="badge bg-success">
-                                Approved
-                            </span>
-                            {% elif booking.status == "pending" %}
-                            <span class="badge bg-warning text-dark">
-                                Pending
-                            </span>
-                            {% elif booking.status == "requested" %}
-                            <span class="badge bg-info text-dark">
-                                Requested
-                            </span>
-                            {% elif booking.status == "cancelled" %}
-                            <span class="badge bg-secondary">
-                                Cancelled
-                            </span>
-                            {% elif booking.status == "completed" %}
-                            <span class="badge bg-primary">
-                                Completed
-                            </span>
-                            {% elif booking.status == "rejected" %}
-                            <span class="badge bg-danger">
-                                Rejected
-                            </span>
-                            {% endif %}
+                            {{ hm.booking_badge(booking.status) }}
                         </td>
                     </tr>
                     {% endfor %}

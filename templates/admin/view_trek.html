@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% import 'macros/helper.html' as hm %}
 {% block content %}
 <section class="my-4">
     <div class="container">
@@ -26,105 +27,45 @@
             </div>
             <!-- ================= Body ================= -->
             <div class="card-body">
-                <h5 class="pb-2 mb-4 border-bottom">
-                    Trek Information
-                </h5>
-                <div class="table-responsive">
-                    <table class="mb-0 table table-borderless align-middle">
-                        <tbody>
-                            <tr>
-                                <th class="w-25 text-primary">Staff ID</th>
-                                <td>{{ staff_id }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-primary">Trek Code</th>
-                                <td>
-                                    <code>{{ trek_code }}</code>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="text-primary">Trek Name</th>
-                                <td>{{ trek_name|title }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-primary">Location</th>
-                                <td>{{ location }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-primary">Difficulty</th>
-                                <td>
-                                    <span class="badge bg-warning text-dark">
-                                        {{ difficulty|title }}
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="text-primary">
-                                    Trek Status
-                                </th>
-                                <td>
-                                    <span class="badge bg-success">
-                                        {{ trek_status|title }}
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="text-primary">Duration</th>
-                                <td>{{ duration }} Days</td>
-                            </tr>
-                            <tr>
-                                <th class="text-primary">Start Date</th>
-                                <td>{{ start_date }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-primary">End Date</th>
-                                <td>{{ end_date }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-primary">Price</th>
-                                <td>₹ {{ price }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="card border mb-4">
+                    <!-- ========== Trek Information ========== -->
+                    <div class="card-header bg-primary-subtle">
+                        <h5 class="fw-bold mb-0">
+                            Trek Information
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {{ hm.show_details('Staff Id', staff_id) }}
+                        {{ hm.show_details('Trek Code', trek_code, code='yes') }}
+                        {{ hm.show_details('Trek Name', trek_name) }}
+                        {{ hm.show_details('Location', location) }}
+                        {{ hm.show_details('Difficulty', hm.trek_difficulty_badge(difficulty)) }}
+                        {{ hm.show_details('Trek Status', hm.trek_badge(trek_status)) }}
+                        {{ hm.show_details('Duration', duration ~ ' Days') }}
+                        {{ hm.show_details('Start Date', start_date) }}
+                        {{ hm.show_details('End Date', end_date) }}
+                        {{ hm.show_details('End Date', '₹ ' ~ price) }}
+                    </div>
                 </div>
-                <!-- ================= Slot Information ================= -->
-                <h5 class="mt-5 pb-2 mb-4 border-bottom">
-                    Slot Information
-                </h5>
-                <div class="table-responsive">
-                    <table class="table table-borderless align-middle">
-                        <tbody>
-                            <tr>
-                                <th class="w-25 text-primary">
-                                    Total Slots
-                                </th>
-                                <td>{{ slots }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-primary">
-                                    Booked Slots
-                                </th>
-                                <td>{{ booked_slots }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-primary">
-                                    Available Slots
-                                </th>
-                                <td>
-                                    <span class="badge bg-info fs-6">
-                                        {{ slots - booked_slots }}
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- ========== Slot Information ========== -->
+                <div class="card-header bg-secondary-subtle">
+                    <h5 class="fw-bold mb-0">
+                        Slot Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {{ hm.show_details('Total Slots', slots) }}
+                    {{ hm.show_details('Booked Slots', booked_slots) }}
+                    {{ hm.show_details('Available Slots', slots - booked_slots, badge='yes') }}
                 </div>
                 <!-- ================= Description ================= -->
-                <h5 class="mt-5 pb-2 mb-4 border-bottom">
-                    Description
-                </h5>
-                <div class="p-3 border rounded bg-light">
-                    {{ description }}
+                <div class="card-header bg-info-subtle">
+                    <h5 class="mb-0 fw-bold">
+                        Description
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="mb-0">{{ description|capitalize }}</p>
                 </div>
             </div>
             <!-- ================= Footer ================= -->
@@ -159,10 +100,14 @@
                         </button>
                     </form>
                     {% endif %}
-                        <a href="{{ url_for('admin.view_booking', trek_id=id) }}"
-                        class="btn btn-outline-success fw-semibold">
-                        View All Bookings
-                    </a>
+                    <div>
+                        <a href="{{ url_for('admin.edit_trek', trek_id=id) }}" class="btn btn-outline-primary fw-semibold">
+                            Edit
+                        </a>
+                        <a href="{{ url_for('admin.view_booking', trek_id=id) }}" class="btn btn-outline-success fw-semibold">
+                            View All Bookings
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

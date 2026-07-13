@@ -3,10 +3,10 @@
     <div class="card shadow-sm border-0">
         <div class="d-flex card-header justify-content-between align-items-center bg-warning-subtle">
             <h4 class="mb-0 fw-bold">
-                Manage Treks
+                Treks History
             </h4>
             <div class="d-flex gap-2 align-items-center">
-                <a href="{{ url_for('admin.trek') }}" class="btn btn-secondary btn-sm">
+                <a href="{{ url_for('admin.history') }}" class="btn btn-secondary btn-sm">
                     Clear Filters
                 </a>
                 <button class="btn btn-outline-warning btn-sm" type="button" data-bs-toggle="collapse"
@@ -17,7 +17,7 @@
         </div>
         <div class="collapse" id="trekFilters">
             <div class="card-body bg-light border-bottom">
-                <form action="{{ url_for('admin.trek') }}" method="GET">
+                <form action="{{ url_for('admin.history_trek') }}" method="GET">
                     <div class="row g-3">
                         <!-- Difficulty -->
                         <div class="col-md-3">
@@ -34,11 +34,8 @@
                             <label class="form-label">Status</label>
                             <select class="form-select" name="status">
                                 <option value="">All</option>
-                                <option value="pending">Pending</option>
-                                <option value="approved">Approved</option>
-                                <option value="open">Open</option>
-                                <option value="ongoing">Ongoing</option>
-                                <option value="closed">Closed</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
                             </select>
                         </div>
                         <!-- Sort By -->
@@ -83,9 +80,6 @@
                             <th>Duration</th>
                             <th>Status</th>
                             <th>View</th>
-                            <th>Edit</th>
-                            <th>Assign Staff</th>
-                            <th>Update Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -118,81 +112,9 @@
                                     View
                                 </a>
                             </td>
-                            <td>
-                                <a href="{{ url_for('admin.edit_trek', trek_id=trek.id) }}"
-                                    class="btn btn-outline-info btn-sm">
-                                    Edit
-                                </a>
-                            </td>
-                            <td>
-                            {% if not trek.staff_id %}
-                            <form
-                                action="{{ url_for(
-                                    'admin.admin_trek_action',
-                                    code=trek.trek_code,
-                                    action='assign_staff'
-                                ) }}"
-                                method="POST"
-                                class="d-flex flex-column gap-2 justify-content-center align-items-center">
-                                {{ assign_staff_form.hidden_tag() }}
-                                {{ assign_staff_form.assigned_staff(
-                                    class="form-select form-select-sm w-auto"
-                                ) }}
-                                <button
-                                    type="submit"
-                                    class="btn btn-primary btn-sm fw-semibold">
-                                    Assign
-                                </button>
-                            </form>
-                            {% else %}
-                            <form
-                                action="{{ url_for(
-                                    'admin.admin_trek_action',
-                                    code=trek.trek_code,
-                                    action='change_staff'
-                                ) }}"
-                                method="POST"
-                                class="d-flex flex-column gap-2 justify-content-center align-items-center">
-                                <div>
-                                    {{ assign_staff_form.hidden_tag() }}
-                                    {{ assign_staff_form.assigned_staff(
-                                    class="form-select form-select-sm w-auto"
-                                    ) }}
-                                </div>
-                                <div>
-                                    <button type="submit" class="btn btn-secondary btn-sm fw-semibold">
-                                        Change
-                                    </button>
-                                    <a href="{{ url_for('admin.admin_trek_action', code = trek.trek_code, action = 'remove_staff') }}"
-                                        class="btn btn-outline-secondary btn-sm fw-semibold">
-                                        Remove
-                                    </a>
-                                </div>
-                            </form>
-                            {% endif %}
-                            </td>
-                            <td>
-                                <form
-                                    action="{{ url_for(
-                                        'admin.admin_trek_action_status',
-                                        code=trek.trek_code
-                                    ) }}"
-                                    method="POST"
-                                    class="d-flex flex-column gap-2 justify-content-center align-items-center">
-                                    {{ trek_action_form.hidden_tag() }}
-                                    {{ trek_action_form.trek_action(
-                                        class="form-select form-select-sm w-auto"
-                                    ) }}
-                                    <button
-                                        type="submit"
-                                        class="btn btn-warning btn-sm fw-semibold">
-                                        Update
-                                    </button>
-                                </form>
-                            </td>
                         </tr>
                         {% endfor %}
-                     </tbody>
+                    </tbody>
                 </table>
             </div>
         </div>

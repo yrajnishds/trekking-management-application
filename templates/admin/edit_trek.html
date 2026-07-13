@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% import 'macros/forms.html' as fm %}
+{% block content %}
+<section class="container py-4">
+    <div class="card shadow-sm border-0">
+        <form action="{{ url_for('admin.edit_trek_details', trek_id = trek.id) }}" method="POST">
+            {{ form.hidden_tag() }}
+            <!-- ============ Header ============ -->
+            <div class="card-header bg-dark text-white">
+                <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center">
+                    <div>
+                        <h3 class="mb-1">
+                            Update Trek
+                        </h3>
+                        <p class="mb-0 text-light">
+                            Update only the fields you want to modify.
+                        </p>
+                    </div>
+                    <a href="{{ url_for('admin.trek') }}" class="btn btn-warning fw-semibold">
+                        ← Back to Treks
+                    </a>
+                </div>
+            </div>
+            <!-- ============Body ============ -->
+            <div class="card-body">
+                <!-- ============ General Information ============ -->
+                <div class="mb-4 card border">
+                    <div class="card-header bg-warning-subtle">
+                        <h5 class="mb-0 fw-bold">
+                            General Information
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Column Heading -->
+                        {{ fm.update_heading() }}
+                        <!-- Trek Code -->
+                        {{ fm.render_update(form.trek_code, trek.trek_code, "Leave blank to keep current code") }}
+                        <!-- Trek Name -->
+                        {{ fm.render_update(form.trek_name, trek.trek_name, "Leave blank to keep current name") }}
+                        <!-- Location -->
+                        {{ fm.render_update(form.location, trek.location, "Leave blank to keep current location") }}
+                    </div>
+                </div>
+                <!-- ============ Trek Configuration ============ -->
+                <div class="mb-4 card border">
+                    <div class="card-header bg-info-subtle">
+                        <h5 class="mb-0 fw-bold">
+                            Trek Configuration
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Column Heading -->
+                        {{ fm.update_heading() }}
+                        <!-- Difficulty -->
+                        {{ fm.render_update(form.difficulty, trek.difficulty, field_type='radio', badge_class='bg-primary') }}
+                        <!-- Duration -->
+                        {{ fm.render_update(form.duration, trek.duration, "Leave blank to keep current duration") }}
+                        <!-- Number of Slots -->
+                        {{ fm.render_update(form.no_of_slots, trek.slots, "Enter number of slots") }}
+                    </div>
+                </div>
+                <!-- ============Trek Schedule ============ -->
+                <div class="mb-4 card border">
+                    <div class="card-header bg-primary-subtle">
+                        <h5 class="mb-0 fw-bold">
+                            Trek Schedule
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Column Heading -->
+                        {{ fm.update_heading() }}
+                        <!-- Start Date -->
+                        {{ fm.render_update(form.start_date, trek.start_date) }}
+                        <!-- End Date -->
+                        {{ fm.render_update(form.end_date, trek.end_date) }}
+                    </div>
+                </div>
+                <!-- ============ Pricing ============ -->
+                <div class="mb-4 card border">
+                    <div class="card-header bg-success-subtle">
+                        <h5 class="mb-0 fw-bold">
+                            Pricing
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Column Heading -->
+                        {{ fm.update_heading() }}
+                        <!-- Price -->
+                        {{ fm.render_update(form.price, trek.price, 'Enter New Price') }}
+                    </div>
+                </div><!-- ============ Description ============ -->
+                <div class="mb-4 card border">
+                    <div class="card-header bg-secondary-subtle">
+                        <h5 class="mb-0 fw-bold">
+                            Description
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Column Heading -->
+                            {{ fm.update_heading() }}
+                            {{ fm.render_update(form.description, trek.description, 'Leave blank to keep current description', field_type='textarea') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============ Footer ============ -->
+            <div class="card-footer bg-light">
+                <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center">
+                    <a href="{{ url_for('admin.trek') }}" class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+                    <div class="d-flex gap-2">
+                        <button type="reset" class="btn btn-outline-warning">
+                            Reset
+                        </button>
+                        {{ form.submit(
+                        class="px-5 btn btn-primary fw-semibold"
+                        ) }}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% import 'macros/helper.html' as hm %}
 {% block content %}
 <section class="my-4">
     <div class="container">
@@ -26,57 +27,27 @@
             </div>
             <div class="card-body">
                 <!-- ================= Personal Information ================= -->
-                <h5 class="pb-2 mb-4 border-bottom">
-                    Personal Information
-                </h5>
-                <div class="table-responsive">
-                    <table class="mb-0 table table-borderless align-middle">
-                        <tbody>
-                            <tr>
-                                <th class="w-25 text-primary">
-                                    First Name
-                                </th>
-                                <td>{{ first_name|title }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-primary">
-                                    Last Name
-                                </th>
-                                <td>{{ last_name|title }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-primary">
-                                    Email
-                                </th>
-                                <td>{{ email }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-primary">
-                                    Contact
-                                </th>
-                                <td>{{ contact }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-primary">
-                                    Date of Birth
-                                </th>
-                                <td>{{ dob }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-primary">
-                                    Created On
-                                </th>
-                                <td>{{ created_at }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="card-header bg-primary-subtle">
+                    <h5 class="fw-bold mb-0">
+                        Personal Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {{ hm.show_details('First Name', first_name) }}
+                    {{ hm.show_details('Last Name', last_name) }}
+                    {{ hm.show_details('Email', email) }}
+                    {{ hm.show_details('Contact', contact) }}
+                    {{ hm.show_details('Date of Birth', dob) }}
+                    {{ hm.show_details('Created On', created_at) }}
                 </div>
                 <!-- ================= Bio ================= -->
-                <h5 class="mt-5 pb-2 mb-4 border-bottom">
-                    Bio
-                </h5>
-                <div class="p-3 border rounded bg-light">
-                    {{ bio }}
+                <div class="card-header bg-info-subtle">
+                    <h5 class="mb-0 fw-bold">
+                        Bio
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="mb-0">{{ bio|capitalize }}</p>
                 </div>
             </div>
         </div>
