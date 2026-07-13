@@ -74,14 +74,77 @@ def dashboard():
 @login_required
 @role_required('trekker')
 def trek():
-    trekker_id = current_user.id
-    trekker_data = User.query.filter_by(id = trekker_id).first()
-    treks = Trek.query.all()
-    return render_template('trekker/trek.html',
-                           page = 'trek', first_name = trekker_data.first_name,
-                           email = trekker_data.email,
-                           role = trekker_data.role,
-                           treks = treks)
+    # =============== Trek ============
+    trek_total = Trek.query.filter(
+        or_(
+            Trek.trek_status == 'open',
+            Trek.trek_status == 'approved',
+            Trek.trek_status == 'closed',
+            Trek.trek_status == 'ongoing'
+        )
+    ).count()
+    trek_coming = Trek.query.filter(Trek.trek_status == 'approved').count()
+    trek_ongoing = Trek.query.filter(Trek.trek_status == 'ongoing').count()
+    trek_closed = Trek.query.filter(Trek.trek_status == 'closed').count()
+    trek_open = Trek.query.filter(Trek.trek_status == 'open').count()
+
+    trek_data = [
+        {"title": "Total Trek", "value": trek_total, "color": "total"},
+        {"title": "Open", "value": trek_open, "color": "open"},
+        {"title": "Ongoing", "value": trek_ongoing, "color": "ongoing"},
+        {"title": "Coming Soon", "value": trek_coming, "color": "pending"},
+        {"title": "Closed", "value": trek_closed, "color": "closed"},
+    ]
+
+    query = Trek.query.filter(
+        or_(
+            Trek.trek_status == 'approved',
+            Trek.trek_status == 'ongoing',
+            Trek.trek_status == 'closed',
+            Trek.trek_status == 'open',
+        )
+    )
+    if request.method == "GET":
+        difficulty = request.args.get("difficulty")
+        status = request.args.get("status")
+        sort = request.args.get("sort", "created_at")
+        orderby = request.args.get("orderby", "desc")
+    #         # === Import filter function
+        from filter import trek_filter, trek_sort
+        query = trek_filter(query, difficulty, status)
+        query = trek_sort(query, sort, orderby)
+    treks = query.all()
+    return render_template(
+        'trekker/trek.html',
+        page = 'trek',
+        trek_data = trek_data,
+        treks = treks,
+    )
+
+
+@trekker_bp.route('/view-trek/<int:trek_id>')
+@login_required
+@role_required('trekker')
+def view_trek(trek_id):
+    trek_details = Trek.query.filter_by(id = trek_id).first()
+
+    return render_template(
+        f'{current_user.role}/view_trek.html',
+        id = trek_details.id,
+        trek_code = trek_details.trek_code,
+        trek_name = trek_details.trek_name,
+        location = trek_details.location,
+        difficulty = trek_details.difficulty,
+        duration = trek_details.duration,
+        start_date = trek_details.start_date,
+        end_date = trek_details.end_date,
+        trek_status = trek_details.trek_status,
+        slots = trek_details.slots,
+        booked_slots = trek_details.booked_slots,
+        price = trek_details.price,
+        description = trek_details.description,
+        staff_id = trek_details.staff_id
+    )
 
 @trekker_bp.route('/booking')
 @login_required

@@ -1,3 +1,5 @@
+{% import 'macros/helper.html' as hm %}
+
 <div class="container py-3">
     <div class="card shadow-sm border-0">
         <div class="d-flex card-header justify-content-between align-items-center bg-warning-subtle">
@@ -16,28 +18,56 @@
         </div>
         <div class="collapse" id="trekFilters">
             <div class="card-body bg-light border-bottom">
-                <form method="GET">
+                <form action="{{ url_for('trekker.trek') }}" method="GET">
                     <div class="row g-3">
-                        <div class="col-md-4">
-                            <!-- Search -->
-                        </div>
+                        <!-- Difficulty -->
                         <div class="col-md-3">
-                            <!-- Difficulty -->
+                            <label class="form-label">Difficulty</label>
+                            <select class="form-select" name="difficulty">
+                                <option value="">All</option>
+                                <option value="easy">Easy</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="hard">Hard</option>
+                            </select>
                         </div>
+                        <!-- Status -->
                         <div class="col-md-3">
-                            <!-- Status -->
+                            <label class="form-label">Status</label>
+                            <select class="form-select" name="status">
+                                <option value="">All</option>
+                                <option value="approved">Coming</option>
+                                <option value="open">Open</option>
+                                <option value="ongoing">Ongoing</option>
+                                <option value="closed">Closed</option>
+                            </select>
                         </div>
-                        <div class="col-md-2">
-                            <!-- Sort -->
+                        <!-- Sort By -->
+                        <div class="col-md-3">
+                            <label class="form-label">Sort By</label>
+                            <select class="form-select" name="sort">
+                                <option value="created_at">Created At</option>
+                                <option value="duration">Duration</option>
+                                <option value="price">Price</option>
+                                <option value="trek_code">Code</option>
+                                <option value="trek_name">Name</option>
+                            </select>
+                        </div>
+                        <!-- Order -->
+                        <div class="col-md-3">
+                            <label class="form-label">Order</label>
+                            <select class="form-select" name="orderby">
+                                <option value="desc">Descending</option>
+                                <option value="asc">Ascending</option>
+                            </select>
                         </div>
                     </div>
                     <div class="d-flex mt-3 gap-2 justify-content-end">
                         <button class="btn btn-warning">
                             Apply
                         </button>
-                        <a href="{{ url_for('trekker.trek') }}" class="btn btn-secondary">
+                        <button type="reset" class="btn btn-secondary">
                             Reset
-                        </a>
+                        </button>
                     </div>
                 </form>
             </div>
@@ -73,60 +103,31 @@
                                 {{ trek.staff_id or "—" }}
                             </td>
                             <td>
-                                {% if trek.difficulty == "hard" %}
-                                <span class="badge bg-danger">
-                                    Hard
-                                </span>
-                                {% elif trek.difficulty == "moderate" %}
-                                <span class="badge bg-warning text-dark">
-                                    Moderate
-                                </span>
-                                {% else %}
-                                <span class="badge bg-success">
-                                    Easy
-                                </span>
-                                {% endif %}
+                                {{ hm.trek_difficulty_badge(trek.difficulty) }}
                             </td>
                             <td>
                                 {{ trek.duration }}
                             </td>
                             <td>
-                                {% if trek.trek_status == "completed" %}
-                                <span class="badge bg-success">
-                                    Completed
-                                </span>
-                                {% elif trek.trek_status == "approved" %}
+                                {% if trek.trek_status == 'approved' %}
                                 <span class="badge bg-primary">
-                                    Approved
-                                </span>
-                                {% elif trek.trek_status == "pending" %}
-                                <span class="badge bg-warning text-dark">
-                                    Pending
-                                </span>
-                                {% elif trek.trek_status == "open" %}
-                                <span class="badge bg-info text-dark">
-                                    Open
-                                </span>
-                                {% elif trek.trek_status == "closed" %}
-                                <span class="badge bg-secondary">
-                                    Closed
+                                    Coming Soon
                                 </span>
                                 {% else %}
-                                <span class="badge bg-danger">
-                                    Cancelled
-                                </span>
+                                {{ hm.trek_badge(trek.trek_status) }}
                                 {% endif %}
                             </td>
                             <td>
-                                {{ trek.booked_slots }} / {{ trek.slots }}
+                                {{ trek.slots }}
                             </td>
                             <td>
-                                <a href="#" class="btn btn-outline-primary btn-sm">
+                                <a href="{{ url_for('trekker.view_trek', trek_id = trek.id) }}" class="btn btn-outline-primary btn-sm">
                                     View
                                 </a>
                             </td>
                             <td>
-                                {% if trek.trek_status == "open" and trek.booked_slots < trek.slots %} <form
+                                {% if trek.trek_status == "open" and trek.booked_slots < trek.slots %} 
+                                    <form
                                     action="{{ url_for('trekker.trekker_booking_action') }}" method="POST">
                                     <input type="hidden" name="trekker_id" value="{{ current_user.id }}">
                                     <input type="hidden" name="trek_id" value="{{ trek.id }}">
@@ -150,11 +151,15 @@
                                     <span class="badge bg-danger">
                                         Cancelled
                                     </span>
+                                    {% elif trek.trek_status == "ongoing" %}
+                                    <span class="badge bg-danger-subtle">
+                                        Ongoing
+                                    </span>
                                     {% else %}
                                     <span class="badge bg-info text-dark">
                                         Coming Soon
                                     </span>
-                                    {% endif %}
+                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}
