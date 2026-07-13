@@ -12,6 +12,7 @@ from forms.trek_form import TrekActionForm, TrekUpdateForm
 from forms.user_form import ProfileUpdateForm
 
 staff_bp = Blueprint('staff', __name__, url_prefix='/staff')
+# ============== Dashboard ========
 
 @staff_bp.route('/')
 @login_required
