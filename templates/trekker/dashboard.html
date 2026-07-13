@@ -1,4 +1,34 @@
 {% extends "base.html" %}
 {% block content %}
-<h1> {{ current_user.first_name|capitalize }} {{ page|capitalize }} Page</h1>
+{% from 'macros/stats.html' import statsDashboard %}
+
+<div class="row g-3">
+    <!-- ======= Booking Statistics ========== -->
+    <div>
+        {{ statsDashboard(
+        title='booking',
+        role='trekker',
+        bgcolor='bg-success-subtle',
+        textcolor='text-dark',
+        btn_color='btn-light',
+        btn_text_color='text-primary',
+        items=booking_data
+        ) }}
+    </div>
+
+
+    <!-- ======= trek Statistics ========== -->
+    <div>
+        {{ statsDashboard(
+        title='trek',
+        role='trekker',
+        bgcolor='bg-warning-subtle',
+        textcolor='text-dark',
+        btn_color='btn-light',
+        btn_text_color='text-primary',
+        items=trek_data
+        ) }}
+    </div>
+</div>
+
 {% endblock %}

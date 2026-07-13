@@ -6,6 +6,7 @@ from models.model import User, Trek, Booking
 from routes.decorators import role_required
 from forms.trek_form import TrekBookForm
 from forms.user_form import ProfileUpdateForm
+from sqlalchemy import or_
 
 
 
@@ -22,12 +23,51 @@ def trekker():
 @login_required
 @role_required('trekker')
 def dashboard():
-    trekker_id = current_user.id
-    trekker_data = User.query.filter_by(id = trekker_id).first()
-    return render_template('trekker/dashboard.html',
-                           page = 'dashboard', first_name = trekker_data.first_name,
-                           email = trekker_data.email,
-                           role = trekker_data.role)
+
+# ========== Booking ========
+    booking_total = Booking.query.count()
+    booking_pending = Booking.query.filter(Booking.trekker_id == current_user.id, Booking.status == 'pending').count()
+    booking_approved = Booking.query.filter(Booking.trekker_id == current_user.id, Booking.status == 'approved').count()
+    booking_requested = Booking.query.filter(Booking.trekker_id == current_user.id, Booking.status == 'requested').count()
+    booking_rejected = Booking.query.filter(Booking.trekker_id == current_user.id, Booking.status == 'rejected').count()
+    booking_completed = Booking.query.filter(Booking.trekker_id == current_user.id, Booking.status == 'completed').count()
+    booking_cancelled = Booking.query.filter(Booking.trekker_id == current_user.id, Booking.status == 'cancelled').count()
+
+    booking_data = [
+        {"title": "Total Booking", "value": booking_total, "color": "total"},
+        {"title": "Pending", "value": booking_pending, "color": "pending"},
+        {"title": "Approved", "value": booking_approved, "color": "approved"},
+        {"title": "Cancellation Requests", "value": booking_requested, "color": "completed"},
+        {"title": "Completed", "value": booking_completed, "color": "completed"},
+        {"title": "Cancelled", "value": booking_cancelled, "color": "cancelled"},
+        {"title": "Rejected", "value": booking_rejected, "color": "rejected"}
+    ]
+
+# =============== Trek ============
+    trek_total = Trek.query.filter(
+        or_(
+            Trek.trek_status == 'open',
+            Trek.trek_status == 'approved',
+            Trek.trek_status == 'ongoing'
+        )
+    ).count()
+    trek_coming = Trek.query.filter(Trek.trek_status == 'approved').count()
+    trek_ongoing = Trek.query.filter(Trek.trek_status == 'ongoing').count()
+    trek_open = Trek.query.filter(Trek.trek_status == 'open').count()
+
+    trek_data = [
+        {"title": "Total Trek", "value": trek_total, "color": "total"},
+        {"title": "Coming Soon", "value": trek_coming, "color": "pending"},
+        {"title": "Open", "value": trek_open, "color": "open"},
+        {"title": "Ongoing", "value": trek_ongoing, "color": "ongoing"}
+    ]
+
+    return render_template(
+        'trekker/dashboard.html',
+        page = 'dashboard',
+        trek_data = trek_data,
+        booking_data = booking_data
+    )
 
 
 @trekker_bp.route('/trek')
@@ -161,10 +201,10 @@ def profile():
     return render_template('trekker/profile.html',page = 'Profile',
                            update_form = update_form)
 
-@trekker_bp.route('/profile/update', methods = ['GET', 'POST'])
+@trekker_bp.route('/profile/edit', methods = ['GET', 'POST'])
 @login_required
 @role_required('trekker')
-def update_profile():
+def edit_profile():
     update_form = ProfileUpdateForm()
     if update_form.validate_on_submit():
         user_data = User.query.filter_by(id = current_user.id).first()
@@ -181,7 +221,7 @@ def update_profile():
             user_data.trekker_profile.trekker_profile.dob = update_form.dob.data
             flash('Date Of Birth Update Successful', 'success')
         if update_form.bio.data:
-            user_data.trekker_profile.trekker_profile.bio = update_form.bio.data
+            user_data.trekker_profile.bio = update_form.bio.data
             flash('About Update Successful', 'success')
         if update_form.password.data:
             user_data.password = update_form.password.data
@@ -189,7 +229,7 @@ def update_profile():
         db.session.commit()
         flash('Profile Updated Successfully', 'success')
         return redirect(url_for(f'{current_user.role}.profile'))
-    return render_template('trekker/update_profile.html', update_form = update_form)
+    return render_template('trekker/edit_profile.html', update_form = update_form)
 
 
 @trekker_bp.route('/search')
