@@ -12,7 +12,7 @@ from sqlalchemy import or_
 
 trekker_bp = Blueprint('trekker', __name__)
 
-
+# =========== Dashboard ========
 @trekker_bp.route('/trekker')
 @login_required
 @role_required('trekker')
@@ -277,7 +277,7 @@ def history():
         Booking.status != 'approved',
         Booking.status != 'requested',
     ).count()
-    
+
     booking_rejected = Booking.query.filter(Booking.trekker_id == current_user.id, Booking.status == 'rejected').count()
     booking_completed = Booking.query.filter(Booking.trekker_id == current_user.id, Booking.status == 'completed').count()
     booking_cancelled = Booking.query.filter(Booking.trekker_id == current_user.id, Booking.status == 'cancelled').count()
@@ -319,8 +319,11 @@ def history():
 @role_required('trekker')
 def profile():
     update_form = ProfileUpdateForm()
-    return render_template('trekker/profile.html',page = 'Profile',
-                           update_form = update_form)
+    return render_template(
+        'trekker/profile.html',
+        page = 'profile',
+        update_form = update_form
+    )
 
 @trekker_bp.route('/profile/edit', methods = ['GET', 'POST'])
 @login_required
@@ -366,6 +369,7 @@ def search():
     results = trekker_search(current_user.id, search)
     return render_template(
         'trekker/search.html',
+        page = 'search',
         search = search,
         results = results,
         trek_book_form = trek_book_form
