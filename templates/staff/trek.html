@@ -1,81 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
+{% from 'macros/stats.html' import statsCollapse %}
+
 <div class="container py-3">
-    <!-- ============== Trek Statistics  ============== -->
-    <div class="mb-4 card shadow-sm border-0">
-        <div class="card-header bg-dark text-white">
-            <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
-                <div>
-                    <h3 class="mb-0">
-                        Trek Statistics
-                    </h3>
-                </div>
-                <button class="btn btn-warning fw-semibold" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#TrekStats" aria-expanded="false" aria-controls="TrekStats">
-                    View Statistics
-                </button>
-            </div>
-        </div>
-        <div class="collapse" id="TrekStats">
-            <div class="card-body">
-                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
-                    <!-- Total -->
-                    <div class="col">
-                        <div class="card h-100 border-0 shadow-sm bg-primary text-white">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">
-                                    Total Treks
-                                </h5>
-                                <h2 class="mb-0 fw-bold display-5">
-                                    {{ total }}
-                                </h2>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Approved -->
-                    <div class="col">
-                        <div class="card h-100 border-0 shadow-sm bg-success text-white">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">
-                                    Approved
-                                </h5>
-                                <h2 class="mb-0 fw-bold display-5">
-                                    {{ approved }}
-                                </h2>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Pending -->
-                    <div class="col">
-                        <div class="card h-100 border-0 shadow-sm bg-warning text-dark">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">
-                                    Pending
-                                </h5>
-                                <h2 class="mb-0 fw-bold display-5">
-                                    {{ pending }}
-                                </h2>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Cancellation Requests -->
-                    <div class="col">
-                        <div class="card h-100 border-0 shadow-sm bg-info text-dark">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">
-                                    Cancellation Requests
-                                </h5>
-                                <h2 class="mb-0 fw-bold display-5">
-                                    {{ requested }}
-                                </h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+    <!-- ======= trek Statistics ========== -->
+    <div>
+        {{ statsCollapse(
+        title='trek',
+        bgcolor='bg-dark-subtle',
+        textcolor='text-dark',
+        btn_color='btn-light',
+        btn_text_color='text-primary',
+        items=trek_data
+        ) }}
     </div>
-    <!-- ============== Trek Table ============== -->
-    {% include "staff/trek_table.html" %}
+    <!-- ======= trek Table ========== -->
+    <div>
+        {% include 'staff/trek_table.html' %}
+    </div>
 </div>
+
 {% endblock %}

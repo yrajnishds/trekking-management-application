@@ -19,7 +19,6 @@
                             <th>Status</th>
                             <th>Slots</th>
                             <th>View</th>
-                            <th>Edit</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -77,14 +76,8 @@
                             </td>
                             <td>{{ trek.slots }}</td>
                             <td>
-                                <a href="#" class="btn btn-outline-info btn-sm">
+                                <a href="{{ url_for('staff.view_trek', trek_id=trek.id) }}" class="btn btn-outline-info btn-sm">
                                     View
-                                </a>
-                            </td>
-                            <td>
-                                <a href="{{ url_for('staff.update_trek', code=trek.trek_code) }}"
-                                    class="btn btn-secondary btn-sm">
-                                    Edit
                                 </a>
                             </td>
                             <td>

@@ -83,13 +83,83 @@ def dashboard():
 @role_required('staff')
 def trek():
     trek_action_form = TrekActionForm()
-    trek_action_form.trek_action.choices = [('', '---Choose Status---')] +  [('open', 'Open'), ('closed', 'Closed'), ('completed', 'Completed')]
-    user_id = current_user.id
-    treks = Trek.query.filter_by(staff_id = user_id).all()
-    return render_template('staff/trek.html',
-                           page = 'trek',
-                           treks = treks,
-                           trek_action_form = trek_action_form)
+    trek_action_form.trek_action.choices = [('', '---Choose Status---')] +  [('open', 'Open'), ('ongoing', 'Ongoing'), ('closed', 'Closed'), ('completed', 'Completed')]
+    
+    # =============== Trek ============
+    trek_total = Trek.query.filter(
+        Trek.staff_id == current_user.id
+    ).count()
+    trek_pending = Trek.query.filter(Trek.staff_id == current_user.id, Trek.trek_status == 'pending').count()
+    trek_approved = Trek.query.filter(Trek.staff_id == current_user.id, Trek.trek_status == 'approved').count()
+    trek_ongoing = Trek.query.filter(Trek.staff_id == current_user.id, Trek.trek_status == 'ongoing').count()
+    trek_open = Trek.query.filter(Trek.staff_id == current_user.id, Trek.trek_status == 'open').count()
+    trek_closed = Trek.query.filter(Trek.staff_id == current_user.id, Trek.trek_status == 'closed').count()
+
+    trek_data = [
+        {"title": "Total Trek", "value": trek_total, "color": "total"},
+        {"title": "Pending", "value": trek_pending, "color": "pending"},
+        {"title": "Approved", "value": trek_approved, "color": "approved"},
+        {"title": "Open", "value": trek_open, "color": "open"},
+        {"title": "Ongoing", "value": trek_ongoing, "color": "ongoing"},
+        {"title": "Closed", "value": trek_closed, "color": "closed"}
+    ]
+
+    query = Trek.query.filter(
+        Trek.staff_id == current_user.id,
+        or_(
+            Trek.trek_status == 'approved',
+            Trek.trek_status == 'ongoing',
+            Trek.trek_status == 'closed',
+            Trek.trek_status == 'open',
+        )
+    )
+    if request.method == "GET":
+        difficulty = request.args.get("difficulty")
+        status = request.args.get("status")
+        sort = request.args.get("sort", "created_at")
+        orderby = request.args.get("orderby", "desc")
+    #         # === Import filter function
+        from filter import trek_filter, trek_sort
+        query = trek_filter(query, difficulty, status)
+        query = trek_sort(query, sort, orderby)
+    treks = query.all()
+    return render_template(
+        'staff/trek.html',
+        page = 'trek',
+        trek_data = trek_data,
+        treks = treks,
+        trek_action_form = trek_action_form,
+
+    )
+
+@staff_bp.route('/view-trek/<int:trek_id>')
+@login_required
+@role_required('staff')
+def view_trek(trek_id):
+    trek_details = Trek.query.filter_by(id = trek_id).first()
+
+    trek_action_form = TrekActionForm()
+    trek_action_form.trek_action.choices = [('', '---Choose Status---')] +  [('open', 'Open'), ('ongoing', 'Ongoing'), ('closed', 'Closed'), ('completed', 'Completed')]
+    
+    return render_template(
+        'staff/view_trek.html',
+        trek_action_form = trek_action_form,
+        id = trek_details.id,
+        trek_code = trek_details.trek_code,
+        trek_name = trek_details.trek_name,
+        location = trek_details.location,
+        difficulty = trek_details.difficulty,
+        duration = trek_details.duration,
+        start_date = trek_details.start_date,
+        end_date = trek_details.end_date,
+        trek_status = trek_details.trek_status,
+        slots = trek_details.slots,
+        booked_slots = trek_details.booked_slots,
+        price = trek_details.price,
+        description = trek_details.description,
+        staff_id = trek_details.staff_id
+    )
+
 
 @staff_bp.route('/trek/<string:code>', methods = ['GET', 'POST'])
 @login_required
@@ -110,12 +180,12 @@ def staff_trek_action_status(code):
     return redirect(url_for('staff.trek'))
 
 
-@staff_bp.route('/edit-trek/<string:code>/update', methods = ['GET', 'POST'])
+@staff_bp.route('/edit-trek/<int:trek_id>/update', methods = ['GET', 'POST'])
 @login_required
 @role_required('staff')
-def edit_trek(code):
+def edit_trek(trek_id):
 
-    trek = Trek.query.filter_by(trek_code = code).first()
+    trek = Trek.query.filter_by(id = trek_id).first()
     form = TrekUpdateForm()
 
     form.trek_code.choices = [(trek.trek_code, trek.trek_code)]
@@ -215,6 +285,17 @@ def booking():
                            cancelled = cancelled,
                            requested = requested,
                            completed = completed)
+
+@staff_bp.route('/booking/trek/<int:trek_id>')
+@login_required
+@role_required('staff')
+def view_booking(trek_id):
+    booking_details = Booking.query.filter_by(trek_id = trek_id).all()
+
+    return render_template(
+        'staff/view_booking.html',
+        booking_details = booking_details
+    )
 
 
 @staff_bp.route('/booking/<int:id>/<string:action>/<int:trek_id>/<string:status>', methods = ['GET', 'POST'])
