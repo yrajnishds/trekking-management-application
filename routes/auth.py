@@ -16,6 +16,17 @@ def login():
         user = User.query.filter_by(email = form.email.data).first()
         # Checking User
         if user and user.password == form.password.data:
+            if user.is_blocked:
+                flash('You  Account is blocked Please Contact admin', 'info')
+                return redirect(url_for('auth.login'))
+            
+            if not user.is_active:
+                flash('You  Account is Deactivated Please Try again after some time', 'info')
+                return redirect(url_for('auth.login'))
+            
+            if not user.is_approved:
+                flash('You  Account is Status id pending Please Try after sum time....', 'info')
+                return redirect(url_for('auth.login'))
 
             login_user(user)
             role = current_user.role
