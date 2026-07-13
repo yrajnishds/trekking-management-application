@@ -3,7 +3,7 @@
 {% block content %}
 <section class="container py-4">
     <div class="card shadow-sm border-0">
-        <form action="{{ url_for('staff.update_trek_details') }}" method="POST">
+        <form action="{{ url_for('staff.edit_trek', trek_id = id ) }}" method="POST">
             {{ form.hidden_tag() }}
             <!-- ============ Header ============ -->
             <div class="card-header bg-dark text-white">

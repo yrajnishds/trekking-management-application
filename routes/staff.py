@@ -24,17 +24,59 @@ def staff():
 @login_required
 @role_required('staff')
 def dashboard():
-    user_id = current_user.id
-    user_data = User.query.filter_by(id = user_id).first()
 
-    # totalAssignedTreks = Trek.filter_by(staff_id = user_id).count()
-    # totalBookings = Booking.query.join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
+    # ========== Booking ========
+    
+    booking = Booking.query.join(Booking.trek).filter(
+        Trek.staff_id == current_user.id,
 
-    return render_template('staff/dashboard.html',
-                           page = 'dashboard', first_name = user_data.first_name,
-                           email = user_data.email,
-                           role = user_data.role)
+    )
+    booking_total = booking.count()
+    booking_pending = booking.filter(Booking.status == 'pending').count()
+    booking_approved = booking.filter(Booking.status == 'approved').count()
+    booking_requested = booking.filter(Booking.status == 'requested').count()
+    booking_completed = booking.filter(Booking.status == 'completed').count()
+    booking_cancelled = booking.filter(Booking.status == 'cancelled').count()
+    booking_rejected = booking.filter(Booking.status == 'rejected').count()
 
+    booking_data = [
+        {"title": "Total Booking", "value": booking_total, "color": "total"},
+        {"title": "Pending", "value": booking_pending, "color": "pending"},
+        {"title": "Approved", "value": booking_approved, "color": "approved"},
+        {"title": "Cancellation Requests", "value": booking_requested, "color": "completed"},
+        {"title": "Completed", "value": booking_completed, "color": "completed"},
+        {"title": "Cancelled", "value": booking_cancelled, "color": "cancelled"},
+        {"title": "Rejected", "value": booking_rejected, "color": "rejected"}
+    ]
+
+    # =============== Trek ============
+    trek_total = Trek.query.filter(
+        Trek.staff_id == current_user.id
+    ).count()
+    trek_pending = Trek.query.filter(Trek.staff_id == current_user.id, Trek.trek_status == 'pending').count()
+    trek_approved = Trek.query.filter(Trek.staff_id == current_user.id, Trek.trek_status == 'approved').count()
+    trek_ongoing = Trek.query.filter(Trek.staff_id == current_user.id, Trek.trek_status == 'ongoing').count()
+    trek_open = Trek.query.filter(Trek.staff_id == current_user.id, Trek.trek_status == 'open').count()
+    trek_closed = Trek.query.filter(Trek.staff_id == current_user.id, Trek.trek_status == 'closed').count()
+    trek_completed = Trek.query.filter(Trek.staff_id == current_user.id, Trek.trek_status == 'completed').count()
+    trek_cancelled = Trek.query.filter(Trek.staff_id == current_user.id, Trek.trek_status == 'cancelled').count()
+
+    trek_data = [
+        {"title": "Total Trek", "value": trek_total, "color": "total"},
+        {"title": "Pending", "value": trek_pending, "color": "pending"},
+        {"title": "Approved", "value": trek_approved, "color": "approved"},
+        {"title": "Open", "value": trek_open, "color": "open"},
+        {"title": "Ongoing", "value": trek_ongoing, "color": "ongoing"},
+        {"title": "Closed", "value": trek_closed, "color": "closed"},
+        {"title": "Completed", "value": trek_completed, "color": "completed"},
+        {"title": "Cancelled", "value": trek_cancelled, "color": "cancelled"}
+    ]
+    return render_template(
+        'staff/dashboard.html',
+        page = 'dashboard',
+        booking_data = booking_data,
+        trek_data = trek_data
+    )
 
 @staff_bp.route('/trek')
 @login_required
@@ -68,10 +110,10 @@ def staff_trek_action_status(code):
     return redirect(url_for('staff.trek'))
 
 
-@staff_bp.route('/trek/<string:code>/update', methods = ['GET', 'POST'])
+@staff_bp.route('/edit-trek/<string:code>/update', methods = ['GET', 'POST'])
 @login_required
 @role_required('staff')
-def update_trek(code):
+def edit_trek(code):
 
     trek = Trek.query.filter_by(trek_code = code).first()
     form = TrekUpdateForm()
@@ -79,7 +121,7 @@ def update_trek(code):
     form.trek_code.choices = [(trek.trek_code, trek.trek_code)]
     form.trek_name.choices = [(trek.trek_name, trek.trek_name)]
 
-    return render_template('staff/update_trek_details.html',
+    return render_template('staff/edit_trek.html',
                            form = form,
                            trek = trek)
 
@@ -318,7 +360,7 @@ def update_profile():
         db.session.commit()
         flash('Profile Updated Successfully', 'success')
         return redirect(url_for(f'{current_user.role}.profile'))
-    return render_template('staff/update_profile.html', update_form = update_form)
+    return render_template('staff/edit_profile.html', update_form = update_form)
 
 
 @staff_bp.route('/search', methods = ['GET', 'POST'])
