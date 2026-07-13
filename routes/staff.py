@@ -71,6 +71,7 @@ def dashboard():
         {"title": "Completed", "value": trek_completed, "color": "completed"},
         {"title": "Cancelled", "value": trek_cancelled, "color": "cancelled"}
     ]
+
     return render_template(
         'staff/dashboard.html',
         page = 'dashboard',
@@ -250,41 +251,47 @@ def update_trek_details():
 @login_required
 @role_required('staff')
 def booking():
-    bookings = db.session.query(Booking).join(Booking.trek).filter(
-        Trek.staff_id == current_user.id,
-        Booking.status != 'completed', 
-        Booking.status != 'cancelled', 
-        Booking.status != 'rejected'
-    ).order_by(
-        desc(Booking.booking_date),
-        desc(Booking.id)
-    ).all()
-    total = db.session.query(Booking).join(Booking.trek).filter(
-        Trek.staff_id == current_user.id,
-        
-            Booking.status != 'completed', 
-            Booking.status != 'cancelled', 
-            Booking.status != 'rejected', 
-        
-    ).count()
 
-    # total = Booking.query.join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
+    # ========== Booking ========
+    
+    booking = Booking.query.join(Booking.trek).filter(
+        Trek.staff_id == current_user.id,
 
-    pending = Booking.query.filter_by(status = 'pending').join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
-    approved = Booking.query.filter_by(status = 'approved').join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
-    rejected = Booking.query.filter_by(status = 'rejected').join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
-    cancelled = Booking.query.filter_by(status = 'cancelled').join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
-    requested = Booking.query.filter_by(status = 'requested').join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
-    completed = Booking.query.filter_by(status = 'completed').join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
-    return render_template('staff/booking.html',page = 'booking',
-                           bookings = bookings,
-                           total = total,
-                           approved = approved,
-                           pending = pending,
-                           rejected = rejected,
-                           cancelled = cancelled,
-                           requested = requested,
-                           completed = completed)
+    )
+    booking_total = booking.count()
+    booking_pending = booking.filter(Booking.status == 'pending').count()
+    booking_approved = booking.filter(Booking.status == 'approved').count()
+    booking_requested = booking.filter(Booking.status == 'requested').count()
+
+    booking_data = [
+        {"title": "Total Booking", "value": booking_total, "color": "total"},
+        {"title": "Pending", "value": booking_pending, "color": "pending"},
+        {"title": "Approved", "value": booking_approved, "color": "approved"},
+        {"title": "Cancellation Requests", "value": booking_requested, "color": "requested"},
+    ]
+
+    query = Booking.query.join(Booking.trek).filter(
+        Trek.staff_id == current_user.id,
+        Booking.status != 'cancelled',
+        Booking.status != 'rejected',
+        Booking.status != 'completed',
+    )
+    if request.method == "GET":
+        status = request.args.get("status")
+        sort = request.args.get("sort", "booking_date")
+        orderby = request.args.get("orderby", "desc")
+    #         # === Import filter function
+        from filter import booking_filter, booking_sort
+        query = booking_filter(query, status)
+        query = booking_sort(query, sort, orderby)
+    bookings = query.all()
+
+    return render_template(
+        'staff/booking.html',
+        page = 'booking',
+        booking_data = booking_data,
+        bookings = bookings
+    )
 
 @staff_bp.route('/booking/trek/<int:trek_id>')
 @login_required
@@ -371,36 +378,233 @@ def staff_booking_action(id, trek_id, action, status):
 @login_required
 @role_required('staff')
 def history():
-    bookings = db.session.query(Booking).join(Booking.trek).filter(
-        Trek.staff_id == current_user.id,
-        or_(
-            Booking.status == 'completed', 
-            Booking.status == 'cancelled', 
-            Booking.status == 'rejected', 
-        )
-    ).order_by(
-        desc(Booking.booking_date),
-        desc(Booking.id)
-    ).all()
 
-    total = db.session.query(Booking).join(Booking.trek).filter(
+
+    # ========== Booking ========
+    
+    booking = Booking.query.join(Booking.trek).filter(
         Trek.staff_id == current_user.id,
-        or_(
-            Booking.status == 'completed', 
-            Booking.status == 'cancelled', 
-            Booking.status == 'rejected', 
-        )
+
+    )
+    booking_total = booking.filter(
+        Booking.status != 'pending',
+        Booking.status != 'approved',
+        Booking.status != 'requested',
     ).count()
+    booking_completed = booking.filter(Booking.status == 'completed').count()
+    booking_cancelled = booking.filter(Booking.status == 'cancelled').count()
+    booking_rejected = booking.filter(Booking.status == 'rejected').count()
 
-    rejected = Booking.query.filter_by(status = 'rejected').join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
-    cancelled = Booking.query.filter_by(status = 'cancelled').join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
-    completed = Booking.query.filter_by(status = 'completed').join(Booking.trek).filter(Trek.staff_id == current_user.id).count()
-    return render_template('staff/history.html',page = 'history',
-                           bookings = bookings,
-                           total = total,
-                           rejected = rejected,
-                           cancelled = cancelled,
-                           completed = completed)
+    booking_data = [
+        {"title": "Total Booking", "value": booking_total, "color": "total"},
+        {"title": "Completed", "value": booking_completed, "color": "completed"},
+        {"title": "Cancelled", "value": booking_cancelled, "color": "cancelled"},
+        {"title": "Rejected", "value": booking_rejected, "color": "rejected"}
+    ]
+
+
+    # =============== Trek ============
+    trek_total = Trek.query.filter(
+        Trek.staff_id == current_user.id,
+        Trek.trek_status == 'completed',
+        Trek.trek_status == 'cancelled',
+    ).count()
+    trek_completed = Trek.query.filter(Trek.staff_id == current_user.id, Trek.trek_status == 'completed').count()
+    trek_cancelled = Trek.query.filter(Trek.staff_id == current_user.id, Trek.trek_status == 'cancelled').count()
+
+    trek_data = [
+        {"title": "Total Trek", "value": trek_total, "color": "total"},
+        {"title": "Completed", "value": trek_completed, "color": "completed"},
+        {"title": "Cancelled", "value": trek_cancelled, "color": "cancelled"}
+    ]
+    
+    query_booking = Booking.query.join(Booking.trek).filter(
+        Trek.staff_id == current_user.id,
+        or_(
+            Booking.status == 'cancelled',
+            Booking.status == 'rejected',
+            Booking.status == 'completed',
+        )
+    )
+
+    query_trek = Trek.query.filter(
+        Trek.staff_id == current_user.id,
+        Trek.trek_status != 'open',
+        Trek.trek_status != 'closed',
+        Trek.trek_status != 'approved',
+        Trek.trek_status != 'pending',
+    )
+    treks = query_trek.all()
+    bookings = query_booking.all()
+    return render_template(
+        'staff/history.html',
+        page = 'history',
+        booking_data = booking_data,
+        trek_data = trek_data,
+        treks = treks,
+        bookings = bookings
+    )
+
+
+@staff_bp.route('/history/booking', methods = ["GET", 'POST'])
+@login_required
+@role_required('staff')
+def history_booking():
+
+
+    # ========== Booking ========
+    
+    booking = Booking.query.join(Booking.trek).filter(
+        Trek.staff_id == current_user.id,
+
+    )
+    booking_total = booking.filter(
+        Booking.status != 'pending',
+        Booking.status != 'approved',
+        Booking.status != 'requested',
+    ).count()
+    booking_completed = booking.filter(Booking.status == 'completed').count()
+    booking_cancelled = booking.filter(Booking.status == 'cancelled').count()
+    booking_rejected = booking.filter(Booking.status == 'rejected').count()
+
+    booking_data = [
+        {"title": "Total Booking", "value": booking_total, "color": "total"},
+        {"title": "Completed", "value": booking_completed, "color": "completed"},
+        {"title": "Cancelled", "value": booking_cancelled, "color": "cancelled"},
+        {"title": "Rejected", "value": booking_rejected, "color": "rejected"}
+    ]
+
+
+    # =============== Trek ============
+    trek_total = Trek.query.filter(
+        Trek.staff_id == current_user.id,
+        Trek.trek_status == 'completed',
+        Trek.trek_status == 'cancelled',
+    ).count()
+    trek_completed = Trek.query.filter(Trek.staff_id == current_user.id, Trek.trek_status == 'completed').count()
+    trek_cancelled = Trek.query.filter(Trek.staff_id == current_user.id, Trek.trek_status == 'cancelled').count()
+
+    trek_data = [
+        {"title": "Total Trek", "value": trek_total, "color": "total"},
+        {"title": "Completed", "value": trek_completed, "color": "completed"},
+        {"title": "Cancelled", "value": trek_cancelled, "color": "cancelled"}
+    ]
+    
+    query = Booking.query.join(Booking.trek).filter(
+        Trek.staff_id == current_user.id,
+        Booking.status != 'approved',
+        Booking.status != 'pending',
+        Booking.status != 'requested',
+    )
+    if request.method == "GET":
+        status = request.args.get("status")
+        sort = request.args.get("sort", "booking_date")
+        orderby = request.args.get("orderby", "desc")
+    #         # === Import filter function
+        from filter import booking_filter, booking_sort
+        query = booking_filter(query, status)
+        query = booking_sort(query, sort, orderby)
+    bookings = query.all()
+
+    query_trek = Trek.query.filter(
+        Trek.staff_id == current_user.id,
+        Trek.trek_status != 'open',
+        Trek.trek_status != 'closed',
+        Trek.trek_status != 'approved',
+        Trek.trek_status != 'pending',
+    )
+
+
+    treks = query_trek.all()
+    return render_template(
+        'staff/history.html',
+        page = 'history',
+        booking_data = booking_data,
+        trek_data = trek_data,
+        treks = treks,
+        bookings = bookings
+    )
+
+@staff_bp.route('/history/trek', methods = ['GET', 'POST'])
+@login_required
+@role_required('staff')
+def history_trek():
+
+
+    # ========== Booking ========
+    
+    booking = Booking.query.join(Booking.trek).filter(
+        Trek.staff_id == current_user.id,
+
+    )
+    booking_total = booking.filter(
+        Booking.status != 'pending',
+        Booking.status != 'approved',
+        Booking.status != 'requested',
+    ).count()
+    booking_completed = booking.filter(Booking.status == 'completed').count()
+    booking_cancelled = booking.filter(Booking.status == 'cancelled').count()
+    booking_rejected = booking.filter(Booking.status == 'rejected').count()
+
+    booking_data = [
+        {"title": "Total Booking", "value": booking_total, "color": "total"},
+        {"title": "Completed", "value": booking_completed, "color": "completed"},
+        {"title": "Cancelled", "value": booking_cancelled, "color": "cancelled"},
+        {"title": "Rejected", "value": booking_rejected, "color": "rejected"}
+    ]
+
+
+    # =============== Trek ============
+    trek_total = Trek.query.filter(
+        Trek.staff_id == current_user.id,
+        Trek.trek_status == 'completed',
+        Trek.trek_status == 'cancelled',
+    ).count()
+    trek_completed = Trek.query.filter(Trek.staff_id == current_user.id, Trek.trek_status == 'completed').count()
+    trek_cancelled = Trek.query.filter(Trek.staff_id == current_user.id, Trek.trek_status == 'cancelled').count()
+
+    trek_data = [
+        {"title": "Total Trek", "value": trek_total, "color": "total"},
+        {"title": "Completed", "value": trek_completed, "color": "completed"},
+        {"title": "Cancelled", "value": trek_cancelled, "color": "cancelled"}
+    ]
+    
+    query_booking = Booking.query.join(Booking.trek).filter(
+        Trek.staff_id == current_user.id,
+        or_(
+            Booking.status == 'cancelled',
+            Booking.status == 'rejected',
+            Booking.status == 'completed',
+        )
+    )
+
+    query = Trek.query.filter(
+        Trek.staff_id == current_user.id,
+        or_(
+            Trek.trek_status == 'completed',
+            Trek.trek_status == 'cancelled',
+        )
+    )
+    if request.method == "GET":
+        difficulty = request.args.get("difficulty")
+        status = request.args.get("status")
+        sort = request.args.get("sort", "created_at")
+        orderby = request.args.get("orderby", "desc")
+    #         # === Import filter function
+        from filter import trek_filter, trek_sort
+        query = trek_filter(query, difficulty, status)
+        query = trek_sort(query, sort, orderby)
+    treks = query.all()
+    bookings = query_booking.all()
+    return render_template(
+        'staff/history.html',
+        page = 'history',
+        booking_data = booking_data,
+        trek_data = trek_data,
+        treks = treks,
+        bookings = bookings
+    )
+
 
 
 
