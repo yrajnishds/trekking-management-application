@@ -20,13 +20,6 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
-    with app.app_context():  # Create the Database
-        db.create_all()
-
-        print('Database Created Successfuly')
-
-        from create_admin import create_admin_user
-        create_admin_user()
     
     login_manager = LoginManager()
     login_manager.init_app(app)
