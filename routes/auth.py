@@ -49,8 +49,8 @@ def register(role_type):
     if form.validate_on_submit():
         user = User.query.filter_by(email = form.email.data).first()
         if user:
-            flash(f'{user.role.caplitalize()} With this email already exits', 'warning')
-            return redirect(url_for('auth.register'))
+            flash(f'{user.role.capitalize()} With this email already exits', 'warning')
+            return redirect(url_for('auth.register', role_type = user.role))
         
         else:
             name = form.name.data.split()

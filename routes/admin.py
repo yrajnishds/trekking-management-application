@@ -698,7 +698,7 @@ def admin_booking_action(id, trek_id, action, status):
             flash('Booking Approval Successful', 'success')
             return redirect(url_for('admin.booking'))
 
-        elif action == 'complete':
+        elif action == 'completed':
             booking.status = action        
             
             
